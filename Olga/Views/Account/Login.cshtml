@@ -1,0 +1,45 @@
+﻿@model Olga.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <section id="loginForm" >
+                <h2>Вход на сайт</h2>
+                <hr />
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.returnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @*<input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />*@
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type="password" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" class="btn btn-default" value="Login" />
+                        </div>
+                    </div>
+
+                }
+            </section>
+        </div>
+    </div>
+</div>
+<div class="empty"></div>
+

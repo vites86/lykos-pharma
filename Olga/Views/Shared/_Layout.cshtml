@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/umega/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+<header>
+    <div style="margin-right: 50px;">
+        <ul class="nav navbar-nav navbar-right">
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <li>@Html.ActionLink("Login", "Login", "Account")</li>
+            }
+            else
+            {
+                <li>
+                    <a>Hello, @User.Identity.Name</a>
+                </li>
+                <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+            }
+
+        </ul>
+    </div>
+</header>
+
+<div class="main-container">
+    <aside class="main-sidebar">
+        @if (Request.IsAuthenticated)
+        {
+            @Html.Action("Menu", "Home")
+        }
+
+    </aside>
+</div>
+<div class="page-container">
+    @RenderBody()
+    <hr />
+    <div class="footer">
+        <footer>
+            <p>&copy; @DateTime.Now.Year – Lykos Pharma</p>
+        </footer>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/umegajs")
+@RenderSection("scripts", required: false)
+</body>
+</html>

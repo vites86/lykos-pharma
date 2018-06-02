@@ -1,0 +1,45 @@
+﻿@model List<Olga.Models.ApprDocsTypeViewModel>
+<div>
+    <h3>ApprDocsTypes: </h3>
+    <table class="table">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>
+                        @{ var loadingElement = @Model[i].Id + "apprDocsTypesloadingDellInfo"; }
+                        @using (Ajax.BeginForm("DeleteInfo", new AjaxOptions
+                        {
+                            UpdateTargetId = "results",
+                            LoadingElementId = @loadingElement,
+                            LoadingElementDuration = 1000
+                        }))
+                        {
+                            <input type="hidden" id="Id" name="Id" value="@Model[i].Id"/>
+                            <input type="hidden" id="objectType" name="objectType" value="ApprDocsType"/>
+                            <span>@Model[i].ApprType</span>
+                            <span id="@loadingElement" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                            <input type="submit" value="Delete" style="float: right"/>
+                        }
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                @using (Ajax.BeginForm("AddInfo", new AjaxOptions
+                {
+                    UpdateTargetId = "results",
+                    LoadingElementId = "loadingApprAddInfo",
+                    LoadingElementDuration = 1000
+                }))
+                {
+                    <input type="text" id="Name" name="Name"/>
+                    <input type="hidden" id="objectType" name="objectType" value="ApprDocsType" />
+                    <input type="submit" value="Add Appr. Docs Type"/>
+                    <span id="loadingApprAddInfo" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+
+

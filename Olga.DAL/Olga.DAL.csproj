@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{81E9684A-CF85-48D7-A8E0-E8072DF6DF53}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Olga.DAL</RootNamespace>
+    <AssemblyName>Olga.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EF\AccountContext.cs" />
+    <Compile Include="Entities\Account\ApplicationRole.cs" />
+    <Compile Include="Entities\Account\ApplicationUser.cs" />
+    <Compile Include="EF\ProductContext.cs" />
+    <Compile Include="Entities\Account\ClientProfile.cs" />
+    <Compile Include="Entities\ApprDocsType.cs" />
+    <Compile Include="Entities\Artwork.cs" />
+    <Compile Include="Entities\Country.cs" />
+    <Compile Include="Entities\Manufacturer.cs" />
+    <Compile Include="Entities\MarketingAuthorizHolder.cs" />
+    <Compile Include="Entities\MarketingAuthorizNumber.cs" />
+    <Compile Include="Entities\PackSize.cs" />
+    <Compile Include="Entities\PharmaceuticalForm.cs" />
+    <Compile Include="Entities\Procedures.cs" />
+    <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ProductCode.cs" />
+    <Compile Include="Entities\ProductDocument.cs" />
+    <Compile Include="Entities\ProductName.cs" />
+    <Compile Include="Entities\ProductRefs.cs" />
+    <Compile Include="Entities\Strength.cs" />
+    <Compile Include="Identity\ApplicationRoleManager.cs" />
+    <Compile Include="Identity\ApplicationUserManager.cs" />
+    <Compile Include="Interfaces\IClientManager.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Migrations\201804091003550_MigrationCountryDeps.cs" />
+    <Compile Include="Migrations\201804091003550_MigrationCountryDeps.Designer.cs">
+      <DependentUpon>201804091003550_MigrationCountryDeps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805152117191_DataMigration_collections.cs" />
+    <Compile Include="Migrations\201805152117191_DataMigration_collections.Designer.cs">
+      <DependentUpon>201805152117191_DataMigration_collections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805172013299_DataMigration_lists.cs" />
+    <Compile Include="Migrations\201805172013299_DataMigration_lists.Designer.cs">
+      <DependentUpon>201805172013299_DataMigration_lists.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805201823143_DataMigration_20180520.cs" />
+    <Compile Include="Migrations\201805201823143_DataMigration_20180520.Designer.cs">
+      <DependentUpon>201805201823143_DataMigration_20180520.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805202117142_DataMigration_20180521.cs" />
+    <Compile Include="Migrations\201805202117142_DataMigration_20180521.Designer.cs">
+      <DependentUpon>201805202117142_DataMigration_20180521.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805202120298_DataMigration_20180521_1.cs" />
+    <Compile Include="Migrations\201805202120298_DataMigration_20180521_1.Designer.cs">
+      <DependentUpon>201805202120298_DataMigration_20180521_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805211953504_DataMigration_20180521_2.cs" />
+    <Compile Include="Migrations\201805211953504_DataMigration_20180521_2.Designer.cs">
+      <DependentUpon>201805211953504_DataMigration_20180521_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805212013453_DataMigration_20180521_3.cs" />
+    <Compile Include="Migrations\201805212013453_DataMigration_20180521_3.Designer.cs">
+      <DependentUpon>201805212013453_DataMigration_20180521_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805232045314_DataMigration_20180523_2.cs" />
+    <Compile Include="Migrations\201805232045314_DataMigration_20180523_2.Designer.cs">
+      <DependentUpon>201805232045314_DataMigration_20180523_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805281401063_DataMigration_documents.cs" />
+    <Compile Include="Migrations\201805281401063_DataMigration_documents.Designer.cs">
+      <DependentUpon>201805281401063_DataMigration_documents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805312211506_DataMigration_addProcedure.cs" />
+    <Compile Include="Migrations\201805312211506_DataMigration_addProcedure.Designer.cs">
+      <DependentUpon>201805312211506_DataMigration_addProcedure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ClientManager.cs" />
+    <Compile Include="Repositories\IdentityUnitOfWork.cs" />
+    <Compile Include="Repositories\ProcedureRepository.cs" />
+    <Compile Include="Repositories\StrengthRepository.cs" />
+    <Compile Include="Repositories\ProductNameRepository.cs" />
+    <Compile Include="Repositories\ProductCodeRepository.cs" />
+    <Compile Include="Repositories\PharmaceuticalFormRepository.cs" />
+    <Compile Include="Repositories\PackSizeRepository.cs" />
+    <Compile Include="Repositories\MarketingAuthorizNumberRepository.cs" />
+    <Compile Include="Repositories\MarketingAuthorizHolderRepository.cs" />
+    <Compile Include="Repositories\ManufacturerRepository.cs" />
+    <Compile Include="Repositories\ArtworkRepository.cs" />
+    <Compile Include="Repositories\ApprDocsTypeRepository.cs" />
+    <Compile Include="Repositories\CountryRepository.cs" />
+    <Compile Include="Repositories\ProductRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201804091003550_MigrationCountryDeps.resx">
+      <DependentUpon>201804091003550_MigrationCountryDeps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805152117191_DataMigration_collections.resx">
+      <DependentUpon>201805152117191_DataMigration_collections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805172013299_DataMigration_lists.resx">
+      <DependentUpon>201805172013299_DataMigration_lists.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805201823143_DataMigration_20180520.resx">
+      <DependentUpon>201805201823143_DataMigration_20180520.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805202117142_DataMigration_20180521.resx">
+      <DependentUpon>201805202117142_DataMigration_20180521.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805202120298_DataMigration_20180521_1.resx">
+      <DependentUpon>201805202120298_DataMigration_20180521_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805211953504_DataMigration_20180521_2.resx">
+      <DependentUpon>201805211953504_DataMigration_20180521_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805212013453_DataMigration_20180521_3.resx">
+      <DependentUpon>201805212013453_DataMigration_20180521_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805232045314_DataMigration_20180523_2.resx">
+      <DependentUpon>201805232045314_DataMigration_20180523_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805281401063_DataMigration_documents.resx">
+      <DependentUpon>201805281401063_DataMigration_documents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805312211506_DataMigration_addProcedure.resx">
+      <DependentUpon>201805312211506_DataMigration_addProcedure.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

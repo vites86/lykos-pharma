@@ -1,0 +1,107 @@
+﻿@model IList<Olga.Models.ProductViewModel>
+@{
+    ViewBag.Title = "Products";
+}
+<div class="container">
+    <div class="row" style="overflow: auto;">
+        <h2>Products</h2>
+        <h3 class="alert-success">@ViewBag.Country</h3>
+        @{
+            if (Model.Count != 0)
+            {
+
+                <table class="table" id="product-table" style='overflow: auto'>
+                    <thead style='font-weight: bold'>
+                        <tr>
+                            <td>Product Name</td>
+                            <td>Pharmaceutical Form</td>
+                            <td>Strength</td>
+                            <td>ProductCode</td>
+                            <td>Manufacturer</td>
+                            <td>Marketing Authoriz Holder</td>
+                            <td>Marketing Authoriz Number</td>
+                            <td>IssuedDate</td>
+                            <td>ExpiredDate</td>
+                            <td>PackSize</td>
+                            <td>ApprDocsType</td>
+                            <td>Artwork</td>
+                            <td>Documents</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.Count; i++)
+                        {
+                            <tr data-rowid="@i">
+                                <td>@Model[i].ProductName</td>
+                                <td>@Model[i].PharmaceuticalForm</td>
+                                <td>@Model[i].Strength</td>
+                                <td>@Model[i].ProductCode</td>
+                                <td>
+                                    <ul>
+                                        @foreach (var item in Model[i].Manufacturers)
+                                        {
+                                            <li>@item.Name</li>
+                                        }
+                                    </ul>
+                                </td>
+                                <td>@Model[i].MarketingAuthorizHolder</td>
+                                <td>@Model[i].MarketingAuthorizNumber</td>
+                                <td>@Model[i].IssuedDate</td>
+                                <td>@Model[i].ExpiredDate</td>
+                                <td>@Model[i].PackSize</td>
+                                <td>
+                                    <ul>
+                                        @foreach (var item in Model[i].ApprDocsTypes)
+                                        {
+                                            <li>@item.ApprType</li>
+                                        }
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        @foreach (var item in Model[i].Artworks)
+                                        {
+                                            <li>@item.Artwork_name</li>
+                                        }
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        @{ 
+                                            var k = 0;
+                                            foreach (var doc in Model[i].ProductDocuments)
+                                            {
+                                                k++;
+                                                <li><a href="/Upload/Documents/@doc.PathToDocument" target="_blank">@k document</a></li>
+                                            }
+                                        }
+                                    </ul>
+                                </td>
+                                <td>
+                                    @Html.ActionLink("   ", "EditProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-pencil" }) |
+                                @Html.ActionLink("   ", "DeleteProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new
+                           {
+                               onclick = "return confirm('Are you sure you wish to delete this product?');",
+                               @class = "glyphicon glyphicon-trash text-warning"
+
+                           })
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <div>No Products yet!</div>
+            }
+
+        }
+    </div>
+    <hr />
+    <div>
+        @Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @ViewBag.CountryId }, new { @class = "btn btn-primary", data_icon = "gear" })
+    </div>
+</div>

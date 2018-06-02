@@ -1,0 +1,27 @@
+﻿<div id="pack_sizes">
+    <h3>Package Sizes: </h3>
+    <table class="table">
+        @foreach (var item in @ViewBag.PackSizes)
+        {
+            <tr>
+                <td>
+                    @using (Ajax.BeginForm("DeletePackSize", new AjaxOptions
+                    {
+                        UpdateTargetId = "packSizes",
+                        LoadingElementId = "loading",
+                        LoadingElementDuration = 1000
+                    }))
+                    {
+                        <input type="hidden" id="Id" name="Id" value="@item.Id" />
+                        <input type="hidden" id="CountryId" name="CountryId" value="@item.CountryId" />
+                        <span>@item.Size</span>
+                        <input type="submit" value="Delete" style="float: right" />
+                        <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+

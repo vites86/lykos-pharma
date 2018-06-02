@@ -1,0 +1,86 @@
+﻿@model Olga.Models.CountryViewModel
+@{
+    ViewBag.Title = "Settings";
+}
+<div class="container">
+    <h2 style="color: cadetblue">@Model.Name</h2>
+    <div class="row" style="height: auto !important">
+
+        <div class="col-md-4">
+            <div id="product_names">
+                @{Html.RenderPartial("ProductNames", Model);}
+            </div>
+            @using (Ajax.BeginForm("AddProductName", new AjaxOptions
+            {
+                UpdateTargetId = "product_names",
+                LoadingElementId = "loading",
+                LoadingElementDuration = 1000
+            }))
+            {
+                <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
+                <input type="text" id="Name" name="Name" />
+                <input type="submit" value="Add Product Name" />
+                <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+            }
+        </div>
+        <div class="col-md-4">
+            <div id="product_codes">
+                @{Html.RenderPartial("ProductCodes", Model);}
+            </div>
+            @using (Ajax.BeginForm("AddProductCode", new AjaxOptions
+            {
+                UpdateTargetId = "product_codes",
+                LoadingElementId = "loading",
+                LoadingElementDuration = 1000
+            }))
+            {
+                <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
+                <input type="text" id="Code" name="Code" />
+                <input type="submit" value="Add Product Code" />
+                <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+            }
+        </div>
+        <div class="col-md-4">
+            <div id="marketingAuthorizNumbers">
+                @{Html.RenderPartial("MarketingAuthorizNumbers", Model);}
+            </div>
+            @using (Ajax.BeginForm("AddMarketingAuthorizNumber", new AjaxOptions
+            {
+                UpdateTargetId = "marketingAuthorizNumbers",
+                LoadingElementId = "loading",
+                LoadingElementDuration = 1000
+            }))
+            {
+                <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
+                <input type="text" id="Number" name="Number" />
+                <input type="submit" value="Add Mark.Author.№" />
+                <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+            }
+        </div>
+    </div>
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="packSizes">
+                    @{Html.RenderPartial("PackSizes", Model);}
+                </div>
+                @using (Ajax.BeginForm("AddPackSize", new AjaxOptions
+                {
+                    UpdateTargetId = "packSizes",
+                    LoadingElementId = "loading",
+                    LoadingElementDuration = 1000
+                }))
+                {
+                    <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
+                    <input type="text" id="Size" name="Size" />
+                    <input type="submit" value="Add Pack Size" />
+                    <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="empty"></div>
+@Scripts.Render("~/bundles/Ajax")
+@*<script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>*@

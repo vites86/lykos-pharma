@@ -1,0 +1,77 @@
+﻿@model List<Olga.Models.CountryViewModel>
+
+<ul class="list-unstyled navigation mb-0">
+    <li class="sidebar-category">Main</li>
+    <li class="panel">
+        <a role="button"
+           data-toggle="collapse"
+           data-parent=".navigation"
+           aria-expanded="false"
+           aria-controls="collapse1"
+           href="#collapse1"
+           class="collapsed">
+            <i class="glyphicon glyphicon-user"></i>
+            <span class="sidebar-title">General Information</span>
+        </a>
+        <ul id="collapse1" class="list-unstyled collapse">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <li>
+                    <a href="#">@Model[i].Name</a>
+                    <ul>
+                        <li>@Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null)</li>
+                        <li>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) </li>
+                        <li>@Html.ActionLink("EditInfo", "Index", "Settings", new { id = @Model[i].Id }, null) </li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    </li>
+    
+    <li class="panel">
+        <a role="button"
+           data-toggle="collapse"
+           data-parent=".navigation"
+           aria-expanded="false"
+           href="#collapse6"
+           class="collapsed">
+            <i class="glyphicon glyphicon-euro"></i>
+            <span class="sidebar-title">Regulatory procedures</span>
+        </a>
+        <ul id="collapse6" class="list-unstyled collapse">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <li>
+                    <a href="#">@Model[i].Name</a>
+                    <ul>
+                        <li>@Html.ActionLink("Procedures", "Index", "Procedure", new { countryId = @Model[i].Id }, null)
+                             <ul>
+                                <li>@Html.ActionLink("All", "Index", "Procedure", new { countryId = @Model[i].Id }, null)</li>
+                                <li>@Html.ActionLink("Create", "Create", "Procedure", new { countryId = @Model[i].Id }, null)</li>
+                             </ul>
+                        </li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    </li>
+    
+    <li class="panel">
+        <a role="button"
+           data-toggle="collapse"
+           data-parent=".navigation"
+           aria-expanded="false"
+           aria-controls="collapse5"
+           href="#collapse5"
+           class="collapsed">
+            <i class="glyphicon glyphicon-tasks"></i>
+            <span class="sidebar-title">Settings</span>
+        </a>
+        <ul id="collapse5" class="list-unstyled collapse">
+            <li>@Html.ActionLink("Countries", "Index", "Home")</li>
+            <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
+            <li>@Html.ActionLink("Register new user", "Register", "Account")</li>
+        </ul>
+    </li>
+
+</ul>

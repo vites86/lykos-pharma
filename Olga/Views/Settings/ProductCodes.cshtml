@@ -1,0 +1,26 @@
+﻿<div id="product_codes">
+    <h3>Product Codes: </h3>
+    <table class="table">
+        @foreach (var item in @ViewBag.ProductCodes)
+        {
+            <tr>
+                <td>
+                    @using (Ajax.BeginForm("DeleteProductCode", new AjaxOptions
+                    {
+                        UpdateTargetId = "product_codes",
+                        LoadingElementId = "loading",
+                        LoadingElementDuration = 1000
+                    }))
+                    {
+                        <input type="hidden" id="Id" name="Id" value="@item.Id" />
+                        <input type="hidden" id="CountryId" name="CountryId" value="@item.CountryId" />
+                        <span>@item.Code</span>
+                        <input type="submit" value="Delete" style="float: right" />
+                        <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+

@@ -1,0 +1,53 @@
+﻿<div class="modal fade" tabindex="-1" id="uploadImageModal" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <label>Attach images</label>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" style="padding: 0; margin: 0;">
+                
+                <div id="dZUpload" class="dropzone" style="padding: 20px; ">
+                    <div class="dz-default dz-message">
+                        DragAndDropText
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        id="cancelAddPhoto"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-warning"
+                        data-loading-text="..." data-dismiss="modal"
+                        id="savePhotoButton">
+                    Save
+                </button>
+                <button type="button"
+                        class="btn btn-danger"
+                        id="deletePhoto"
+                        data-dismiss="modal">
+                    Delete 
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-dialog {
+        position: absolute;
+        left: 20%;
+    }
+    .dz-success-mark, .dz-error-mark, .dz-details {
+        display: none;
+    }
+    .dropzone {
+        display: inline-block;
+        width: 100%;
+    }
+    .dz-preview {
+        width: 150px;
+        float: left;
+    }
+</style>

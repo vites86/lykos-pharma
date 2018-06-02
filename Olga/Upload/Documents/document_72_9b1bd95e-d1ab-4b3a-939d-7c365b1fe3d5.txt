@@ -1,0 +1,5 @@
+                  kravchuk" password="kravchuk1985"/>
+          <user name="zharkova" password="zharkova1985"/>
+          <user name="Shapovalova" password="Shapov2Anas"/>
+          <user name="Istomina" password="Istom03Svet"/>
+          <user name="Mamedova" password="Mamed04Zul"/>

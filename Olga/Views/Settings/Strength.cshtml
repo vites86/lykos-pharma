@@ -1,0 +1,45 @@
+﻿@model List<Olga.Models.StrengthViewModel>
+<div>
+    <h3>Strength: </h3>
+    <table class="table">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td> 
+                    @{ var loadingElement = @Model[i].Id + "strengthloadingDellInfo"; }
+                    @using (Ajax.BeginForm("DeleteInfo", new AjaxOptions
+                    {
+                        UpdateTargetId = "results",
+                        LoadingElementId = @loadingElement,
+                        LoadingElementDuration = 1000
+                    }))
+                    {
+                        <input type="hidden" id="Id" name="Id" value="@Model[i].Id"/>
+                        <input type="hidden" id="objectType" name="objectType" value="Strength"/>
+                        <span>@Model[i].Strngth</span>
+                        <span id="@loadingElement" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                        <input type="submit" value="Delete" style="float: right"/>
+                    }
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                @using (Ajax.BeginForm("AddInfo", new AjaxOptions
+                {
+                    UpdateTargetId = "results",
+                    LoadingElementId = "loadingStrthAddInfo",
+                    LoadingElementDuration = 1000
+                }))
+                {
+                    <input type="text" id="Name" name="Name" />
+                    <input type="hidden" id="objectType" name="objectType" value="Strength" />
+                    <input type="submit" value="Add Strength" />
+                    <span id="loadingStrthAddInfo" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+
+
