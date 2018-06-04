@@ -54,7 +54,12 @@ namespace Olga.Controllers
                 @ViewBag.Error = "No countryId in request!";
                 return View("Error");
             }
-            InitialiseModel(countryId);
+            var errorMessage = String.Empty;
+            if (!InitialiseModel(countryId,out errorMessage))
+            {
+                @ViewBag.Error = errorMessage;
+                return View("Error");
+            }
             var allProcedures = GetProcedures(countryId);
             return View(allProcedures);
         }
@@ -89,7 +94,12 @@ namespace Olga.Controllers
             try
             {
                 var model = new ProcedureViewModel();
-                InitialiseModel(countryId);
+                var errorMessage = String.Empty;
+                if (!InitialiseModel(countryId, out errorMessage))
+                {
+                    @ViewBag.Error = errorMessage;
+                    return View("Error");
+                }
                 return View(model);
             }
             catch (Exception e)
@@ -113,7 +123,12 @@ namespace Olga.Controllers
                 _procedureService.AddItem(procedureDto);
                 _procedureService.Commit();
 
-                InitialiseModel(Int32.Parse(countryId));
+                var errorMessage = String.Empty;
+                if (!InitialiseModel(Int32.Parse(countryId), out errorMessage))
+                {
+                    @ViewBag.Error = errorMessage;
+                    return View("Error");
+                }
                 var allProcedures = GetProcedures(Int32.Parse(countryId));
                 return View("Index",allProcedures);
             }
@@ -158,7 +173,13 @@ namespace Olga.Controllers
                 _procedureService.DeleteItem(id);
                 _procedureService.Commit();
 
-                InitialiseModel(countryId);
+                var errorMessage = String.Empty;
+                if (!InitialiseModel(countryId, out errorMessage))
+                {
+                    @ViewBag.Error = errorMessage;
+                    return View("Error");
+                }
+
                 var allProcedures = GetProcedures(countryId);
                 return View("Index", allProcedures);
             }
@@ -185,14 +206,21 @@ namespace Olga.Controllers
             }
         }
 
-        public void InitialiseModel(int? countryId)
+        public bool InitialiseModel(int? countryId, out string errorMessage)
         {
+            errorMessage = String.Empty;
             var country = Mapper.Map<CountryDTO, CountryViewModel>(_countryService.GetItem((int)countryId));
             @ViewBag.CountryName = country.Name;
             @ViewBag.CountryId = countryId;
             var allProducts = _productService.GetProducts(countryId);
+            if (allProducts == null)
+            {
+                errorMessage = $"{country.Name} don't have Products! So there are no Procedures to work with!";
+                return false;
+            }
             List<SelectListItem> products = allProducts.Select(n => new SelectListItem { Text = n.ProductName.Name, Value = n.Id.ToString() }).ToList();
             @ViewBag.Products = products;
+            return true;
         }
     }
 }

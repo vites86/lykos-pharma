@@ -5,7 +5,7 @@
 <div class="container">
     <h2>Create Remark</h2>
     <div class="row" style="overflow: auto;">
-        @using (Html.BeginForm("CreateProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Create", "Remarks", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
@@ -21,7 +21,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Comments, new SelectList(@ViewBag.ProductCodes, "Id", "Code"), "-- No Product Code --", new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
                 </div>
             </div>
 
