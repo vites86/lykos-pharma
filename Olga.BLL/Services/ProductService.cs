@@ -23,10 +23,10 @@ namespace Olga.BLL.Services
            Database = new ProductRepository(context);
         }
 
-        public  void AddProduct(ProductDTO productDto, string[] selectedApprDocsTypes, string[] selectedManufacturers, string[] selectedArtworks)
+        public  void AddProduct(ProductDTO productDto, string[] selectedManufacturers, string[] selectedArtworks)
         {
             Product product = Mapper.Map<ProductDTO, Product>(productDto);
-            Database.Create(product, selectedApprDocsTypes, selectedManufacturers, selectedArtworks);
+            Database.Create(product, selectedManufacturers, selectedArtworks);
         }
 
         public ProductDTO GetProduct(int id)

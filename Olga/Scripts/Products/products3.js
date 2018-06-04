@@ -20,35 +20,31 @@
 $(document).ready(function(event) {
     Dropzone.autoDiscover = false;
     var images = [];
-    var apprId = 1;
 
     function removeImages() {
-        console.log("removeImages()");
         var elements = document.querySelectorAll('[data-type-marker="image"]');
         if (elements && elements.length) {
             var i = 0;
             for (; i < elements.length; i++) {
                 $('form').remove(elements[i]);
-                console.log(elements[i].element);
             }
             images = [];
-            $('#DocumentImagesListStringApprs').val('');
-            $('#DocumentImagesListStringApprs' + apprId).val('');
+            $('#DocumentImagesListString').val('');
         }
     }
 
-    
-    $("#dZUpload" + apprId).dropzone({
-        url: "/Product/SaveUploadedFile?apprId=" + apprId,
+    var element = 3;
+        $("#dZUpload" + element).dropzone({
+            url: "/Product/SaveUploadedFile?apprId=" + element,
             uploadMultiple: true,
             maxFiles: 10,
             acceptedFiles: "image/*,application/pdf, .txt,.xlsx,.docx,.ai,.cdr",
-            maxFilesize: 1500000,
+            maxFilesize: 10,
             addRemoveLinks: true,
             init: function() {
                 var fancybox = this;
 
-                $('#savePhotoButton' + apprId).off('click').click(function(clickEvent) {
+                $('#savePhotoButton' + element).off('click').click(function(clickEvent) {
                     var i = 0;
 
                     if (images.length) {
@@ -57,43 +53,38 @@ $(document).ready(function(event) {
                             imageString += ',';
                         }
                         for (i = 0; i < images.length; i++) {
-                                imageString += images[i].savedName + ',';
+                            imageString += images[i].savedName + ',';
                         }
                         imageString = imageString.substring(0, imageString.length - 1);
                         $('#DocumentImagesListStringApprs').val(imageString);
 
-                        var imageString2 = $('#DocumentImagesListStringApprs' + apprId).val();
+                        var imageString2 = $('#DocumentImagesListStringApprs' + element).val();
                         if (imageString2.length > 1) {
                             imageString2 += ',';
                         }
                         for (i = 0; i < images.length; i++) {
-                                imageString2 += images[i].savedName + ',';
+                            imageString2 += element + '__' + images[i].savedName + ',';
                         }
                         imageString2 = imageString2.substring(0, imageString2.length - 1);
-                        $('#DocumentImagesListStringApprs' + apprId).val(imageString2);
+                        $('#DocumentImagesListStringApprs' + element).val(imageString2);
                     }
-                    //fancybox.removeAllFiles();
+                    fancybox.removeAllFiles();
                 });
-                $('#deletePhoto' + apprId).off('click').click(function(clickEvent) {
+                $('#deletePhoto' + element).off('click').click(function(clickEvent) {
                     removeImages();
                     fancybox.removeAllFiles();
                 });
-                $('#cancelAddPhoto' + apprId).off('click').click(function(clickEvent) {
+                $('#cancelAddPhoto' + element).off('click').click(function(clickEvent) {
                     images = [];
                     fancybox.removeAllFiles();
                 });
 
                 this.on("removedfile",
                     function(file) {
-                        console.log('removed file event for ' + file.name);
+                        console.log('removed file event');
                         var index = -1;
-                        var imageString = $('#DocumentImagesListStringApprs').val();
                         for (var i = 0; i < images.length; i++) {
                             if (images[i].name === file.name) {
-                                //console.log('imageString before delete: ' + imageString);
-                                //imageString.replace(file.name, '');
-                                //imageString.replace(',,', ',');
-                                //console.log('imageString after delete: ' + imageString);
                                 index = i;
                                 break;
                             }

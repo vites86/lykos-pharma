@@ -1,0 +1,78 @@
+﻿@model List<Olga.Models.RemarkViewModel>
+@{
+    ViewBag.Title = "Create";
+}
+<div class="container">
+    <h2>Remarks</h2>
+    <div class="row" style="overflow: auto;">
+        @{
+            if (Model != null)
+            {
+
+                <table class="table" id="remarks-table" style='overflow: auto'>
+                    <thead style='font-weight: bold'>
+                        <tr>
+                            <td>Product</td>
+                            <td>Procedure</td>
+                            <td>Remark Type</td>
+                            <td>Date</td>
+                            <td>Comments</td>
+                            <td>Documents</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.Count; i++)
+                        {
+                            <tr data-rowid="@i">
+                                <td>@Model[i].Procedure.Product.ProductName @Model[i].Procedure.Product.ProductCode</td>
+                                <td>@Model[i].Procedure.ProcedureType.ToString()</td>
+                                <td>Obtained from Authority</td>
+                                <td>@{ var remarkDate = Model[i].RemarkDate != null ? @Model[i].RemarkDate.ToString().Substring(0, 10) : null; } @remarkDate</td>
+                                <td>
+                                    @*<ul>
+                                        @{
+                                            var k = 0;
+                                            foreach (var doc in Model[i].Doc)
+                                            {
+                                                k++;
+                                                <li><a href="@doc.PathToDocument" target="_blank">@k doc.</a></li>
+                                            }
+                                        }
+                                    </ul>*@
+                                    <img src="~/Content/images/extentions/crd.jpg"/>
+                                </td>
+                                <td>
+                                    Deiete | Edit
+                                    @*@Html.ActionLink("   ", "EditProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-pencil" }) |
+                                    @Html.ActionLink("   ", "DeleteProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new
+                                    {
+                                        onclick = "return confirm('Are you sure you wish to delete this product?');",
+                                        @class = "glyphicon glyphicon-trash text-warning"
+
+                                    })*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <div>No Products yet!</div>
+            }
+
+        }
+    </div>
+    <hr />
+    <div>
+        @Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @ViewBag.CountryId }, new { @class = "btn btn-primary", data_icon = "gear" })
+    </div>
+
+</div>
+</div>
+<div class="empty"></div>
+
+
+

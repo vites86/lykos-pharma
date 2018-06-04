@@ -8,17 +8,16 @@ namespace Olga.DAL.Entities
     [Table("ApprDocsTypes", Schema = "info")]
     public class ApprDocsType
     {
+        public ApprDocsType()
+        {
+            this.ProductDocuments = new HashSet<ProductDocument>();
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
         public string ApprType { get; set; }
-
-        public ApprDocsType()
-        {
-            this.Products = new HashSet<Product>();
-        }
-        public virtual ICollection<Product> Products { get; set; }
-
-        
+       
+        public virtual ICollection<ProductDocument> ProductDocuments { get; set; }
     }
 }

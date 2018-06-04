@@ -120,6 +120,7 @@
     <Compile Include="DTO\PackSizeDTO.cs" />
     <Compile Include="DTO\PharmaceuticalFormDTO.cs" />
     <Compile Include="DTO\ProcedureDTO.cs" />
+    <Compile Include="DTO\ProductDocumentDTO.cs" />
     <Compile Include="DTO\ProductDTO.cs" />
     <Compile Include="DTO\ProductCodeDTO.cs" />
     <Compile Include="DTO\ProductNameDTO.cs" />

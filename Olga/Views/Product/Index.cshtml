@@ -7,7 +7,7 @@
         <h2>Products</h2>
         <h3 class="alert-success">@ViewBag.Country</h3>
         @{
-            if (Model.Count != 0)
+            if (Model != null)
             {
 
                 <table class="table" id="product-table" style='overflow: auto'>
@@ -23,7 +23,7 @@
                             <td>IssuedDate</td>
                             <td>ExpiredDate</td>
                             <td>PackSize</td>
-                            <td>ApprDocsType</td>
+                            @*<td>ApprDocsType</td>*@
                             <td>Artwork</td>
                             <td>Documents</td>
                             <td>Action</td>
@@ -47,17 +47,9 @@
                                 </td>
                                 <td>@Model[i].MarketingAuthorizHolder</td>
                                 <td>@Model[i].MarketingAuthorizNumber</td>
-                                <td>@Model[i].IssuedDate</td>
-                                <td>@Model[i].ExpiredDate</td>
+                                <td>@{ var issuedDate = Model[i].IssuedDate != null ? @Model[i].IssuedDate.ToString().Substring(0, 10) : null; } @issuedDate</td>
+                                <td>@{ var expiredDate = Model[i].ExpiredDate != null ? @Model[i].ExpiredDate.ToString().Substring(0, 10) : null; } @expiredDate</td>
                                 <td>@Model[i].PackSize</td>
-                                <td>
-                                    <ul>
-                                        @foreach (var item in Model[i].ApprDocsTypes)
-                                        {
-                                            <li>@item.ApprType</li>
-                                        }
-                                    </ul>
-                                </td>
                                 <td>
                                     <ul>
                                         @foreach (var item in Model[i].Artworks)
@@ -73,7 +65,7 @@
                                             foreach (var doc in Model[i].ProductDocuments)
                                             {
                                                 k++;
-                                                <li><a href="/Upload/Documents/@doc.PathToDocument" target="_blank">@k document</a></li>
+                                                <li><a href="@doc.PathToDocument" target="_blank">@k doc.</a></li>
                                             }
                                         }
                                     </ul>
@@ -104,4 +96,5 @@
     <div>
         @Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @ViewBag.CountryId }, new { @class = "btn btn-primary", data_icon = "gear" })
     </div>
+    <div class="empty"></div>
 </div>

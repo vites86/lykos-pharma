@@ -65,11 +65,11 @@ namespace Olga.Controllers
                     return View(products.ToList());
                 }
 
-                List<ProductViewModel> nullModel = new List<ProductViewModel>()
-                {
-                    new ProductViewModel { Country =  countryDto.Name}
-                };
-                return View(nullModel);
+                //List<ProductViewModel> nullModel = new List<ProductViewModel>()
+                //{
+                //    new ProductViewModel { Country =  countryDto.Name}
+                //};
+                return View();
             }
             catch (Exception e)
             {
@@ -100,22 +100,23 @@ namespace Olga.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProduct(ProductCreateModel model, string[] selectedApprDocsTypes, string[] selectedManufacturers, string[] selectedArtworks)
+        public ActionResult CreateProduct(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks)
         {
-
             if (!ModelState.IsValid)
             {
                 return View("Error");
             }
-            var documentNames = model.DocumentImagesListString?.Split(',');
+
+            var documentNamesApprs = model.DocumentImagesListStringApprs?.Split(',');
+            var documentNamesArtworks = model.DocumentImagesListStringArtworks?.Split(',');
 
             try
             {
                 var productDto = Mapper.Map<ProductCreateModel, ProductDTO>(model);
 
-                AddDocumentsToProduct(ref productDto, documentNames);
+                AddDocumentsToProduct(ref productDto, documentNamesApprs, documentNamesArtworks);
 
-                _productService.AddProduct(productDto, selectedApprDocsTypes, selectedManufacturers, selectedArtworks);
+                _productService.AddProduct(productDto, selectedManufacturers, selectedArtworks);
 
                 _productService.Commit();
 
@@ -130,11 +131,31 @@ namespace Olga.Controllers
             }
         }
 
-        private void AddDocumentsToProduct(ref ProductDTO product, string[] images)
+        private void AddDocumentsToProduct(ref ProductDTO product, string[] documentNamesApprs, string[] documentNamesArtworks)
         {
-            if (images != null && images.Length > 0)
+            if (documentNamesApprs != null && documentNamesApprs.Length > 0)
             {
-                foreach (var name in images)
+                foreach (var name in documentNamesApprs)
+                {
+                    var apprNumber = name.Substring(0, name.IndexOf("__"));
+                    if (apprNumber.Length > 15) apprNumber = apprNumber.Substring(apprNumber.LastIndexOf("/"), apprNumber.Length - apprNumber.LastIndexOf("/")).Replace("/", "");
+
+                    if (name.Contains("/Upload/Documents/"))
+                    {
+                        product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name, ApprDocsTypeId = Int32.Parse(apprNumber) });
+                    }
+                    else
+                    {
+                        //var folder = GetApprFolder(apprNumber);
+                        product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name, ApprDocsTypeId = Int32.Parse(apprNumber) });
+                    }
+
+                }
+            }
+
+            if (documentNamesArtworks != null && documentNamesArtworks.Length > 0)
+            {
+                foreach (var name in documentNamesArtworks)
                 {
                     product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name });
                 }
@@ -181,10 +202,30 @@ namespace Olga.Controllers
                 var prod = _productService.GetProduct(int.Parse(id));
                 var product = Mapper.Map<ProductDTO, ProductCreateModel>(prod);
 
-                var userDocuments = prod?.ProductDocuments.Select(m => m.PathToDocument).ToList();
-                product.DocumentImages = userDocuments;
-                product.DocumentImagesListString = userDocuments != null ? String.Join(",", userDocuments) : String.Empty;
-                
+                var userDocumentsApprs = prod?.ProductDocuments.Where(a=>a.ApprDocsTypeId!=null).Select(m => m.PathToDocument).ToList();
+                var userDocumentsArtworks = prod?.ProductDocuments.Where(a => a.ArtworkId != null).Select(m => m.PathToDocument).ToList();
+
+                product.DocumentImagesArtworks = userDocumentsArtworks;
+                product.DocumentImagesApprs = userDocumentsApprs;
+                product.DocumentImagesListStringApprs = userDocumentsApprs != null ? String.Join(",", userDocumentsApprs) : String.Empty;
+                product.DocumentImagesListStringArtworks = userDocumentsArtworks != null ? String.Join(",", userDocumentsArtworks) : String.Empty;
+
+                var DocumentImagesListStringApprs1 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("1__"));
+                var DocumentImagesListStringApprs2 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("2__"));
+                var DocumentImagesListStringApprs3 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("3__"));
+                var DocumentImagesListStringApprs4 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("4__"));
+
+                ViewBag.DocumentImagesApprs1 = DocumentImagesListStringApprs1 != null ? String.Join(",", DocumentImagesListStringApprs1) : null;
+                ViewBag.DocumentImagesApprs2 = DocumentImagesListStringApprs2 != null ? String.Join(",", DocumentImagesListStringApprs2) : null;
+                ViewBag.DocumentImagesApprs3 = DocumentImagesListStringApprs3 != null ? String.Join(",", DocumentImagesListStringApprs3) : null;
+                ViewBag.DocumentImagesApprs4 = DocumentImagesListStringApprs4 != null ? String.Join(",", DocumentImagesListStringApprs4) : null;
+
+                ViewBag.DocumentImagesListStringApprs1=DocumentImagesListStringApprs1;
+                ViewBag.DocumentImagesListStringApprs2=DocumentImagesListStringApprs2;
+                ViewBag.DocumentImagesListStringApprs3=DocumentImagesListStringApprs3;
+                ViewBag.DocumentImagesListStringApprs4 = DocumentImagesListStringApprs4;
+
+
                 return View("CreateProduct",product);
 
             }
@@ -194,40 +235,6 @@ namespace Olga.Controllers
                 return View("Error");
             }
         }
-
-        [HttpPost]
-        public ActionResult EditProduct(ProductCreateModel model, string[] selectedApprDocsTypes)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-            try
-            {
-                var productDto = Mapper.Map<ProductCreateModel, ProductDTO>(model);
-
-                foreach (var apprDocsType in selectedApprDocsTypes)
-                {
-                    if (apprDocsType.Equals("false")) continue;
-                    var apprDocsTypeToAdd = _apprDocsTypeService.GetItem(int.Parse(apprDocsType));
-                    productDto.ApprDocsTypes.Add(apprDocsTypeToAdd);
-                }
-
-                //_productService.AddProduct(productDto);
-                _productService.Commit();
-
-                var products = Mapper.Map<IEnumerable<ProductDTO>, IEnumerable<ProductViewModel>>(_productService.GetProducts(model.CountryId));
-                @ViewBag.CountryId = model.CountryId;
-                return View("Index", products.ToList());
-
-            }
-            catch (Exception ex)
-            {
-                @ViewBag.Error = ex.Message;
-                return View("Error");
-            }
-        }
-
 
         public void InitialiseModel(int? countryId)
         {
@@ -294,7 +301,7 @@ namespace Olga.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveUploadedFile(int? productId)
+        public ActionResult SaveUploadedFile(string apprId)
         {
             bool isSavedSuccessfully = true;
             string fName = "";
@@ -305,10 +312,11 @@ namespace Olga.Controllers
                     HttpPostedFileBase file = Request.Files[fileName];
                     if (file != null && file.ContentLength > 0)
                     {
-                        var targetFolder = Server.MapPath("~/Upload/Documents");
-                        var id = productId != null ? productId.ToString() : "";
+                        var apprFolder = GetApprFolder(apprId);
+                        var targetFolder = Server.MapPath($"~/Upload/Documents/{apprFolder}");
+                        var id = apprId != null ? apprId.ToString() : "";
                         //var localFileName = String.Format("document_{0}_{1}{2}", id, Guid.NewGuid(), Path.GetExtension(file.FileName));
-                        var localFileName = String.Format("{0}_{1}{2}", Path.GetFileNameWithoutExtension(file.FileName), Guid.NewGuid().ToString().Substring(0,6), Path.GetExtension(file.FileName));
+                        var localFileName = String.Format("{0}_{1}{2}", apprId + "__" + Path.GetFileNameWithoutExtension(file.FileName), Guid.NewGuid().ToString().Substring(0,6), Path.GetExtension(file.FileName));
                         var targetPath = Path.Combine(targetFolder, localFileName);
                         fName = localFileName;
                         file.SaveAs(targetPath);
@@ -325,6 +333,43 @@ namespace Olga.Controllers
                 return Json(new { Message = fName });
             }
             return Json(new { Message = "Error in saving file" });
+        }
+
+        public void DeleteUploadedFile(int productId)
+        {
+            var product = _productService.GetProduct(productId);
+            try
+            {
+                for (int i = 0; i < product.ProductDocuments.Count; i++)
+                {
+                    if(product.ProductDocuments[i].ApprDocsTypeId==null) continue;
+                    var apprFolder = GetApprFolder(product.ProductDocuments[i].ApprDocsTypeId.ToString());
+                    var targetPath = Server.MapPath($"~/Upload/Documents/{apprFolder}/{product.ProductDocuments[i].PathToDocument}");
+                    if (System.IO.File.Exists(targetPath))
+                    {
+                        System.IO.File.Delete(targetPath);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
+        public static string GetApprFolder(string apprId)
+        {
+            switch (apprId)
+            {
+                case "1":
+                    return "ApprDocType/RegistrationCertificate";
+                case "2":
+                    return $"ApprDocType/PIL";
+                case "3":
+                    return "ApprDocType/NDMQC";
+                case "4":
+                    return "ApprDocType/PackMaterialsLabelling";
+            }
+            return "/";
         }
     }
 }

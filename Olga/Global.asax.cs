@@ -72,8 +72,10 @@ namespace Olga
                     .ForMember(m => m.DocumentImagesListString, opt => opt.Ignore());
 
                 cfg.CreateMap<ProductDTO, ProductCreateModel>()
-                    .ForMember(m => m.DocumentImages, opt => opt.Ignore())
-                    .ForMember(m => m.DocumentImagesListString, opt => opt.Ignore());
+                    .ForMember(m => m.DocumentImagesArtworks, opt => opt.Ignore())
+                    .ForMember(m => m.DocumentImagesListStringArtworks, opt => opt.Ignore())
+                    .ForMember(m => m.DocumentImagesApprs, opt => opt.Ignore())
+                    .ForMember(m => m.DocumentImagesListStringApprs, opt => opt.Ignore());
 
                 cfg.CreateMap<ApprDocsTypeViewModel, ApprDocsTypeDTO>();
                     //.ForMember(x => x.Products, opt => opt.Ignore());

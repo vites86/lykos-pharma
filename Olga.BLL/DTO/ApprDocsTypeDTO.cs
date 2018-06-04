@@ -7,11 +7,14 @@ namespace Olga.BLL.DTO
     {
         public ApprDocsTypeDTO()
         {
-            this.Products = new List<ProductDTO>();
+            this.ProductDocuments = new List<ProductDocument>();
         }
         public List<ProductDTO> Products { get; set; }
 
         public int Id { get; set; }
         public string ApprType { get; set; }
+
+        public List<ProductDocument> ProductDocuments { get; set; }
+
     }
 }

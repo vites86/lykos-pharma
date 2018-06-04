@@ -22,7 +22,7 @@
                 <div class="form-group">
                     @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        <label class="control-label text-info ">@ViewBag.ContryName</label>
+                        <label class="control-label text-info" value="@ViewBag.ContryName" text="">@ViewBag.CountryName</label>
                     </div>
                 </div>
                 
@@ -128,7 +128,7 @@
          }
     </div>
 </div>
-@Html.Partial("~/Views/Shared/_UploadFiles.cshtml")
+@*@Html.Partial("~/Views/Shared/_UploadFiles.cshtml")*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

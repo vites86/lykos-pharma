@@ -13,7 +13,6 @@ namespace Olga.DAL.Entities
         {
             this.Artworks = new HashSet<Artwork>();
             this.Manufacturers = new HashSet<Manufacturer>();
-            this.ApprDocsTypes = new HashSet<ApprDocsType>();
             this.ProductDocuments = new HashSet<ProductDocument>();
             this.Procedures = new HashSet<Procedure>();
         }
@@ -48,7 +47,6 @@ namespace Olga.DAL.Entities
         public virtual Strength Strength { get; set; }
         public int? StrengthId { get; set; }
 
-        public virtual ICollection<ApprDocsType> ApprDocsTypes { get; set; }
         public virtual ICollection<Artwork> Artworks { get; set; }
         public virtual ICollection<Manufacturer> Manufacturers { get; set; }
         public virtual ICollection<ProductDocument> ProductDocuments { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Olga.DAL.Entities;
 
 namespace Olga.Models
 {
@@ -9,11 +10,13 @@ namespace Olga.Models
     {
         public ApprDocsTypeViewModel()
         {
-            this.Products = new List<ProductViewModel>();
+            this.ProductDocuments = new List<ProductDocument>();
         }
         public List<ProductViewModel> Products { get; set; }
 
         public int Id { get; set; }
         public string ApprType { get; set; }
+
+        public List<ProductDocument> ProductDocuments { get; set; }
     }
 }

@@ -190,6 +190,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProcedureController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\RemarksController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -4897,6 +4898,7 @@
     <Content Include="Content\umega\plugins\uploader\.bower.json" />
     <Content Include="Content\umega\plugins\uploader\dmuploader.jquery.json" />
     <Content Include="Content\umega\plugins\uploader\README.md" />
+    <Content Include="App_Start\connections.config" />
     <None Include="Properties\PublishProfiles\185.112.41.146.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -4938,6 +4940,9 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\Products\products4.js" />
+    <Content Include="Scripts\Products\products3.js" />
+    <Content Include="Scripts\Products\products2.js" />
     <Content Include="Scripts\Products\products.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -4947,32 +4952,6 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Upload\Documents\CP00005-example_537b98.jpg" />
-    <Content Include="Upload\Documents\CP00005-example_bc0554.jpg" />
-    <Content Include="Upload\Documents\document_71_2c5f20e0-2ea1-4aae-99b5-b052133a1fa3.png" />
-    <Content Include="Upload\Documents\document_71_3189de90-985a-4721-9b16-359ed6c85a0b.jpg" />
-    <Content Include="Upload\Documents\document_71_5da268e2-63aa-47a4-8be7-c9d581c26f79.jpg" />
-    <Content Include="Upload\Documents\document_71_76b506d0-d28b-4172-a5ff-de1a4a4b427a.jpg" />
-    <Content Include="Upload\Documents\document_71_a0099f77-5b48-419e-8dba-22abf6ba8f87.txt" />
-    <Content Include="Upload\Documents\document_71_d13fdffe-5d41-4f3a-8d6b-847a3fbd1931.jpg" />
-    <Content Include="Upload\Documents\document_71_efdc9839-c151-4ef4-92b5-2101cb6fef5c.jpg" />
-    <Content Include="Upload\Documents\document_72_3b52af70-5462-4009-8301-ab4a3f96217b.png" />
-    <Content Include="Upload\Documents\document_72_9b1bd95e-d1ab-4b3a-939d-7c365b1fe3d5.txt" />
-    <Content Include="Upload\Documents\document_unknownproduct_07b66a5c-d1a8-44da-81a5-b97aed55dc2a.png" />
-    <Content Include="Upload\Documents\document_unknownproduct_103423a7-a725-4b8a-9ac2-d3b344ef6687.jpg" />
-    <Content Include="Upload\Documents\document_unknownproduct_27ee8271-452e-4652-ad1a-c993c44c175e.png" />
-    <Content Include="Upload\Documents\document_unknownproduct_3312f7c6-3d5b-4f4e-97da-656aeb27bbf4.png" />
-    <Content Include="Upload\Documents\document_unknownproduct_64a75279-63d9-4d1d-a065-a5cc3cd5eee5.png" />
-    <Content Include="Upload\Documents\document_unknownproduct_75167c18-1015-47b5-b883-1bd0f4026ba7.jpg" />
-    <Content Include="Upload\Documents\document_unknownproduct_770bb3de-20ba-462e-bf39-bffa365d54f3.jpg" />
-    <Content Include="Upload\Documents\document_unknownproduct_7e4d93f9-a84f-4fc0-8b2f-ed9066122f8c.jpg" />
-    <Content Include="Upload\Documents\document_unknownproduct_9a72681f-4399-4bdb-9335-b40eb4f99fc2.jpg" />
-    <Content Include="Upload\Documents\document_unknownproduct_a4240006-ea99-4aae-97d9-6f846a08b095.txt" />
-    <Content Include="Upload\Documents\Fond3_f7a595.gif" />
-    <Content Include="Upload\Documents\posting in fb_11cbba.txt" />
-    <Content Include="Upload\Documents\Ася_26b78e.png" />
-    <Content Include="Upload\Documents\Ася_8f8ba0.png" />
-    <Content Include="Upload\Documents\Ася_e4d6fc.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -5019,11 +4998,11 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_UploadFiles.cshtml" />
     <Content Include="Views\Home\_Navigation.cshtml" />
-    <Content Include="Upload\Documents\Administration_731ac5.xlsx" />
-    <Content Include="Upload\Documents\document_unknownproduct_28eb99b9-7b4c-42b2-9f4b-6dd8e060c75b.xlsx" />
     <Content Include="Views\Procedure\Index.cshtml" />
     <Content Include="Views\Procedure\Create.cshtml" />
     <Content Include="Views\Procedure\Delete.cshtml" />
+    <Content Include="Views\Remarks\Index.cshtml" />
+    <Content Include="Views\Remarks\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5035,6 +5014,11 @@
     <Folder Include="Content\umega\assets\jade\third-layout\icons\" />
     <Folder Include="Content\umega\build\images\icons\" />
     <Folder Include="Content\umega\plugins\pdfmake\libs\FileSaver.js\" />
+    <Folder Include="Upload\Documents\ApprDocType\NDMQC\" />
+    <Folder Include="Upload\Documents\ApprDocType\PackMaterialsLabelling\" />
+    <Folder Include="Upload\Documents\ApprDocType\PIL\" />
+    <Folder Include="Upload\Documents\ApprDocType\RegistrationCertificate\" />
+    <Folder Include="Upload\Documents\Artwork\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

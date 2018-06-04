@@ -10,8 +10,8 @@ namespace Olga.BLL.DTO
         {
             this.Artworks = new List<ArtworkDTO>();
             this.Manufacturers = new List<ManufacturerDTO>();
-            this.ApprDocsTypes = new List<ApprDocsTypeDTO>();
             this.ProductDocuments = new List<ProductDocument>();
+            this.Procedures = new List<ProcedureDTO>();
         }
 
         public int Id { get; set; }
@@ -43,9 +43,9 @@ namespace Olga.BLL.DTO
         public virtual Strength Strength { get; set; }
         public int? StrengthId { get; set; } 
 
-        public List<ApprDocsTypeDTO> ApprDocsTypes { get; set; }
         public List<ArtworkDTO> Artworks { get; set; }
         public List<ManufacturerDTO> Manufacturers { get; set; }
         public List<ProductDocument> ProductDocuments { get; set; }
+        public List<ProcedureDTO> Procedures { get; set; }
     }
 }

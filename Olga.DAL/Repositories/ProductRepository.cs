@@ -40,25 +40,25 @@ namespace Olga.DAL.Repositories
             db.Products.Add(product);
         }
 
-        public void Create(Product product, string[] selectedApprDocsTypes, string[] selectedManufacturers, string[] selectedArtworks)
+        public void Create(Product product, string[] selectedManufacturers, string[] selectedArtworks)
         {
             db.Products.AddOrUpdate(product);
 
             if (product.Id != 0)
             {
-                Update(product, selectedApprDocsTypes, selectedManufacturers, selectedArtworks);
+                Update(product, selectedManufacturers, selectedArtworks);
                 return;
             }
 
-            if (selectedApprDocsTypes != null)
-            {
-                foreach (var id in selectedApprDocsTypes)
-                {
-                    if (string.IsNullOrEmpty(id)) continue;
-                    var apprDocsTypeToAdd = db.ApprDocsTypes.Find(int.Parse(id));
-                    product.ApprDocsTypes.Add(apprDocsTypeToAdd);
-                }
-            }
+            //if (selectedApprDocsTypes != null)
+            //{
+            //    foreach (var id in selectedApprDocsTypes)
+            //    {
+            //        if (string.IsNullOrEmpty(id)) continue;
+            //        var apprDocsTypeToAdd = db.ApprDocsTypes.Find(int.Parse(id));
+            //        product.ApprDocsTypes.Add(apprDocsTypeToAdd);
+            //    }
+            //}
 
             if (selectedManufacturers != null)
             {
@@ -85,14 +85,12 @@ namespace Olga.DAL.Repositories
         {
         }
 
-        public void Update(Product product, string[] selectedApprDocsTypes, string[] selectedManufacturers, string[] selectedArtworks)
+        public void Update(Product product, string[] selectedManufacturers, string[] selectedArtworks)
         {
             var existingProduct = db.Products.FirstOrDefault(a=>a.Id == product.Id);
 
             if (existingProduct == null) return;
 
-
-            existingProduct.ApprDocsTypes.Clear();
             existingProduct.Artworks.Clear();
             existingProduct.Manufacturers.Clear();
 
@@ -102,16 +100,7 @@ namespace Olga.DAL.Repositories
                 var appr = db.ProductDocuments.Any(a=>a.PathToDocument == doc.PathToDocument);
                 if (!appr)
                 {
-                    existingProduct.ProductDocuments.Add(new ProductDocument(){PathToDocument = doc.PathToDocument, ProductId = product.Id});
-                }
-            }
-
-            if (selectedApprDocsTypes != null)
-            {
-                foreach (var newAppr in selectedApprDocsTypes)
-                {
-                    var appr = db.ApprDocsTypes.Find(int.Parse(newAppr));
-                    existingProduct.ApprDocsTypes.Add(appr);
+                    existingProduct.ProductDocuments.Add(new ProductDocument(){PathToDocument = doc.PathToDocument, ProductId = product.Id, ApprDocsTypeId = doc.ApprDocsTypeId});
                 }
             }
 

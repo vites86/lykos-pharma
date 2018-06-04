@@ -10,7 +10,7 @@ namespace Olga.BLL.Interfaces
 {
     public interface IProductService
     {
-        void AddProduct(ProductDTO productDto, string[] selectedApprDocsTypes, string[] selectedManufacturers, string[] selectedArtworks);
+        void AddProduct(ProductDTO productDto, string[] selectedManufacturers, string[] selectedArtworks);
         ProductDTO GetProduct(int id);
         void DeleteProduct(int id);
         IEnumerable<ProductDTO> GetProducts(int? countryId);
