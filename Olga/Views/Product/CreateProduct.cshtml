@@ -99,8 +99,7 @@
                                         @{ var res = Request.Form[$"imageListApprs"+@apprId];
                                             res = res != @apprId ? "" : Request.Form[$"imageListApprs" + apprId];
                                         } 
-                                        <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" 
-                                               value="@res" />
+                                        <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" value="@res" />
                                         @{
                                             foreach (var fileName in Model.DocumentImagesApprs)
                                             {

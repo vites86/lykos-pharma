@@ -1,0 +1,18 @@
+{
+Method: GET, 
+RequestUri: 'http://localhost:51500/api/Triggers', 
+Version: 1.1, 
+Content: System.Web.Http.WebHost.HttpControllerHandler+LazyStreamContent, 
+Headers:
+{
+  Cache-Control: no-cache
+  Connection: keep-alive
+  Accept: */*
+  Accept-Encoding: gzip
+  Accept-Encoding: deflate
+  Host: localhost:51500
+  User-Agent: PostmanRuntime/7.1.1
+  password: qwerty
+  Postman-Token: 9661eeae-d15f-4745-9fa8-cf06b4d8f2d4
+  Content-Length: 0
+}}

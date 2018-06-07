@@ -139,17 +139,7 @@ namespace Olga.Controllers
                 {
                     var apprNumber = name.Substring(0, name.IndexOf("__"));
                     if (apprNumber.Length > 15) apprNumber = apprNumber.Substring(apprNumber.LastIndexOf("/"), apprNumber.Length - apprNumber.LastIndexOf("/")).Replace("/", "");
-
-                    if (name.Contains("/Upload/Documents/"))
-                    {
-                        product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name, ApprDocsTypeId = Int32.Parse(apprNumber) });
-                    }
-                    else
-                    {
-                        //var folder = GetApprFolder(apprNumber);
-                        product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name, ApprDocsTypeId = Int32.Parse(apprNumber) });
-                    }
-
+                    product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name, ApprDocsTypeId = Int32.Parse(apprNumber) });
                 }
             }
 

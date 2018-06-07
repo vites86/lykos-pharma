@@ -21,6 +21,7 @@ $(document).ready(function(event) {
     Dropzone.autoDiscover = false;
     var images = [];
     var apprId = 1;
+    var accept = ".pdf,.doc,.docx,.odt";
 
     function removeImages() {
         console.log("removeImages()");
@@ -42,9 +43,10 @@ $(document).ready(function(event) {
         url: "/Product/SaveUploadedFile?apprId=" + apprId,
             uploadMultiple: true,
             maxFiles: 10,
-            acceptedFiles: "image/*,application/pdf, .txt,.xlsx,.docx,.ai,.cdr",
+            acceptedFiles: "image/*, application/pdf, .txt,.xlsx,.docx,.ai,.cdr",
             maxFilesize: 1500000,
             addRemoveLinks: true,
+            createImageThumbnails: true,
             init: function() {
                 var fancybox = this;
 
@@ -88,12 +90,18 @@ $(document).ready(function(event) {
                         console.log('removed file event for ' + file.name);
                         var index = -1;
                         var imageString = $('#DocumentImagesListStringApprs').val();
+                        var imageString2 = $('#DocumentImagesListStringApprs' + apprId).val();
                         for (var i = 0; i < images.length; i++) {
                             if (images[i].name === file.name) {
-                                //console.log('imageString before delete: ' + imageString);
-                                //imageString.replace(file.name, '');
-                                //imageString.replace(',,', ',');
-                                //console.log('imageString after delete: ' + imageString);
+                                console.log('file.name: ' + file.name);
+                                console.log('imageString before delete: ' + imageString);
+                                var fileNameInList = apprId + '__' + file.name;
+                                imageString.replace(fileNameInList, '');
+                                imageString.replace(',,', ',');
+                                imageString2.replace(fileNameInList, '');
+                                imageString2.replace(',,', ',');
+                                console.log('fileNameInList: ' + fileNameInList);
+                                console.log('imageString after delete: ' + imageString);
                                 index = i;
                                 break;
                             }

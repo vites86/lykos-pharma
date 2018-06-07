@@ -14,6 +14,14 @@ $(document).ready(function() {
         dictDefaultMessage: '<i class=\'icon-dz fa fa-file-o\'></i>Drop files here to upload',
         init: function() {
             this.on('addedfile', function(file) {
+
+                /* added to preview*/
+                /*var preview = document.getElementsByClassName('dz-preview');
+                preview = preview[preview.length - 1];
+                var imageName = document.createElement('span');
+                imageName.innerHTML = file.name;
+                preview.insertBefore(imageName, preview.firstChild);*/
+
                 if (this.fileTracker) {
                     this.removeFile(this.fileTracker);
                 }
