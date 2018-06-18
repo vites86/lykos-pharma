@@ -20,8 +20,12 @@ namespace Olga.DAL.Entities
         [Key]
         public int Id { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:yyyy'/'MM'/'dd}", ApplyFormatInEditMode = true)]
         public DateTime? IssuedDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy'/'MM'/'dd}", ApplyFormatInEditMode = true)]
         public DateTime? ExpiredDate { get; set; }
+
+        public bool? UnLimited { get; set; }
 
         public virtual Country Country { get; set; }
         public int? CountryId { get; set; }

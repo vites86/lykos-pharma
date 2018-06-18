@@ -14,7 +14,6 @@ $(document).ready(function() {
         dictDefaultMessage: '<i class=\'icon-dz fa fa-file-o\'></i>Drop files here to upload',
         init: function() {
             this.on('addedfile', function(file) {
-
                 /* added to preview*/
                 /*var preview = document.getElementsByClassName('dz-preview');
                 preview = preview[preview.length - 1];
@@ -49,7 +48,7 @@ $(document).ready(function() {
 
     $('#limit-dz').dropzone({
         url: '/upload',
-        paramName: 'file',
+        paramName: 'file',  
         maxFilesize: 2,
         maxThumbnailFilesize: 0.5,
         maxFiles: 3,

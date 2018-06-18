@@ -1081,7 +1081,8 @@
       fileReader = new FileReader;
       fileReader.onload = (function(_this) {
         return function() {
-          if (file.type === "image/svg+xml") {
+            if (file.type === "image/svg+xml") {
+                console.log(('file.type' + (file.type);
             _this.emit("thumbnail", file, fileReader.result);
             if (callback != null) {
               callback();

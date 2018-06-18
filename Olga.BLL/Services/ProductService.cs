@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Owin.Security.Provider;
 using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
@@ -77,6 +78,12 @@ namespace Olga.BLL.Services
         public void Commit()
         {
             Database.Commit();
+        }
+
+        public void DeleteDocument(string name)
+        {
+            if(string.IsNullOrEmpty(name)) return;
+            Database.DeleteDocuments(name);
         }
     }
 }

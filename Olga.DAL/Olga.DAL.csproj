@@ -184,6 +184,10 @@
     <Compile Include="Migrations\201806020729032_DataMigration_docsToApps.Designer.cs">
       <DependentUpon>201806020729032_DataMigration_docsToApps.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806172152316_DataMigration_unLimited.cs" />
+    <Compile Include="Migrations\201806172152316_DataMigration_unLimited.Designer.cs">
+      <DependentUpon>201806172152316_DataMigration_unLimited.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
@@ -242,6 +246,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806020729032_DataMigration_docsToApps.resx">
       <DependentUpon>201806020729032_DataMigration_docsToApps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806172152316_DataMigration_unLimited.resx">
+      <DependentUpon>201806172152316_DataMigration_unLimited.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

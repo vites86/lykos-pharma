@@ -4940,6 +4940,8 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\Products\artworks.js" />
+    <Content Include="Scripts\Products\products-handler.js" />
     <Content Include="Scripts\Products\products4.js" />
     <Content Include="Scripts\Products\products3.js" />
     <Content Include="Scripts\Products\products2.js" />

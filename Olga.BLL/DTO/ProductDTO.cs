@@ -18,6 +18,7 @@ namespace Olga.BLL.DTO
 
         public DateTime? IssuedDate { get; set; }
         public DateTime? ExpiredDate { get; set; }
+        public bool? UnLimited { get; set; }
 
         public virtual Country Country { get; set; }
         public int? CountryId { get; set; }

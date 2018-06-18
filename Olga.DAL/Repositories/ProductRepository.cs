@@ -100,7 +100,7 @@ namespace Olga.DAL.Repositories
                 var appr = db.ProductDocuments.Any(a=>a.PathToDocument == doc.PathToDocument);
                 if (!appr)
                 {
-                    existingProduct.ProductDocuments.Add(new ProductDocument(){PathToDocument = doc.PathToDocument, ProductId = product.Id, ApprDocsTypeId = doc.ApprDocsTypeId});
+                    existingProduct.ProductDocuments.Add(new ProductDocument(){PathToDocument = doc.PathToDocument, ProductId = product.Id, ApprDocsTypeId = doc.ApprDocsTypeId, ArtworkId = doc.ArtworkId });
                 }
             }
 
@@ -172,6 +172,16 @@ namespace Olga.DAL.Repositories
         public Manufacturer GetManufacturer(int id)
         {
             return db.Manufacturers.FirstOrDefault(p => p.Id == id); ;
+        }
+
+        public void DeleteDocuments(string fileName)
+        {
+            var doc = db.ProductDocuments.FirstOrDefault(p => p.PathToDocument.Equals(fileName));
+            if (doc!=null)
+            {
+                db.ProductDocuments.Remove(doc);
+                Commit();
+            }
         }
 
 

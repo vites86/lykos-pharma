@@ -95,26 +95,41 @@
                                            id="UploadImg@(apprId)">Upload Documents</a>
                                     </td>
                                     <td style="padding-left: 25px;">
-                                        <input type="hidden" value="@ViewBag.DocumentImagesApprs@(apprId)" id="imageListApprs@(apprId)"/>
-                                        @{ var res = Request.Form[$"imageListApprs"+@apprId];
-                                            res = res != @apprId ? "" : Request.Form[$"imageListApprs" + apprId];
-                                        } 
-                                        <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" value="@res" />
+                                        @*input for taking value for DocumentImagesListStringApprs*@
+                                        <input type="hidden" value="@ViewBag.DocumentImagesApprs@(apprId)" id="imageListApprs@(apprId)" />
                                         @{
-                                            foreach (var fileName in Model.DocumentImagesApprs)
-                                            {
-                                                if (fileName.Contains(@apprId + "__"))
-                                                {
-                                                    var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
-                                                    var folder = GetApprFolder(apprDocsType.Text);
-
-                                                    <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                        <img class="" style="height: 50px;" src="~/@docImagePath" />
-                                                    </a>
-                                                }
-
-                                            }
+                                            var res = Request.Form[$"imageListApprs" + @apprId];
+                                            res = res != @apprId ? "" : Request.Form[$"imageListApprs" + apprId];
                                         }
+                                        <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" value="@res" />
+                                        <div class="row" style="display: inline-block;" id="filesDiv@(apprId)" name="filesDiv@(apprId)">
+                                            @{
+                                                foreach (var fileName in Model.DocumentImagesApprs)
+                                                {
+                                                    if (fileName.Contains(@apprId + "__"))
+                                                    {
+                                                        var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
+                                                        var folder = GetApprFolder(apprDocsType.Text);
+
+                                                        var blockName = fileName.Replace(".", "").Replace(" ", "");
+
+                                                        var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+
+                                                        <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
+                                                            <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
+                                                                <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" data-toggle="tooltip" title="@alt" data-placement="top" />
+                                                            </a>
+                                                            <div style="margin-top:5px; line-height: 20px;">
+                                                                <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
+                                                            </div>
+                                                            <div style="margin-top:0px; line-height: 20px;">
+                                                                <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Удалить" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -126,24 +141,15 @@
                     @Html.LabelFor(model => model.Manufacturers, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <table>
-                                <ul style="list-style-type: none; padding-left: 0px">
+                            <ul style="list-style-type: none; padding-left: 0px">
                                 @foreach (var manufacturer in ViewBag.manufacturers)
                                 {
-                                        <li>
-                                            <input type="checkbox"
-                                                   name="selectedManufacturers" value="@manufacturer.Value" id="@manufacturer.Value"
-                                                   @{
-                                                       if (Model != null)
-                                                       {
-                                                           var foundItem = Model.Manufacturers.FirstOrDefault(i => i.Name == manufacturer.Text);
-                                                           if (foundItem != null)
-                                                           {
-                                                               <text> checked='checked' </text>
-                                                           }
-                                                       }
-                                                   }/>
-                                            <label for="@manufacturer.Value">@manufacturer.Text</label>
-                                        </li>
+                                    <li>
+                                        <input type="checkbox"
+                                               name="selectedManufacturers" value="@manufacturer.Value" id="@manufacturer.Value"
+                                               @{ if (Model != null) { var foundItem = Model.Manufacturers.FirstOrDefault(i => i.Name == manufacturer.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                                        <label for="@manufacturer.Value">@manufacturer.Text</label>
+                                    </li>
                                 }
                             </ul>
                         </table>
@@ -152,26 +158,88 @@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Artworks, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="col-md-10 left">
+                        @Html.HiddenFor(m => m.DocumentImagesListStringArtworks)
+
                         <table>
                             @foreach (var artwork in ViewBag.artworks)
-                             {
-                            <tr style="line-height: 40px">
-                                <td>
-                                    <input type="checkbox"
-                                           name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
-                                           @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
-                                </td>
-                                <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
-                                <td style="padding-left: 25px;">
-                                    <a class="btn btn-default" href="#"
-                                       data-toggle="modal" data-target="#uploadImageModal"
-                                       id="UploadImg">Upload Documents</a>
-                                </td>
-                            </tr>
-                             }
+                            {
+                                var artworkId = @artwork.Value;
+                                <tr style="line-height: 50px;">
+                                        <td>
+                                            <input type="checkbox" onclick="showDownloads(this)" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
+                                                   @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                                        </td>
+                                    <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
+                                    <td style="padding-left: 25px;">
+                                        <a class="btn btn-default" href="#"  
+                                           data-toggle="modal" data-target="#uploadArtworImageModal@(artworkId)"
+                                           id="UploadImg@(artworkId)">Upload Documents</a>
+                                    </td>
+                                    <td style="padding-left: 25px;">
+                                        @*input for taking value for DocumentImagesListStringApprs*@
+                                        <input type="hidden" value="@ViewBag.DocumentImagesArtworks@(artworkId)" id="imageListArtworks@(artworkId)" />
+                                        @{
+                                            var res = Request.Form[$"imageListArtworks" + @artworkId];
+                                            res = res != @artworkId ? "" : Request.Form[$"imageListArtworks" + artworkId];
+                                        }
+                                        <input type="hidden" id="DocumentImagesListStringArtworks@(artworkId)" value="@res" />
+                                        <div class="row" style="display: inline-block;" id="filesArtworkDiv@(artworkId)" name="filesArtworkDiv@(artworkId)">
+                                            @{
+                                                foreach (var fileName in Model.DocumentImagesArtworks)
+                                                {
+                                                    if (fileName.Contains(@artworkId + "__"))
+                                                    {
+                                                        var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
+                                                        var folder = String.Format("Artwork/{0}", @artworkId.ToString());
+
+                                                        var blockName = fileName.Replace(".", "").Replace(" ", "");
+
+                                                        var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+
+                                                        <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
+                                                            <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
+                                                                <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" data-toggle="tooltip" title="@alt" data-placement="top" />
+                                                            </a>
+                                                            <div style="margin-top:5px; line-height: 20px;">
+                                                                <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
+                                                            </div>
+                                                            <div style="margin-top:0px; line-height: 20px;">
+                                                                <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Удалить" />
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </table>
                     </div>
+
+
+
+                    @*<div class="col-md-10">
+                            <table>
+                                @foreach (var artwork in ViewBag.artworks)
+                                {
+                                    <tr style="line-height: 40px">
+                                        <td>
+                                            <input type="checkbox" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
+                                                   @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                                        </td>
+                                        <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
+                                        <td style="padding-left: 25px;">
+                                            <a id="UploadImg" data-target="#uploadArtworImageModal" class="btn btn-default" href="#" data-toggle="modal">Upload Documents</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>*@
+
+
+
                 </div>
 
 
@@ -183,7 +251,9 @@
                             var dateValue =
                                 DateTime.MinValue == Model.IssuedDate
                                     ? String.Empty
-                                    : Model.IssuedDate.ToString();
+                                    //: Model.IssuedDate.ToString();
+                                    : DateTime.Parse(@Model.IssuedDate.ToString()).ToString("u").Substring(0, 10);
+
                         }
                         <input class="form-control rounded"
                                data-val="true"
@@ -195,19 +265,36 @@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.ExpiredDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @{
-                            var dateValue2 =
-                                DateTime.MinValue == Model.ExpiredDate
-                                    ? String.Empty
-                                    : Model.ExpiredDate.ToString();
-                        }
-                        <input class="form-control rounded"
-                               data-val="true"
-                               id="ExpiredDate"
-                               name="ExpiredDate"
-                               value="@dateValue2" />
-                    </div>
+                    @*@if (!Model.UnLimited)
+                    {*@
+
+                        <div class="col-md-10">
+                            @{
+                                var dateValue2 =
+                                    DateTime.MinValue == Model.ExpiredDate
+                                        ? String.Empty
+                                       // : Model.ExpiredDate.ToString();
+                                : DateTime.Parse(@Model.ExpiredDate.ToString()).ToString("u").Substring(0, 10);
+                            }
+                            <input class="form-control rounded"
+                                   data-val="true"
+                                   id="ExpiredDate"
+                                   name="ExpiredDate"
+                                   value="@dateValue2"/>
+                        <br/>
+                            <span id="UnLimited">
+                                UnLimited @Html.CheckBoxFor(m=>m.UnLimited)
+                            </span>
+                        </div>
+
+                    @*}
+                    else
+                    {
+                        <div id="UnLimited">
+                            UnLimited @Html.CheckBoxFor(m=>m.UnLimited)
+                        </div>
+                    }*@
+                   
                 </div>
                 <br />
                 <hr />
@@ -222,15 +309,51 @@
 </div>
 @Html.Partial("~/Views/Shared/_UploadFiles.cshtml")
 
+<style>
+    .show_blockOfImage {
+        display: inline-block;
+        text-align: center;
+        margin-left: 10px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .btn_delete {
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+        line-height: 20px;
+    }
+
+    .shadow {
+        background: ##1f364f; /* Цвет фона */
+        box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
+        padding: 2px;
+    }
+
+    .preview_image {
+        height: 120px;
+        width: 120px;
+        vert-align: middle;
+        background: ##1f364f; /* Цвет фона */
+        box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
+        margin-bottom: 10px;
+    }
+</style>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/dropzonescripts")
     <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
     @*<script src="~/Scripts/jquery-3.3.1.min.js"></script>*@
+    @*<script src='@Url.Content("~/Scripts/Products/products-handler.js")'></script>*@
     <script src='@Url.Content("~/Scripts/Products/products.js")'></script>
-    <script src='@Url.Content("~/Scripts/Products/products2.js")'></script>
-    <script src='@Url.Content("~/Scripts/Products/products3.js")'></script>
-    <script src='@Url.Content("~/Scripts/Products/products4.js")'></script>
+    <script src='@Url.Content("~/Scripts/Products/artworks.js")'></script>
+    @*<script src='@Url.Content("~/Scripts/Products/products2.js")'></script>
+        <script src='@Url.Content("~/Scripts/Products/products3.js")'></script>
+        <script src='@Url.Content("~/Scripts/Products/products4.js")'></script>*@
 
 
     @*<script src="~/Scripts/bootstrap.min.js"></script>*@
@@ -242,25 +365,54 @@
         </script>*@
 
     <script type="text/javascript">
-        (function (parameters) {
-            $(document).ready(function () {
-                            console.log('@Model.IssuedDate');
-                            var format = 'YYYY-MM-DD';
+        (function(parameters) {
+            $(document).ready(function() {
+                console.log('@Model.IssuedDate');
+                var format = 'YYYY-MM-DD';
                 $('#IssuedDate').datetimepicker({
-                                format: format
+                    format: format
                 });
-                            console.log('@Model.ExpiredDate');
+                console.log('@Model.ExpiredDate');
                 $('#ExpiredDate').datetimepicker({
-                                format: format
+                    format: format
                 });
-                        });
+            });
 
-        }())
+        }());
 
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        function showDownloads(elem) {
+            //toastr.info("ok");
+            var artworkId = elem.value;
+            toastr.info("artworkId=" + artworkId);
+            var buttonToHideId = document.getElementById("UploadImg"+artworkId);
+            document.getElementById("UploadImg" + artworkId.toString()).style.display = elem.checked ? "block" : "none";
+        }
+
+        //$("#UnLimited").click(function() {
+        //    // Get the checkbox
+        //    var checkBox = document.getElementById("UnLimited");
+        //    // Get the output text
+        //    var text = document.getElementById("ExpiredDate");
+
+        //    // If the checkbox is checked, display the output text
+        //    //if ($(this).prop('checked')) {
+        //    //    $('input[name="ExpiredDate"]').hide();
+                
+        //    //} else {
+        //    //    $('input[name="ExpiredDate"]').fadeIn();
+        //    //}
+        //    //if (checkBox.checked === true){
+        //    //    text.style.display = "block";
+        //    //} else {
+        //    //    text.style.display = "none";
+        //    //}
+        //});
 
     </script>
-
-
 }
 
 @functions {
@@ -272,9 +424,14 @@
         {
             folder = GetApprFolder(docsSubType);
         }
+        if (docsType.Contains("Artwork"))
+        {
+            folder = "Artwork/" + docsSubType;
+        }
 
-        var ext = fileName.Substring(fileName.IndexOf("."), fileName.Length - fileName.IndexOf("."));
-        var docImage = String.Concat(folder, "/", fileName);
+
+        var ext = fileName.Substring(fileName.LastIndexOf("."), fileName.Length - fileName.LastIndexOf("."));
+        var docImage = String.Concat("/Upload/Documents/", folder, "/", fileName);
         if (ext.Equals(".txt"))
         {
             docImage = "/Content/images/extentions/txt.jpg";
@@ -287,11 +444,11 @@
         {
             docImage = "/Content/images/extentions/ai.jpg";
         }
-        if (ext.Equals(".docx"))
+        if (ext.Equals(".docx") || ext.Equals(".doc"))
         {
             docImage = "/Content/images/extentions/docx.jpg";
         }
-        if (ext.Equals(".xlsx"))
+        if (ext.Equals(".xlsx") || ext.Equals(".xls"))
         {
             docImage = "/Content/images/extentions/xlsx.jpg";
         }

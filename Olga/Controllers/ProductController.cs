@@ -137,9 +137,19 @@ namespace Olga.Controllers
             {
                 foreach (var name in documentNamesApprs)
                 {
-                    var apprNumber = name.Substring(0, name.IndexOf("__"));
-                    if (apprNumber.Length > 15) apprNumber = apprNumber.Substring(apprNumber.LastIndexOf("/"), apprNumber.Length - apprNumber.LastIndexOf("/")).Replace("/", "");
-                    product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name, ApprDocsTypeId = Int32.Parse(apprNumber) });
+                    if(name.IndexOf("__") == -1) continue;
+                    var apprNumberString = name.Substring(0, name.IndexOf("__"));
+                    var apprNumber = Int32.Parse(apprNumberString);
+                    //if (apprNumberString.Length > 15) apprNumberString = apprNumberString.Substring(apprNumberString.LastIndexOf("/"), apprNumberString.Length - apprNumberString.LastIndexOf("/")).Replace("/", "");
+                    var newProduct =
+                        new ProductDocument() {PathToDocument = name, ApprDocsTypeId = apprNumber };
+                    var res = product.ProductDocuments.FirstOrDefault(a=>a.PathToDocument == name && a.ApprDocsTypeId == apprNumber);
+                    var res2 = product.ProductDocuments.Contains(newProduct);
+                    if (res == null && !res2)
+                    {
+                        product.ProductDocuments.Add(newProduct);
+                    }
+                    
                 }
             }
 
@@ -147,7 +157,19 @@ namespace Olga.Controllers
             {
                 foreach (var name in documentNamesArtworks)
                 {
-                    product.ProductDocuments.Add(new ProductDocument() { PathToDocument = name });
+                    if (name.IndexOf("__") == -1) continue;
+                    var artworkNumberString = name.Substring(0, name.IndexOf("__"));
+                    var artworkNumber = Int32.Parse(artworkNumberString);
+                    //if (apprNumberString.Length > 15) apprNumberString = apprNumberString.Substring(apprNumberString.LastIndexOf("/"), apprNumberString.Length - apprNumberString.LastIndexOf("/")).Replace("/", "");
+                    var newProduct =
+                        new ProductDocument() { PathToDocument = name, ArtworkId = artworkNumber };
+                    var res = product.ProductDocuments.FirstOrDefault(a => a.PathToDocument == name && a.ArtworkId == artworkNumber);
+                    var res2 = product.ProductDocuments.Contains(newProduct);
+                    if (res == null && !res2)
+                    {
+                        product.ProductDocuments.Add(newProduct);
+                    }
+
                 }
             }
         }
@@ -165,10 +187,16 @@ namespace Olga.Controllers
                 _productService.DeleteProduct(int.Parse(Id));
                 _productService.Commit();
 
-
-                var products = Mapper.Map<IEnumerable<ProductDTO>, IEnumerable<ProductViewModel>>(_productService.GetProducts(int.Parse(CountryId)));
+                var countryDto = _countryService.GetItem(int.Parse(CountryId));
+                @ViewBag.Country = countryDto.Name;
                 @ViewBag.CountryId = CountryId;
-                return View("Index", products.ToList());
+                var productsDto = _productService.GetProducts(int.Parse(CountryId));
+                if (productsDto != null)
+                {
+                    var products = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productsDto);
+                    return View("Index", products.ToList());
+                }
+                return View("Index");
             }
             catch (Exception ex)
             {
@@ -200,20 +228,44 @@ namespace Olga.Controllers
                 product.DocumentImagesListStringApprs = userDocumentsApprs != null ? String.Join(",", userDocumentsApprs) : String.Empty;
                 product.DocumentImagesListStringArtworks = userDocumentsArtworks != null ? String.Join(",", userDocumentsArtworks) : String.Empty;
 
-                var DocumentImagesListStringApprs1 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("1__"));
-                var DocumentImagesListStringApprs2 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("2__"));
-                var DocumentImagesListStringApprs3 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("3__"));
-                var DocumentImagesListStringApprs4 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("4__"));
+                //var DocumentImagesListStringApprs1 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("1__"));
+                //var DocumentImagesListStringApprs2 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("2__"));
+                //var DocumentImagesListStringApprs3 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("3__"));
+                //var DocumentImagesListStringApprs4 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("4__"));
 
-                ViewBag.DocumentImagesApprs1 = DocumentImagesListStringApprs1 != null ? String.Join(",", DocumentImagesListStringApprs1) : null;
-                ViewBag.DocumentImagesApprs2 = DocumentImagesListStringApprs2 != null ? String.Join(",", DocumentImagesListStringApprs2) : null;
-                ViewBag.DocumentImagesApprs3 = DocumentImagesListStringApprs3 != null ? String.Join(",", DocumentImagesListStringApprs3) : null;
-                ViewBag.DocumentImagesApprs4 = DocumentImagesListStringApprs4 != null ? String.Join(",", DocumentImagesListStringApprs4) : null;
+                //ViewBag.DocumentImagesApprs1 = DocumentImagesListStringApprs1 != null ? String.Join(",", DocumentImagesListStringApprs1) : null;
+                //ViewBag.DocumentImagesApprs2 = DocumentImagesListStringApprs2 != null ? String.Join(",", DocumentImagesListStringApprs2) : null;
+                //ViewBag.DocumentImagesApprs3 = DocumentImagesListStringApprs3 != null ? String.Join(",", DocumentImagesListStringApprs3) : null;
+                //ViewBag.DocumentImagesApprs4 = DocumentImagesListStringApprs4 != null ? String.Join(",", DocumentImagesListStringApprs4) : null;
 
-                ViewBag.DocumentImagesListStringApprs1=DocumentImagesListStringApprs1;
-                ViewBag.DocumentImagesListStringApprs2=DocumentImagesListStringApprs2;
-                ViewBag.DocumentImagesListStringApprs3=DocumentImagesListStringApprs3;
-                ViewBag.DocumentImagesListStringApprs4 = DocumentImagesListStringApprs4;
+                //ViewBag.DocumentImagesListStringApprs1=DocumentImagesListStringApprs1;
+                //ViewBag.DocumentImagesListStringApprs2=DocumentImagesListStringApprs2;
+                //ViewBag.DocumentImagesListStringApprs3=DocumentImagesListStringApprs3;
+                //ViewBag.DocumentImagesListStringApprs4=DocumentImagesListStringApprs4;
+
+                //var DocumentImagesListStringArtworks1 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("1__"));
+                //var DocumentImagesListStringArtworks2 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("2__"));
+                //var DocumentImagesListStringArtworks3 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("3__"));
+                //var DocumentImagesListStringArtworks4 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("4__"));
+                //var DocumentImagesListStringArtworks5 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("5__"));
+                //var DocumentImagesListStringArtworks6 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("6__"));
+                //var DocumentImagesListStringArtworks7 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("7__"));
+
+                //ViewBag.DocumentImagesArtworks1 = DocumentImagesListStringArtworks1 != null ? String.Join(",", DocumentImagesListStringArtworks1) : null;
+                //ViewBag.DocumentImagesArtworks2 = DocumentImagesListStringArtworks2 != null ? String.Join(",", DocumentImagesListStringArtworks2) : null;
+                //ViewBag.DocumentImagesArtworks3 = DocumentImagesListStringArtworks3 != null ? String.Join(",", DocumentImagesListStringArtworks3) : null;
+                //ViewBag.DocumentImagesArtworks4 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks4) : null;
+                //ViewBag.DocumentImagesArtworks5 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks5) : null;
+                //ViewBag.DocumentImagesArtworks6 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks6) : null;
+                //ViewBag.DocumentImagesArtworks7 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks7) : null;
+
+                //ViewBag.DocumentImagesListStringArtworks1 = DocumentImagesListStringArtworks1;
+                //ViewBag.DocumentImagesListStringArtworks2 = DocumentImagesListStringArtworks2;
+                //ViewBag.DocumentImagesListStringArtworks3 = DocumentImagesListStringArtworks3;
+                //ViewBag.DocumentImagesListStringArtworks4 = DocumentImagesListStringArtworks4;
+                //ViewBag.DocumentImagesListStringArtworks5 = DocumentImagesListStringArtworks5;
+                //ViewBag.DocumentImagesListStringArtworks6 = DocumentImagesListStringArtworks6;
+                //ViewBag.DocumentImagesListStringArtworks7 = DocumentImagesListStringArtworks7;
 
 
                 return View("CreateProduct",product);
@@ -295,6 +347,8 @@ namespace Olga.Controllers
         {
             bool isSavedSuccessfully = true;
             string fName = "";
+            string targetPath = "";
+            string apprFolder = "";
             try
             {
                 foreach (string fileName in Request.Files)
@@ -302,12 +356,12 @@ namespace Olga.Controllers
                     HttpPostedFileBase file = Request.Files[fileName];
                     if (file != null && file.ContentLength > 0)
                     {
-                        var apprFolder = GetApprFolder(apprId);
+                        apprFolder = GetApprFolder(apprId);
                         var targetFolder = Server.MapPath($"~/Upload/Documents/{apprFolder}");
                         var id = apprId != null ? apprId.ToString() : "";
                         //var localFileName = String.Format("document_{0}_{1}{2}", id, Guid.NewGuid(), Path.GetExtension(file.FileName));
                         var localFileName = String.Format("{0}_{1}{2}", apprId + "__" + Path.GetFileNameWithoutExtension(file.FileName), Guid.NewGuid().ToString().Substring(0,6), Path.GetExtension(file.FileName));
-                        var targetPath = Path.Combine(targetFolder, localFileName);
+                        targetPath = Path.Combine(targetFolder, localFileName);
                         fName = localFileName;
                         file.SaveAs(targetPath);
                     }
@@ -320,7 +374,44 @@ namespace Olga.Controllers
 
             if (isSavedSuccessfully)
             {
-                return Json(new { Message = fName });
+                return Json(new { Message = fName, Folder = apprFolder });
+            }
+            return Json(new { Message = "Error in saving file" });
+        }
+
+        [HttpPost]
+        public ActionResult SaveArtworkUploadedFile(string artworkId)
+        {
+            bool isSavedSuccessfully = true;
+            string fName = "";
+            string targetPath = "";
+            string artworkFolder = "";
+            try
+            {
+                foreach (string fileName in Request.Files)
+                {
+                    HttpPostedFileBase file = Request.Files[fileName];
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        artworkFolder = $"Artwork/{artworkId}";
+                        var targetFolder = Server.MapPath($"~/Upload/Documents/{artworkFolder}");
+                        var id = artworkId != null ? artworkId.ToString() : "";
+                        //var localFileName = String.Format("document_{0}_{1}{2}", id, Guid.NewGuid(), Path.GetExtension(file.FileName));
+                        var localFileName = String.Format("{0}_{1}{2}", artworkId + "__" + Path.GetFileNameWithoutExtension(file.FileName), Guid.NewGuid().ToString().Substring(0, 6), Path.GetExtension(file.FileName));
+                        targetPath = Path.Combine(targetFolder, localFileName);
+                        fName = localFileName;
+                        file.SaveAs(targetPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                isSavedSuccessfully = false;
+            }
+
+            if (isSavedSuccessfully)
+            {
+                return Json(new { Message = fName, Folder = artworkFolder });
             }
             return Json(new { Message = "Error in saving file" });
         }
@@ -360,6 +451,41 @@ namespace Olga.Controllers
                     return "ApprDocType/PackMaterialsLabelling";
             }
             return "/";
+        }
+        public ActionResult DeleteFile(string fileName)
+        {
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return Json(new { Message = "File deleted!" });
+            } 
+            try
+            {
+                var dirs = Directory.GetDirectories(Server.MapPath("~/Upload/Documents/"));
+                foreach (var dir in dirs)
+                {
+                    var subDirs = Directory.GetDirectories(dir);
+                    foreach (var subDir in subDirs)
+                    {
+                        var fileToDeleteList = Directory.GetFiles(subDir, fileName);
+                        if (fileToDeleteList.Length == 0) continue;
+                        var fileToDel = fileToDeleteList[0];
+                        if(string.IsNullOrEmpty(fileToDel)) continue;
+                        if (System.IO.File.Exists(fileToDel))
+                        {
+                            System.IO.File.Delete(fileToDel);
+                            _productService.DeleteDocument(fileName);
+                        }
+                    }
+
+                   
+                }
+                return Json(new { Message = "File deleted!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Message = ex.Message });
+            }
         }
     }
 }

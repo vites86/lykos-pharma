@@ -19,6 +19,6 @@ namespace Olga.BLL.Interfaces
         ApprDocsTypeDTO GetApprDocsType(int id);
         ArtworkDTO GetArtwork(int id);
         ManufacturerDTO GetManufacturer(int id);
-
+        void DeleteDocument(string name);
     }
 }

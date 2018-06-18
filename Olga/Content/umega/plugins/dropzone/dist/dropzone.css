@@ -218,6 +218,7 @@
         -o-transition: opacity 0.2s linear;
         transition: opacity 0.2s linear; }
     .dropzone .dz-preview .dz-remove {
+        margin-top: 10px;
       font-size: 14px;
       text-align: center;
       display: block;

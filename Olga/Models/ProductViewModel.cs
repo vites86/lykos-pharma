@@ -15,9 +15,13 @@ namespace Olga.Models
         public int Id { get; set; }
 
         [Display(Name = "Issued Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? IssuedDate { get; set; }
         [Display(Name = "Expiry Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ExpiredDate { get; set; }
+
+        public bool? UnLimited { get; set; }
 
         public string Country { get; set; }
 
@@ -64,10 +68,15 @@ namespace Olga.Models
         public int? Id { get; set; }
 
         [Display(Name = "Issued Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? IssuedDate { get; set; }
 
         [Display(Name = "Expiry Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ExpiredDate { get; set; }
+
+        public bool UnLimited { get; set; }
+
 
         public virtual Country Country { get; set; }
         public int? CountryId { get; set; }
