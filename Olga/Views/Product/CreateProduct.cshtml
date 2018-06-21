@@ -13,299 +13,267 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
-                <br />
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-horizontal">
+            <br />
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <input type="hidden" id="CountryId" name="CountryId" value="@ViewBag.ContryId" />
-                @Html.HiddenFor(model => model.CountryId)
-                @Html.HiddenFor(model => model.Id)
-                <div class="form-group">
-                    @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info ">@ViewBag.ContryName</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ProductNameId, new SelectList(@ViewBag.ProductNames, "Id", "Name"), new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ProductCodeId, new SelectList(@ViewBag.ProductCodes, "Id", "Code"), "-- No Product Code --", new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.StrengthId, new SelectList(ViewBag.strength, "Id", "Strngth"), "-- No Strength --", new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PharmaceuticalForm, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.PharmaceuticalFormId, new SelectList(ViewBag.pharmaceuticalForm, "Id", "PharmaForm"), "-- No Pharmaceutical Form --", new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MarketingAuthorizNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.MarketingAuthorizNumberId, new SelectList(@ViewBag.MarketingAuthorizNumbers, "Id", "Number"), "-- No MarketingAuthorizNumber --", new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.PackSizeId, new SelectList(@ViewBag.PackSizes, "Id", "Size"), "-- No PackSize --", new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.MarketingAuthorizHolderId, new SelectList(ViewBag.marketingAuthorizHolder, "Id", "Name"), "-- No MarketingAuthorizHolder --", new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 left">
-                        @Html.HiddenFor(m => m.DocumentImagesListStringApprs)
-
-                        <table>
-                            @foreach (var apprDocsType in ViewBag.apprDocsTypes)
-                            {
-                                var apprId = @apprDocsType.Value;
-                                <tr style="line-height: 50px;">
-                                    <td>
-                                        <span class="glyphicon glyphicon-file" />  <label for="UploadImg@(apprId)">@apprDocsType.Text</label>
-                                    </td>
-                                    <td style="padding-left: 25px;">
-                                        <a class="btn btn-default" href="#"
-                                           data-toggle="modal" data-target="#uploadImageModal@(apprId)"
-                                           id="UploadImg@(apprId)">Upload Documents</a>
-                                    </td>
-                                    <td style="padding-left: 25px;">
-                                        @*input for taking value for DocumentImagesListStringApprs*@
-                                        <input type="hidden" value="@ViewBag.DocumentImagesApprs@(apprId)" id="imageListApprs@(apprId)" />
-                                        @{
-                                            var res = Request.Form[$"imageListApprs" + @apprId];
-                                            res = res != @apprId ? "" : Request.Form[$"imageListApprs" + apprId];
-                                        }
-                                        <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" value="@res" />
-                                        <div class="row" style="display: inline-block;" id="filesDiv@(apprId)" name="filesDiv@(apprId)">
-                                            @{
-                                                foreach (var fileName in Model.DocumentImagesApprs)
-                                                {
-                                                    if (fileName.Contains(@apprId + "__"))
-                                                    {
-                                                        var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
-                                                        var folder = GetApprFolder(apprDocsType.Text);
-
-                                                        var blockName = fileName.Replace(".", "").Replace(" ", "");
-
-                                                        var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
-
-                                                        <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
-                                                            <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                                <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" data-toggle="tooltip" title="@alt" data-placement="top" />
-                                                            </a>
-                                                            <div style="margin-top:5px; line-height: 20px;">
-                                                                <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
-                                                            </div>
-                                                            <div style="margin-top:0px; line-height: 20px;">
-                                                                <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Удалить" />
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
-                                            }
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Manufacturers, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <table>
-                            <ul style="list-style-type: none; padding-left: 0px">
-                                @foreach (var manufacturer in ViewBag.manufacturers)
-                                {
-                                    <li>
-                                        <input type="checkbox"
-                                               name="selectedManufacturers" value="@manufacturer.Value" id="@manufacturer.Value"
-                                               @{ if (Model != null) { var foundItem = Model.Manufacturers.FirstOrDefault(i => i.Name == manufacturer.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
-                                        <label for="@manufacturer.Value">@manufacturer.Text</label>
-                                    </li>
-                                }
-                            </ul>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Artworks, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 left">
-                        @Html.HiddenFor(m => m.DocumentImagesListStringArtworks)
-
-                        <table>
-                            @foreach (var artwork in ViewBag.artworks)
-                            {
-                                var artworkId = @artwork.Value;
-                                <tr style="line-height: 50px;">
-                                        <td>
-                                            <input type="checkbox" onclick="showDownloads(this)" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
-                                                   @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
-                                        </td>
-                                    <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
-                                    <td style="padding-left: 25px;">
-                                        <a class="btn btn-default" href="#"  
-                                           data-toggle="modal" data-target="#uploadArtworImageModal@(artworkId)"
-                                           id="UploadImg@(artworkId)">Upload Documents</a>
-                                    </td>
-                                    <td style="padding-left: 25px;">
-                                        @*input for taking value for DocumentImagesListStringApprs*@
-                                        <input type="hidden" value="@ViewBag.DocumentImagesArtworks@(artworkId)" id="imageListArtworks@(artworkId)" />
-                                        @{
-                                            var res = Request.Form[$"imageListArtworks" + @artworkId];
-                                            res = res != @artworkId ? "" : Request.Form[$"imageListArtworks" + artworkId];
-                                        }
-                                        <input type="hidden" id="DocumentImagesListStringArtworks@(artworkId)" value="@res" />
-                                        <div class="row" style="display: inline-block;" id="filesArtworkDiv@(artworkId)" name="filesArtworkDiv@(artworkId)">
-                                            @{
-                                                foreach (var fileName in Model.DocumentImagesArtworks)
-                                                {
-                                                    if (fileName.Contains(@artworkId + "__"))
-                                                    {
-                                                        var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
-                                                        var folder = String.Format("Artwork/{0}", @artworkId.ToString());
-
-                                                        var blockName = fileName.Replace(".", "").Replace(" ", "");
-
-                                                        var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
-
-                                                        <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
-                                                            <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                                <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" data-toggle="tooltip" title="@alt" data-placement="top" />
-                                                            </a>
-                                                            <div style="margin-top:5px; line-height: 20px;">
-                                                                <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
-                                                            </div>
-                                                            <div style="margin-top:0px; line-height: 20px;">
-                                                                <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Удалить" />
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
-                                            }
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
-
-
-
-                    @*<div class="col-md-10">
-                            <table>
-                                @foreach (var artwork in ViewBag.artworks)
-                                {
-                                    <tr style="line-height: 40px">
-                                        <td>
-                                            <input type="checkbox" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
-                                                   @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
-                                        </td>
-                                        <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
-                                        <td style="padding-left: 25px;">
-                                            <a id="UploadImg" data-target="#uploadArtworImageModal" class="btn btn-default" href="#" data-toggle="modal">Upload Documents</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>*@
-
-
-
-                </div>
-
-
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @{
-                            var dateValue =
-                                DateTime.MinValue == Model.IssuedDate
-                                    ? String.Empty
-                                    //: Model.IssuedDate.ToString();
-                                    : DateTime.Parse(@Model.IssuedDate.ToString()).ToString("u").Substring(0, 10);
-
-                        }
-                        <input class="form-control rounded"
-                               data-val="true"
-                               id="IssuedDate"
-                               name="IssuedDate"
-                               value="@dateValue" />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ExpiredDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    @*@if (!Model.UnLimited)
-                    {*@
-
-                        <div class="col-md-10">
-                            @{
-                                var dateValue2 =
-                                    DateTime.MinValue == Model.ExpiredDate
-                                        ? String.Empty
-                                       // : Model.ExpiredDate.ToString();
-                                : DateTime.Parse(@Model.ExpiredDate.ToString()).ToString("u").Substring(0, 10);
-                            }
-                            <input class="form-control rounded"
-                                   data-val="true"
-                                   id="ExpiredDate"
-                                   name="ExpiredDate"
-                                   value="@dateValue2"/>
-                        <br/>
-                            <span id="UnLimited">
-                                UnLimited @Html.CheckBoxFor(m=>m.UnLimited)
-                            </span>
-                        </div>
-
-                    @*}
-                    else
-                    {
-                        <div id="UnLimited">
-                            UnLimited @Html.CheckBoxFor(m=>m.UnLimited)
-                        </div>
-                    }*@
-                   
-                </div>
-                <br />
-                <hr />
-                <div class="form-group">
-                    <div class="col-md-1 col-xs-1 col-md-offset-1">
-                        <input type="submit" value="Save" class="btn btn-primary" id="submit-all" />
-                    </div>
+            <input type="hidden" id="CountryId" name="CountryId" value="@ViewBag.ContryId" />
+            <input type="hidden" id="CountryName" name="CountryName" value="@ViewBag.ContryName" />
+            @Html.HiddenFor(model => model.CountryId)
+            @Html.HiddenFor(model => model.Id)
+            <div class="form-group">
+                @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info ">@ViewBag.ContryName</label>
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.ProductNameId, new SelectList(@ViewBag.ProductNames, "Id", "Name"), new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.ProductCodeId, new SelectList(@ViewBag.ProductCodes, "Id", "Code"), "-- No Product Code --", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.StrengthId, new SelectList(ViewBag.strength, "Id", "Strngth"), "-- No Strength --", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PharmaceuticalForm, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.PharmaceuticalFormId, new SelectList(ViewBag.pharmaceuticalForm, "Id", "PharmaForm"), "-- No Pharmaceutical Form --", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MarketingAuthorizNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.MarketingAuthorizNumberId, new SelectList(@ViewBag.MarketingAuthorizNumbers, "Id", "Number"), "-- No MarketingAuthorizNumber --", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.PackSizeId, new SelectList(@ViewBag.PackSizes, "Id", "Size"), "-- No PackSize --", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.MarketingAuthorizHolderId, new SelectList(ViewBag.marketingAuthorizHolder, "Id", "Name"), "-- No MarketingAuthorizHolder --", new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 left">
+                    @Html.HiddenFor(m => m.DocumentImagesListStringApprs)
+
+                    <table>
+                        @foreach (var apprDocsType in ViewBag.apprDocsTypes)
+                {
+                    var apprId = @apprDocsType.Value;
+                    <tr style="line-height: 50px;">
+                        <td>
+                            <span class="glyphicon glyphicon-file" />  <label for="UploadImg@(apprId)">@apprDocsType.Text</label>
+                        </td>
+                        <td style="padding-left: 25px;">
+                            <a class="btn btn-default" href="#"
+                               data-toggle="modal" data-target="#uploadImageModal@(apprId)"
+                               id="UploadImg@(apprId)">Upload Documents</a>
+                        </td>
+                        <td style="padding-left: 25px;">
+                            @*input for taking value for DocumentImagesListStringApprs*@
+                            <input type="hidden" value="@ViewBag.DocumentImagesApprs@(apprId)" id="imageListApprs@(apprId)" />
+                            @{
+                        var res = Request.Form[$"imageListApprs" + @apprId];
+                        res = res != @apprId ? "" : Request.Form[$"imageListApprs" + apprId];
+                            }
+                            <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" value="@res" />
+                            <div class="row" style="display: inline-block;" id="filesDiv@(apprId)" name="filesDiv@(apprId)">
+                                @{
+                            foreach (var fileName in Model.DocumentImagesApprs)
+                            {
+                                if (fileName.Contains(@apprId + "__"))
+                                {
+                                    var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
+                                    var folder = GetApprFolder(apprDocsType.Text);
+
+                                    var blockName = fileName.Replace(".", "").Replace(" ", "");
+
+                                    var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+
+                                    <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
+                                        <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
+                                            <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" data-toggle="tooltip" title="@alt" data-placement="top" />
+                                        </a>
+                                        <div style="margin-top:5px; line-height: 20px;">
+                                            <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
+                                        </div>
+                                        <div style="margin-top:0px; line-height: 20px;">
+                                            <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Удалить" />
+                                        </div>
+                                    </div>
+                        }
+                    }
+                                }
+                            </div>
+                        </td>
+                    </tr>
         }
-    </div>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Manufacturers, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <table>
+                        <ul style="list-style-type: none; padding-left: 0px">
+                            @foreach (var manufacturer in ViewBag.manufacturers)
+                    {
+                        <li>
+                            <input type="checkbox"
+                                   name="selectedManufacturers" value="@manufacturer.Value" id="@manufacturer.Value"
+                                   @{ if (Model != null) { var foundItem = Model.Manufacturers.FirstOrDefault(i => i.Name == manufacturer.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                            <label for="@manufacturer.Value">@manufacturer.Text</label>
+                        </li>
+            }
+                        </ul>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Artworks, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 left">
+                    @Html.HiddenFor(m => m.DocumentImagesListStringArtworks)
+
+                    <table>
+                        @foreach (var artwork in ViewBag.artworks)
+                {
+                    var artworkId = @artwork.Value;
+                    <tr style="line-height: 50px;">
+                        <td>
+                            <input type="checkbox" onclick="showDownloads(this)" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
+                                   @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                        </td>
+                        <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
+                        <td style="padding-left: 25px;">
+                            <a class="btn btn-default" href="#"
+                               data-toggle="modal" data-target="#uploadArtworImageModal@(artworkId)"
+                               id="UploadImg@(artworkId)">Upload Documents</a>
+                        </td>
+                        <td style="padding-left: 25px;">
+                            @*input for taking value for DocumentImagesListStringApprs*@
+                            <input type="hidden" value="@ViewBag.DocumentImagesArtworks@(artworkId)" id="imageListArtworks@(artworkId)" />
+                            @{
+                        var res = Request.Form[$"imageListArtworks" + @artworkId];
+                        res = res != @artworkId ? "" : Request.Form[$"imageListArtworks" + artworkId];
+                            }
+                            <input type="hidden" id="DocumentImagesListStringArtworks@(artworkId)" value="@res" />
+                            <div class="row" style="display: inline-block;" id="filesArtworkDiv@(artworkId)" name="filesArtworkDiv@(artworkId)">
+                                @{
+                            foreach (var fileName in Model.DocumentImagesArtworks)
+                            {
+                                if (fileName.Contains(@artworkId + "__"))
+                                {
+                                    var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
+                                    var folder = String.Format("Artwork/{0}", @artworkId.ToString());
+
+                                    var blockName = fileName.Replace(".", "").Replace(" ", "");
+
+                                    var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+
+                                    <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
+                                        <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
+                                            <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" data-toggle="tooltip" title="@alt" data-placement="top" />
+                                        </a>
+                                        <div style="margin-top:5px; line-height: 20px;">
+                                            <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
+                                        </div>
+                                        <div style="margin-top:0px; line-height: 20px;">
+                                            <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Удалить" />
+                                        </div>
+                                    </div>
+                        }
+                    }
+                                }
+                            </div>
+                        </td>
+                    </tr>
+        }
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                var dateValue =
+                    DateTime.MinValue == Model.IssuedDate || Model.IssuedDate == null
+                        ? String.Empty
+                        //: Model.IssuedDate.ToString();
+                        : DateTime.Parse(@Model.IssuedDate.ToString()).ToString("u").Substring(0, 10);
+
+                    }
+                    <input class="form-control rounded"
+                           data-val="true"
+                           id="IssuedDate"
+                           name="IssuedDate"
+                           value="@dateValue" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ExpiredDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                var dateValue2 =
+                    DateTime.MinValue == Model.ExpiredDate || Model.ExpiredDate == null
+                        ? String.Empty
+                        // : Model.ExpiredDate.ToString();
+                        : DateTime.Parse(@Model.ExpiredDate.ToString()).ToString("u").Substring(0, 10);
+                    }
+                    <input class="form-control rounded"
+                           data-val="true"
+                           id="ExpiredDate"
+                           name="ExpiredDate"
+                           value="@dateValue2" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2"></label>
+                <div class="col-md-2">
+                    <span id="UnLimited">
+                        UnLimited @Html.CheckBoxFor(m => m.UnLimited)
+                    </span>
+                </div>
+            </div>
+            <br /><br /> <br /> <br />
+            <hr />
+            <div class="form-group">
+                <div class="col-md-1 col-xs-1 col-md-offset-1">
+                    <input type="submit" value="Save" class="btn btn-primary" id="submit-all" />
+                </div>
+            </div>
+        </div>
+        }
+    </div> 
 </div>
 @Html.Partial("~/Views/Shared/_UploadFiles.cshtml")
 
@@ -387,30 +355,10 @@
         function showDownloads(elem) {
             //toastr.info("ok");
             var artworkId = elem.value;
-            toastr.info("artworkId=" + artworkId);
+            //toastr.info("artworkId=" + artworkId);
             var buttonToHideId = document.getElementById("UploadImg"+artworkId);
             document.getElementById("UploadImg" + artworkId.toString()).style.display = elem.checked ? "block" : "none";
         }
-
-        //$("#UnLimited").click(function() {
-        //    // Get the checkbox
-        //    var checkBox = document.getElementById("UnLimited");
-        //    // Get the output text
-        //    var text = document.getElementById("ExpiredDate");
-
-        //    // If the checkbox is checked, display the output text
-        //    //if ($(this).prop('checked')) {
-        //    //    $('input[name="ExpiredDate"]').hide();
-                
-        //    //} else {
-        //    //    $('input[name="ExpiredDate"]').fadeIn();
-        //    //}
-        //    //if (checkBox.checked === true){
-        //    //    text.style.display = "block";
-        //    //} else {
-        //    //    text.style.display = "none";
-        //    //}
-        //});
 
     </script>
 }

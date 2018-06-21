@@ -21,6 +21,7 @@ namespace Olga.DAL.Entities
             MarketingAuthorizNumbers = new List<MarketingAuthorizNumber>();
             PackSizes = new List<PackSize>();
             ProductCodes = new List<ProductCode>();
+            //Products = new List<Product>();
         }
 
         //public virtual IEnumerable<Product> Products { get; set; }

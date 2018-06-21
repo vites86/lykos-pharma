@@ -23,20 +23,22 @@ namespace Olga.Util
 
             // регистрируем споставление типов
             string cs = ConfigurationManager.ConnectionStrings["DefaultConectionString"].ConnectionString;
-            builder.RegisterType<ProductService>().As<IProductService>().WithParameter("context", new ProductContext(cs));
 
-            builder.RegisterType<ApprDocsTypeService>().As<IApprDocsType>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<ArtworkService>().As<IArtwork>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<CountryService>().As<ICountry>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<ManufacturerService>().As<IManufacturer>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<MarketingAuthorizHolderService>().As<IMarketingAuthorizHolder>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<MarketingAuthorizNumberService>().As<IMarketingAuthorizNumber>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<PackSizeService>().As<IPackSize>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<PharmaceuticalFormService>().As<IPharmaceuticalForm>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<ProductCodeService>().As<IProductCode>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<ProductNameService>().As<IProductName>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<StrengthService>().As<IStrength>().WithParameter("context", new ProductContext(cs));
-            builder.RegisterType<ProcedureService>().As<IProcedure>().WithParameter("context", new ProductContext(cs));
+            var context = new ProductContext(cs);
+
+            builder.RegisterType<ProductService>().As<IProductService>().WithParameter("context", context);
+            builder.RegisterType<ApprDocsTypeService>().As<IApprDocsType>().WithParameter("context", context);
+            builder.RegisterType<ArtworkService>().As<IArtwork>().WithParameter("context", context);
+            builder.RegisterType<CountryService>().As<ICountry>().WithParameter("context", context);
+            builder.RegisterType<ManufacturerService>().As<IManufacturer>().WithParameter("context", context);
+            builder.RegisterType<MarketingAuthorizHolderService>().As<IMarketingAuthorizHolder>().WithParameter("context", context);
+            builder.RegisterType<MarketingAuthorizNumberService>().As<IMarketingAuthorizNumber>().WithParameter("context", context);
+            builder.RegisterType<PackSizeService>().As<IPackSize>().WithParameter("context", context);
+            builder.RegisterType<PharmaceuticalFormService>().As<IPharmaceuticalForm>().WithParameter("context", context);
+            builder.RegisterType<ProductCodeService>().As<IProductCode>().WithParameter("context", context);
+            builder.RegisterType<ProductNameService>().As<IProductName>().WithParameter("context", context);
+            builder.RegisterType<StrengthService>().As<IStrength>().WithParameter("context", context);
+            builder.RegisterType<ProcedureService>().As<IProcedure>().WithParameter("context", context);
 
             // создаем новый контейнер с теми зависимостями, которые определены выше
             var container = builder.Build();

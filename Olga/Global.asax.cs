@@ -11,6 +11,7 @@ using Olga.DAL.Entities;
 using Olga.Models;
 using Olga.Util;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 namespace Olga
 {
     public class MvcApplication : System.Web.HttpApplication
@@ -55,8 +56,6 @@ namespace Olga
                 cfg.CreateMap<ManufacturerDTO, Manufacturer>();
                 //    .ForMember(x => x.Products, opt => opt.Ignore());
 
-                cfg.CreateMap<ProductDTO, Product>().MaxDepth(3);
-
 
                 cfg.CreateMap<ProductDTO, ProductViewModel>()
                     .ForMember(x => x.Country, o => o.MapFrom(s => s.Country.Name))
@@ -91,6 +90,7 @@ namespace Olga
 
                 cfg.CreateMap<ProductCreateModel, ProductDTO>().
                     ForMember(m => m.ProductDocuments, opt => opt.Ignore());
+                cfg.CreateMap<ProductDTO, Product>();
 
                 cfg.CreateMap<ProductNameViewModel, ProductNameDTO>()
                     .ForMember(x => x.Id, o => o.MapFrom(s => s.Id))

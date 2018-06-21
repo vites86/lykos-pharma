@@ -8,6 +8,7 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.Entities;
 using Olga.Models;
+using Olga.Util;
 
 namespace Olga.Controllers
 {
@@ -55,19 +56,19 @@ namespace Olga.Controllers
 
             var country = Mapper.Map<CountryDTO, CountryViewModel>(_countryService.GetItem((int)id));
 
-            var prodNamesDto = _productNameService.GetItems((int)id);
+            var prodNamesDto = _productNameService.GetItems((int)id).OrderBy(a=>a.Name);
             var prodNames = Mapper.Map<IEnumerable<ProductNameDTO>, IEnumerable<ProductNameViewModel>>(prodNamesDto);
             @ViewBag.ProductNames = prodNames;
 
-            var prodCodesDto = _productCodeService.GetItems((int)id);
+            var prodCodesDto = _productCodeService.GetItems((int)id).OrderBy(a => a.Code);
             var prodCodes = Mapper.Map<IEnumerable<ProductCodeDTO>, IEnumerable<ProductCodeViewModel>>(prodCodesDto);
             @ViewBag.ProductCodes = prodCodes;
 
-            var markAuthNumsDto = _marketingAuthorizNumberService.GetItems((int)id);
+            var markAuthNumsDto = _marketingAuthorizNumberService.GetItems((int)id).OrderBy(a => a.Number);
             var markAuthNums = Mapper.Map<IEnumerable<MarketingAuthorizNumberDTO>, IEnumerable<MarketingAuthorizNumberViewModel>>(markAuthNumsDto);
             @ViewBag.MarketingAuthorizNumbers = markAuthNums;
 
-            var packSizesDto = _packSizeService.GetItems((int)id);
+            var packSizesDto = _packSizeService.GetItems((int)id).OrderBy(a => a.Size);
             var packSizes = Mapper.Map<IEnumerable<PackSizeDTO>, IEnumerable<PackSizeViewModel>>(packSizesDto);
             @ViewBag.PackSizes = packSizes;
 
@@ -87,6 +88,9 @@ namespace Olga.Controllers
                 _productNameService.AddItem(new ProductNameDTO() { Name = Name, CountryId = Int32.Parse(CountryId) });
                 _productNameService.Commit();
 
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: AddProductName() {Name} ");
+
                 var prodNamesDto = _productNameService.GetItems(int.Parse(CountryId));
                 var prodNames = Mapper.Map<IEnumerable< ProductNameDTO>, IEnumerable<ProductNameViewModel>>(prodNamesDto);
                 @ViewBag.ProductNames = prodNames;
@@ -94,6 +98,9 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: AddProductName() {ex.Message} ");
+               
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -115,10 +122,17 @@ namespace Olga.Controllers
                 var prodNamesDto = _productNameService.GetItems(int.Parse(CountryId));
                 var prodNames = Mapper.Map<IEnumerable<ProductNameDTO>, IEnumerable<ProductNameViewModel>>(prodNamesDto);
                 @ViewBag.ProductNames = prodNames;
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: DeleteProductName() {Id} ");
+
                 return PartialView("ProductNames");
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: DeleteProductName() {Id} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -153,10 +167,17 @@ namespace Olga.Controllers
                 var prodCodesDto = _productCodeService.GetItems(int.Parse(CountryId));
                 var prodCodes = Mapper.Map<IEnumerable<ProductCodeDTO>, IEnumerable<ProductCodeViewModel>>(prodCodesDto);
                 @ViewBag.ProductCodes = prodCodes;
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: AddProductCode() {Code} ");
+
                 return PartialView("ProductCodes");
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: AddProductCode() {Code} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -178,10 +199,17 @@ namespace Olga.Controllers
                 var prodCodesDto = _productCodeService.GetItems(int.Parse(CountryId));
                 var prodCodes = Mapper.Map<IEnumerable<ProductCodeDTO>, IEnumerable<ProductCodeViewModel>>(prodCodesDto);
                 @ViewBag.ProductCodes = prodCodes;
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: DeleteProductCode() {Id} ");
+
                 return PartialView("ProductCodes");
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: DeleteProductCode() {Id} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -203,10 +231,17 @@ namespace Olga.Controllers
                 var markAuthNumsDto = _marketingAuthorizNumberService.GetItems(int.Parse(CountryId));
                 var markAuthNums = Mapper.Map<IEnumerable<MarketingAuthorizNumberDTO>, IEnumerable<MarketingAuthorizNumberViewModel>>(markAuthNumsDto);
                 @ViewBag.MarketingAuthorizNumbers = markAuthNums;
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: AddMarketingAuthorizNumber() {Number} ");
+
                 return PartialView("MarketingAuthorizNumbers");
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: AddMarketingAuthorizNumber() {Number} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -228,10 +263,17 @@ namespace Olga.Controllers
                 var markAuthNumsDto = _marketingAuthorizNumberService.GetItems(int.Parse(CountryId));
                 var markAuthNums = Mapper.Map<IEnumerable<MarketingAuthorizNumberDTO>, IEnumerable<MarketingAuthorizNumberViewModel>>(markAuthNumsDto);
                 @ViewBag.MarketingAuthorizNumbers = markAuthNums;
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: DeleteMarketingAuthorizNumber() {Id} ");
+
                 return PartialView("MarketingAuthorizNumbers");
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: DeleteMarketingAuthorizNumber() {Id} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -253,10 +295,17 @@ namespace Olga.Controllers
                 var packSizesDto = _packSizeService.GetItems(int.Parse(CountryId));
                 var packSizes = Mapper.Map<IEnumerable<PackSizeDTO>, IEnumerable<PackSizeViewModel>>(packSizesDto);
                 @ViewBag.PackSizes = packSizes;
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: AddPackSize() {Size} ");
+
                 return PartialView("PackSizes");
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: AddPackSize() {Size} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -278,10 +327,17 @@ namespace Olga.Controllers
                 var packSizesDto = _packSizeService.GetItems(int.Parse(CountryId));
                 var packSizes = Mapper.Map<IEnumerable<PackSizeDTO>, IEnumerable<PackSizeViewModel>>(packSizesDto);
                 @ViewBag.PackSizes = packSizes;
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: DeletePackSize() {Id} ");
+
                 return PartialView("PackSizes");
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: DeletePackSize() {Id} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -331,7 +387,7 @@ namespace Olga.Controllers
         {
             try
             {
-                var manufacturerDto = _manufacturerService.GetItems();
+                var manufacturerDto = _manufacturerService.GetItems().OrderBy(a=>a.Name);
                 var manufacturer = Mapper.Map<IEnumerable<ManufacturerDTO>, IEnumerable<ManufacturerViewModel>>(manufacturerDto).ToList();
                 return PartialView("Manufacturer", manufacturer);
             }
@@ -347,7 +403,7 @@ namespace Olga.Controllers
         {
             try
             {
-                var artworkDto = _artworkService.GetItems();
+                var artworkDto = _artworkService.GetItems().OrderBy(a => a.Artwork_name); ;
                 var artwork = Mapper.Map<IEnumerable<ArtworkDTO>, IEnumerable<ArtworkViewModel>>(artworkDto).ToList();
                 return PartialView("Artwork", artwork);
             }
@@ -363,7 +419,7 @@ namespace Olga.Controllers
         {
             try
             {
-                var marketingAuthorizHolderDto = _marketingAuthorizHolderService.GetItems();
+                var marketingAuthorizHolderDto = _marketingAuthorizHolderService.GetItems().OrderBy(a => a.Name);
                 var marketingAuthorizHolder = Mapper.Map<IEnumerable<MarketingAuthorizHolderDTO>, IEnumerable<MarketingAuthorizHolderViewModel>>(marketingAuthorizHolderDto).ToList();
                 return PartialView("MarketingAuthorizHolder", marketingAuthorizHolder);
             }
@@ -379,7 +435,7 @@ namespace Olga.Controllers
         {
             try
             {
-                var pharmaceuticalFormDto = _pharmaceuticalFormService.GetItems();
+                var pharmaceuticalFormDto = _pharmaceuticalFormService.GetItems().OrderBy(a => a.PharmaForm);
                 var pharmaceuticalForm = Mapper.Map<IEnumerable<PharmaceuticalFormDTO>, IEnumerable<PharmaceuticalFormViewModel>>(pharmaceuticalFormDto).ToList();
                 return PartialView("PharmaceuticalForm", pharmaceuticalForm);
             }

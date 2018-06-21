@@ -11,6 +11,7 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.Entities;
 using Olga.Models;
+using Olga.Util;
 
 namespace Olga.Controllers
 {
@@ -64,15 +65,14 @@ namespace Olga.Controllers
                     var products = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productsDto);
                     return View(products.ToList());
                 }
-
-                //List<ProductViewModel> nullModel = new List<ProductViewModel>()
-                //{
-                //    new ProductViewModel { Country =  countryDto.Name}
-                //};
+               
                 return View();
             }
             catch (Exception e)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: Index() {e.Message} ");
+
                 @ViewBag.Error = e.Message;
                 return View("Error");
             }
@@ -94,13 +94,16 @@ namespace Olga.Controllers
             }
             catch (Exception e)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: CreateProduct() {e.Message} ");
+
                 @ViewBag.Error = e.Message;
                 return View("Error");
             }
         }
 
         [HttpPost]
-        public ActionResult CreateProduct(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks)
+        public ActionResult CreateProduct(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks, string CountryName)
         {
             if (!ModelState.IsValid)
             {
@@ -113,19 +116,27 @@ namespace Olga.Controllers
             try
             {
                 var productDto = Mapper.Map<ProductCreateModel, ProductDTO>(model);
+                //var prodName = model.ProductNameId !=null ? _productNameService.GetItem((int)model.ProductNameId) : null;
+                //productDto.ProductName = Mapper.Map<ProductNameDTO, ProductName> (prodName);
+                //productDto.ProductNameId = model.ProductNameId;
 
                 AddDocumentsToProduct(ref productDto, documentNamesApprs, documentNamesArtworks);
-
                 _productService.AddProduct(productDto, selectedManufacturers, selectedArtworks);
-
                 _productService.Commit();
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: Created/Updated Product {model.Id} ");
 
                 var products = Mapper.Map<IEnumerable<ProductDTO>, IEnumerable<ProductViewModel>>(_productService.GetProducts(model.CountryId));
                 @ViewBag.CountryId = model.CountryId;
+                @ViewBag.Country = CountryName;
                 return View("Index",products.ToList());
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: CreateProduct() {ex.Message} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -187,6 +198,10 @@ namespace Olga.Controllers
                 _productService.DeleteProduct(int.Parse(Id));
                 _productService.Commit();
 
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: Deleted Product {Id} ");
+
+
                 var countryDto = _countryService.GetItem(int.Parse(CountryId));
                 @ViewBag.Country = countryDto.Name;
                 @ViewBag.CountryId = CountryId;
@@ -200,6 +215,9 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: DeleteProduct() {ex.Message} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -228,51 +246,15 @@ namespace Olga.Controllers
                 product.DocumentImagesListStringApprs = userDocumentsApprs != null ? String.Join(",", userDocumentsApprs) : String.Empty;
                 product.DocumentImagesListStringArtworks = userDocumentsArtworks != null ? String.Join(",", userDocumentsArtworks) : String.Empty;
 
-                //var DocumentImagesListStringApprs1 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("1__"));
-                //var DocumentImagesListStringApprs2 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("2__"));
-                //var DocumentImagesListStringApprs3 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("3__"));
-                //var DocumentImagesListStringApprs4 = userDocumentsApprs?.FirstOrDefault(stringToCheck  => stringToCheck.Contains("4__"));
-
-                //ViewBag.DocumentImagesApprs1 = DocumentImagesListStringApprs1 != null ? String.Join(",", DocumentImagesListStringApprs1) : null;
-                //ViewBag.DocumentImagesApprs2 = DocumentImagesListStringApprs2 != null ? String.Join(",", DocumentImagesListStringApprs2) : null;
-                //ViewBag.DocumentImagesApprs3 = DocumentImagesListStringApprs3 != null ? String.Join(",", DocumentImagesListStringApprs3) : null;
-                //ViewBag.DocumentImagesApprs4 = DocumentImagesListStringApprs4 != null ? String.Join(",", DocumentImagesListStringApprs4) : null;
-
-                //ViewBag.DocumentImagesListStringApprs1=DocumentImagesListStringApprs1;
-                //ViewBag.DocumentImagesListStringApprs2=DocumentImagesListStringApprs2;
-                //ViewBag.DocumentImagesListStringApprs3=DocumentImagesListStringApprs3;
-                //ViewBag.DocumentImagesListStringApprs4=DocumentImagesListStringApprs4;
-
-                //var DocumentImagesListStringArtworks1 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("1__"));
-                //var DocumentImagesListStringArtworks2 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("2__"));
-                //var DocumentImagesListStringArtworks3 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("3__"));
-                //var DocumentImagesListStringArtworks4 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("4__"));
-                //var DocumentImagesListStringArtworks5 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("5__"));
-                //var DocumentImagesListStringArtworks6 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("6__"));
-                //var DocumentImagesListStringArtworks7 = userDocumentsArtworks?.FirstOrDefault(stringToCheck => stringToCheck.Contains("7__"));
-
-                //ViewBag.DocumentImagesArtworks1 = DocumentImagesListStringArtworks1 != null ? String.Join(",", DocumentImagesListStringArtworks1) : null;
-                //ViewBag.DocumentImagesArtworks2 = DocumentImagesListStringArtworks2 != null ? String.Join(",", DocumentImagesListStringArtworks2) : null;
-                //ViewBag.DocumentImagesArtworks3 = DocumentImagesListStringArtworks3 != null ? String.Join(",", DocumentImagesListStringArtworks3) : null;
-                //ViewBag.DocumentImagesArtworks4 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks4) : null;
-                //ViewBag.DocumentImagesArtworks5 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks5) : null;
-                //ViewBag.DocumentImagesArtworks6 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks6) : null;
-                //ViewBag.DocumentImagesArtworks7 = DocumentImagesListStringArtworks4 != null ? String.Join(",", DocumentImagesListStringArtworks7) : null;
-
-                //ViewBag.DocumentImagesListStringArtworks1 = DocumentImagesListStringArtworks1;
-                //ViewBag.DocumentImagesListStringArtworks2 = DocumentImagesListStringArtworks2;
-                //ViewBag.DocumentImagesListStringArtworks3 = DocumentImagesListStringArtworks3;
-                //ViewBag.DocumentImagesListStringArtworks4 = DocumentImagesListStringArtworks4;
-                //ViewBag.DocumentImagesListStringArtworks5 = DocumentImagesListStringArtworks5;
-                //ViewBag.DocumentImagesListStringArtworks6 = DocumentImagesListStringArtworks6;
-                //ViewBag.DocumentImagesListStringArtworks7 = DocumentImagesListStringArtworks7;
-
-
+               
                 return View("CreateProduct",product);
 
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: EditProduct() {ex.Message} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }
@@ -282,10 +264,10 @@ namespace Olga.Controllers
         {
             var country = Mapper.Map<CountryDTO, CountryViewModel>(_countryService.GetItem((int)countryId));
             
-            @ViewBag.ProductNames = country.ProductNames;
-            @ViewBag.ProductCodes = country.ProductCodes;
-            @ViewBag.MarketingAuthorizNumbers = country.MarketingAuthorizNumbers;
-            @ViewBag.PackSizes = country.PackSizes;
+            @ViewBag.ProductNames = country.ProductNames.OrderBy(a=>a.Name);
+            @ViewBag.ProductCodes = country.ProductCodes.OrderBy(a => a.Code);
+            @ViewBag.MarketingAuthorizNumbers = country.MarketingAuthorizNumbers.OrderBy(a => a.Number);
+            @ViewBag.PackSizes = country.PackSizes.OrderBy(a => a.Size);
             @ViewBag.ContryName = country.Name;
             @ViewBag.ContryId = countryId;
 
@@ -307,7 +289,7 @@ namespace Olga.Controllers
                 Value = o.Id.ToString()
             });
 
-            var allManufacturers = _manufacturerService.GetItems();
+            var allManufacturers = _manufacturerService.GetItems().OrderBy(a=>a.Name);
             var manufacturers = Mapper.Map<IEnumerable<ManufacturerDTO>, IEnumerable<ManufacturerViewModel>>(allManufacturers).ToList();
 
             @ViewBag.manufacturers = manufacturers.Select(o => new SelectListItem
@@ -320,11 +302,11 @@ namespace Olga.Controllers
             var strength = Mapper.Map<IEnumerable<StrengthDTO>, IEnumerable<StrengthViewModel>>(strengthDto).ToList();
             @ViewBag.strength = strength;
 
-            var marketingAuthorizHolderDto = _marketingAuthorizHolderService.GetItems();
+            var marketingAuthorizHolderDto = _marketingAuthorizHolderService.GetItems().OrderBy(a => a.Name);
             var marketingAuthorizHolder = Mapper.Map<IEnumerable<MarketingAuthorizHolderDTO>, IEnumerable<MarketingAuthorizHolderViewModel>>(marketingAuthorizHolderDto).ToList();
             @ViewBag.marketingAuthorizHolder = marketingAuthorizHolder;
 
-            var pharmaceuticalFormDto = _pharmaceuticalFormService.GetItems();
+            var pharmaceuticalFormDto = _pharmaceuticalFormService.GetItems().OrderBy(a => a.PharmaForm);
             var pharmaceuticalForm = Mapper.Map<IEnumerable<PharmaceuticalFormDTO>, IEnumerable<PharmaceuticalFormViewModel>>(pharmaceuticalFormDto).ToList();
             @ViewBag.pharmaceuticalForm = pharmaceuticalForm;
         }
@@ -369,6 +351,9 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: SaveUploadedFile() {ex.Message} ");
+
                 isSavedSuccessfully = false;
             }
 
@@ -406,6 +391,9 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: SaveArtworkUploadedFile() {ex.Message} ");
+
                 isSavedSuccessfully = false;
             }
 
@@ -434,6 +422,8 @@ namespace Olga.Controllers
             }
             catch (Exception e)
             {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: DeleteUploadedFile() {e.Message} ");
             }
         }
 
@@ -454,6 +444,8 @@ namespace Olga.Controllers
         }
         public ActionResult DeleteFile(string fileName)
         {
+            var userName = User.Identity.Name;
+            Logger.Log.Info($"{userName}: Deleted file {fileName}");
 
             if (string.IsNullOrEmpty(fileName))
             {
@@ -484,6 +476,8 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log.Error($"{userName}: DeleteFile() {ex.Message} ");
+
                 return Json(new { Message = ex.Message });
             }
         }

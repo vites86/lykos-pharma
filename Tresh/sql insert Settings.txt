@@ -1,0 +1,16 @@
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'',3)
+INSERT INTO  [Olga2].[info].[ProductNames] ([Name],[CountryId]) VALUES(N'',3)
+INSERT INTO  [Olga2].[info].[ProductCodes] ([Code],[CountryId]) VALUES(N'',3)
+INSERT INTO  [Olga2].[info].[MarketingAuthorizNumbers] ([Number],[CountryId]) VALUES(N'',3)
+
+
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'DAFNEGIN®',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'ERMUCIN',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'GLIATILIN',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'MACMIROR® COMPLEX',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'MACMIROR',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'Spasmovax®',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'TANTUM® ROSA',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'Trittico',3)
+INSERT INTO  [Olga2].[info].[PackSizes] ([Size],[CountryId]) VALUES(N'TANTUM VERDE®',3)
+

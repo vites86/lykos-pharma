@@ -16,6 +16,7 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using Microsoft.AspNet.Identity;
 using Olga.Models;
+using Olga.Util;
 
 namespace Olga.Controllers
 {
@@ -54,6 +55,7 @@ namespace Olga.Controllers
                 ClaimsIdentity claim = await UserService.Authenticate(userDto);
                 if (claim == null)
                 {
+                    Logger.Log.Error("Not correct login/password");
                     ModelState.AddModelError("", "Неверный логин или пароль.");
                 }
                 else
@@ -63,6 +65,7 @@ namespace Olga.Controllers
                     {
                         IsPersistent = true
                     }, claim);
+                    Logger.Log.Info($"{userDto.Email} Logged in");
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -71,6 +74,9 @@ namespace Olga.Controllers
 
         public ActionResult Logout()
         {
+            var userName = User.Identity.Name;
+            Logger.Log.Info($"{userName} Logged out");
+
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
@@ -100,6 +106,9 @@ namespace Olga.Controllers
                 OperationDetails operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
                 {
+                    var userName = User.Identity.Name;
+                    Logger.Log.Info($"{userName} registered {userDto.Email} ");
+
                     return RedirectToAction("Index", "Home");
                     //return View("SuccessRegister");
                 }
