@@ -1,0 +1,77 @@
+﻿@model Olga.Models.UserEditModel
+@{
+    ViewBag.Title = "Edit";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <section id="loginForm">
+                <h2>Edit user</h2>
+                <hr />
+                @using (Html.BeginForm("EditUser", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.Id)
+            //@Html.HiddenFor(m => m.OldEmail, Model.Email)
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control disable" })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+           
+            <div class="form-group">
+                @Html.LabelFor(m => m.Rank, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Rank, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Rank, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.Role, new { @class = "form-control" })
+                </div>
+            </div>
+            @Html.HiddenFor(m => m.OldRole, Model.Role)
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Update" />
+                </div>
+            </div>
+}
+            </section>
+        </div>
+    </div>
+</div>
+<div class="empty"></div>
+
+@{
+    ViewBag.Title = "EditUser";
+}
+<style>
+    .disable {
+        background: #CCC;
+        color: #333;
+        border: 1px solid #666;
+        pointer-events: none;
+    }
+</style>
+
+

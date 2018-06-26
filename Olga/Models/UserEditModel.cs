@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using Olga.DAL.Entities.Account;
 
-namespace Olga.BLL.DTO
+namespace Olga.Models
 {
-    public class UserDTO
+    public class UserEditModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -15,7 +15,7 @@ namespace Olga.BLL.DTO
         public string Password { get; set; }
         public string Email { get; set; }
         //public string OldEmail { get; set; }
-        public string Role { get; set; }
-        public string OldRole { get; set; }
+        public Roles OldRole { get; set; }
+        public Roles Role { get; set; }
     }
 }

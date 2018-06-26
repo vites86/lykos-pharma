@@ -111,6 +111,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMapper\MapperForUser.cs" />
     <Compile Include="DTO\ApprDocsTypeDTO.cs" />
     <Compile Include="DTO\ArtworkDTO.cs" />
     <Compile Include="DTO\CountryDTO.cs" />

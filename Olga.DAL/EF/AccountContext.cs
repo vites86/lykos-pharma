@@ -12,7 +12,6 @@ namespace Olga.DAL.EF
     public class AccountContext : IdentityDbContext<ApplicationUser>
     {
         public AccountContext(string conectionString) : base(conectionString) { }
-
         public DbSet<ClientProfile> ClientProfiles { get; set; }
     }
 }

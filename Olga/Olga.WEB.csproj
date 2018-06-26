@@ -190,6 +190,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="AutoMapper\MapperForProduct.cs" />
+    <Compile Include="AutoMapper\MapperForUser.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProcedureController.cs" />
@@ -210,7 +211,14 @@
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\StrengthViewModel.cs" />
+    <Compile Include="Models\UserEditModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\TableHead.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TableHead.resx</DependentUpon>
+    </Compile>
     <Compile Include="Util\AutofacConfig.cs" />
     <Compile Include="Util\Logger.cs" />
   </ItemGroup>
@@ -5013,6 +5021,8 @@
     <Content Include="Views\Procedure\Delete.cshtml" />
     <Content Include="Views\Remarks\Index.cshtml" />
     <Content Include="Views\Remarks\Create.cshtml" />
+    <Content Include="Views\Account\Users.cshtml" />
+    <Content Include="Views\Account\EditUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5049,6 +5059,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\TableHead.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TableHead.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

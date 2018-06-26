@@ -19,4 +19,11 @@ namespace Olga.DAL.Entities.Account
 
         public virtual ApplicationUser ApplicationUser { get; set; }
     }
+
+    public enum Roles
+    {
+        Admin,
+        Manager,
+        Watcher
+    }
 }

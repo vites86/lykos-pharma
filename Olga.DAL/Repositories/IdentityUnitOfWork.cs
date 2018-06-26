@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,16 @@ namespace Olga.DAL.Repositories
             clientManager = new ClientManager(db);
         }
 
+        public virtual DbContext GetContext()
+        {
+            return db;
+        }
+
+        public IQueryable<ClientProfile> GetAll()
+        {
+            return db.ClientProfiles;
+        }
+
         public ApplicationUserManager UserManager
         {
             get { return userManager; }
@@ -45,6 +56,11 @@ namespace Olga.DAL.Repositories
         public async Task SaveAsync()
         {
             await db.SaveChangesAsync();
+        }
+
+        public void SaveChanges()
+        {
+            db.SaveChanges();
         }
 
         public void Dispose()

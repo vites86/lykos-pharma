@@ -24,6 +24,16 @@ namespace Olga.DAL.Repositories
             Database.SaveChanges();
         }
 
+        public void Delete(string id)
+        {
+            var clientProfile = Database.ClientProfiles.Find(id);
+            if (clientProfile==null)
+            {
+                return;
+            }
+            Database.ClientProfiles.Remove(clientProfile);
+        }
+
         public void Dispose()
         {
             Database.Dispose();
