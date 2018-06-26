@@ -59,13 +59,12 @@ namespace Olga.Controllers
                 var countryDto = _countryService.GetItem((int)id);
                 @ViewBag.Country = countryDto.Name;
                 @ViewBag.CountryId = id;
-                var productsDto  = _productService.GetProducts(id);
-                if (productsDto != null)
+                var productsDto  = _productService.GetProducts(id).ToList();
+                if (productsDto.Count > 0)
                 {
-                    var products = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productsDto);
-                    return View(products.ToList());
+                    var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto);
+                    return View(products);
                 }
-               
                 return View();
             }
             catch (Exception e)

@@ -31,6 +31,7 @@ namespace Olga
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<Product, ProductDTO>().MaxDepth(3);
 
                 cfg.CreateMap<Product, Product>()
                     .ForMember(m => m.ProductDocuments,
@@ -68,7 +69,8 @@ namespace Olga
                     .ForMember(x => x.Strength, o => o.MapFrom(s => s.Strength.Strngth))
                     .ForMember(x => x.ProductDocuments, o => o.MapFrom(s => s.ProductDocuments))
                     .ForMember(m => m.DocumentImages, opt => opt.Ignore())
-                    .ForMember(m => m.DocumentImagesListString, opt => opt.Ignore());
+                    .ForMember(m => m.DocumentImagesListString, opt => opt.Ignore())
+                    .MaxDepth(3);
 
                 cfg.CreateMap<ProductDTO, ProductCreateModel>()
                     .ForMember(m => m.DocumentImagesArtworks, opt => opt.Ignore())

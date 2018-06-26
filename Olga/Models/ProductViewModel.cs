@@ -47,10 +47,10 @@ namespace Olga.Models
 
         public string DocumentImagesListString { get; set; }
         public IList<string> DocumentImages = new List<string>();
-        public IList<ProductDocument> ProductDocuments = new List<ProductDocument>();
+        public List<ProductDocument> ProductDocuments = new List<ProductDocument>();
 
-        public virtual ICollection<ArtworkDTO> Artworks { get; set; }
-        public virtual ICollection<ManufacturerDTO> Manufacturers { get; set; }
+        public virtual List<ArtworkDTO> Artworks { get; set; }
+        public virtual List<ManufacturerDTO> Manufacturers { get; set; }
     }
 
     public class ProductCreateModel
