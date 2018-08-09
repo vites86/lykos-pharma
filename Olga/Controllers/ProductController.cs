@@ -391,9 +391,10 @@ namespace Olga.Controllers
                     HttpPostedFileBase file = Request.Files[fileName];
                     if (file != null && file.ContentLength > 0)
                     {
+                        var fileTrimmName = file.FileName.Replace(",", "");
                         apprFolder = GetApprFolder(apprId);
                         var targetFolder = Server.MapPath($"~/Upload/Documents/{apprFolder}");
-                        var localFileName = String.Format("{0}_{1}{2}", apprId + "__" + Path.GetFileNameWithoutExtension(file.FileName), Guid.NewGuid().ToString().Substring(0,6), Path.GetExtension(file.FileName));
+                        var localFileName = String.Format("{0}_{1}{2}", apprId + "__" + Path.GetFileNameWithoutExtension(fileTrimmName), Guid.NewGuid().ToString().Substring(0,6), Path.GetExtension(fileTrimmName));
                         targetPath = Path.Combine(targetFolder, localFileName);
                         fName = localFileName;
                         file.SaveAs(targetPath);
