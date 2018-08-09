@@ -123,6 +123,9 @@
   <data name="Action" xml:space="preserve">
     <value>Action</value>
   </data>
+  <data name="Countries" xml:space="preserve">
+    <value>Countries</value>
+  </data>
   <data name="Coworker" xml:space="preserve">
     <value>Сотрудник</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Number" xml:space="preserve">
     <value>№</value>
+  </data>
+  <data name="Rank" xml:space="preserve">
+    <value>Rank</value>
   </data>
   <data name="Result" xml:space="preserve">
     <value>Result</value>

@@ -42,12 +42,34 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
+                @Html.LabelFor(m => m.Role, new {  @class = "col-md-2 control-label"  })
                 <div class="col-md-10">
-                    @Html.EnumDropDownListFor(model => model.Role, new { @class = "form-control" })
+                    @Html.EnumDropDownListFor(model => model.Role, new { onchange = "setCheckBox()", @class = "form-control" })
                 </div>
             </div>
             @Html.HiddenFor(m => m.OldRole, Model.Role)
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Countries, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <ul style="list-style-type: none; padding-left: 0px">
+                    @foreach (var country in ViewBag.userCountries)
+                    {
+                        <li>
+                            <input type="checkbox" name="selectedCountries" value="@country.Value" id="@country.Value" class="countryCheckbox"
+                                   @{
+                                       if (Model != null)
+                                       {
+                                           var foundItem = Model.Countries.FirstOrDefault(i => i.Name == country.Text);
+                                           if (foundItem != null) { <text> checked='checked' </text>  }
+                                       }
+                                   } />
+                            <label for="@country.Value">@country.Text</label>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
 
 
             <div class="form-group">
@@ -73,5 +95,26 @@
         pointer-events: none;
     }
 </style>
+<script>
+    function setCheckBox() {
+        //var $cb = $('#selectedCountries');
+        //var element = document.getElementById("selectedCountries");
+        var val = $("#Role option:selected").text();
+        console.log('#Role value=' + val);
+        if ( val === 'Admin') {
+            $('.countryCheckbox').prop('checked', true);
+            //elem.style.display = this.checked ? 'block' : 'none';
+           // window.cb.checked = true;;
+            toastr.info('Admin has rights on all countries!');
+        }
+    }
 
+    //$(function () {
+    //    setCheckBox();
+    //    $('#Role').change(function () {
+    //        console.log('#Role changed to+' + $('#Role').val);
+    //        setCheckBox();
+    //    });
+    //});
 
+</script>

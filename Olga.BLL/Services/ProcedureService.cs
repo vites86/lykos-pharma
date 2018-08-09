@@ -8,34 +8,34 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
 {
      public class ProcedureService : IProcedure
     {
+        IUnitOfWorkGeneral Database { get; set; }
 
-        private ProcedureRepository Database { get; set; }
-
-        public ProcedureService(ProductContext context)
+        public ProcedureService(IUnitOfWorkGeneral uow)
         {
-            Database = new ProcedureRepository(context);
+            Database = uow;
         }
 
         public void AddItem(ProcedureDTO item)
         {
             Procedure procedure = Mapper.Map<ProcedureDTO, Procedure>(item);
-            Database.Create(procedure);
+            Database.Procedures.Create(procedure);
         }
 
         public ProcedureDTO GetItem(int id)
         {
-            return Mapper.Map<Procedure, ProcedureDTO>(Database.Get(id));
+            return Mapper.Map<Procedure, ProcedureDTO>(Database.Procedures.Get(id));
         }
 
         public void DeleteItem(int id)
         {
-            Database.Delete(id);
+            Database.Procedures.Delete(id);
         }
 
         public void Dispose()
@@ -45,17 +45,17 @@ namespace Olga.BLL.Services
 
         public void Commit()
         {
-            Database.Commit();
+            Database.Procedures.Commit();
         }
 
         public IEnumerable<ProcedureDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(Database.GetAll()).ToArray();
+            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(Database.Procedures.GetAll()).ToArray();
         }
 
         public IEnumerable<ProcedureDTO> GetItems(int productId)
         {
-            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(Database.GetAll(productId).ToArray());  
+            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(Database.Procedures.GetAll(productId).ToArray());  
         }
        
     }

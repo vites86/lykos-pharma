@@ -43,12 +43,7 @@ namespace Olga.BLL.Services
             }
 
             var productList = Database.GetAll((int)countryId).ToList();
-            if (productList.Any())
-            {
-                return Mapper.Map<List<Product>, List<ProductDTO>>(productList.ToList()); 
-            }
-
-            return null;
+            return productList.Any() ? Mapper.Map<List<Product>, List<ProductDTO>>(productList.ToList()) : new List<ProductDTO>();
         }
 
         public ApprDocsTypeDTO GetApprDocsType(int id)

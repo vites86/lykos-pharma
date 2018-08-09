@@ -177,10 +177,12 @@
         var apprId = j;
         $("#dZUpload" + apprId).dropzone({
             url: "/Product/SaveUploadedFile?apprId=" + apprId,
+            timeout: 180000,
             uploadMultiple: true,
             maxFiles: 10,
             acceptedFiles: "image/*, .pdf, .txt, .xlsx, .docx, .ai, .cdr, .xls, .doc",
-            maxFilesize: 1500000,
+            maxFilesize: 2500000000,
+            maxThumbnailFilesize: 2500000000,
             addRemoveLinks: true,
             createImageThumbnails: true,
             init: function () {
@@ -299,11 +301,12 @@
                 }
                 file.previewElement.classList.add("dz-error");
 
-                var fileSizeMB = file.size / 1024 / 1024;
-                if (fileSizeMB > 5) {
+                var fileSizeMB = file.size / 2500000000 / 2500000000;
+                if (fileSizeMB > 2500000) {
                     alertify.error('ErrorMaxUploadFileSize');
+                    toastr.error('Error in  File Size - Too Big File Size!');
+                    console.log('file.size ['+file.size+'] is to big!');
                 }
-
             },
             maxfilesexceeded: function (file) {
                 this.removeFile(file);
@@ -311,138 +314,3 @@
         });
     }
 });
-
-//    $("#dZUpload" + apprId).dropzone({
-//            url: "/Product/SaveUploadedFile?apprId=" + apprId,
-//            uploadMultiple: true,
-//            maxFiles: 10,
-//            acceptedFiles: "image/*, .pdf, .txt, .xlsx, .docx, .ai, .cdr, .xls, .doc",
-//            maxFilesize: 1500000,
-//            addRemoveLinks: true,
-//            createImageThumbnails: true,
-//            init: function() {
-//                var fancybox = this;
-
-//                $('#savePhotoButton' + apprId).off('click').click(function (clickEvent) {
-//                    console.log('#savePhotoButton click() ');
-//                    console.log('Count of saved files = ' + images.length);
-
-//                    for (var i = 0; i < images.length; i++) {
-//                        if (images.length) {
-//                            var fileName = images[i].savedName;
-//                            console.log('Saving file in Hidden lists ' + fileName);
-//                            var imageStringElement1 = $('#DocumentImagesListStringApprs');
-//                            var imageStringElement2 = $('#DocumentImagesListStringApprs' + apprId);
-
-//                            if (imageStringElement1.val().includes(fileName)) {
-//                                console.log('imageString already contains(' + fileName + ')');
-//                                continue;
-//                            }
-//                            saveFileNameInHiddenList(fileName, imageStringElement1);
-//                            saveFileNameInHiddenList(fileName, imageStringElement2);
-//                        }
-//                    }
-//                    //var i = 0;
-//                });
-//                $('#deletePhoto' + apprId).off('click').click(function(clickEvent) {
-//                    console.log('#deletePhoto click() ');
-//                    removeImages(apprId);
-//                    fancybox.removeAllFiles();
-//                });
-//                $('#cancelAddPhoto' + apprId).off('click').click(function(clickEvent) {
-//                    console.log('#cancelAddPhoto click() ');
-//                    if (images.length) {
-//                        for (i = 0; i < images.length; i++) {
-//                            var fileName = images[i].savedName;
-//                            console.log('cancelAddPhoto name = ' + fileName);
-                            
-//                            var trimFileName = fileName.replace('.', '').replace(/\s+/g, '').trim();
-//                            console.log('Hidding #showImageBlock_' + trimFileName);
-
-//                            var blockElementWithImage = $('#showImageBlock_' + trimFileName);
-//                            blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
-
-//                            var stringElement = $('#DocumentImagesListStringApprs');
-//                            var stringElement2 = $('#DocumentImagesListStringApprs' + apprId);
-
-//                            deleteFileFromHiddenList(fileName, stringElement);
-//                            deleteFileFromHiddenList(fileName, stringElement2);
-
-//                            deleteImage(fileName);
-//                            //images.splice(i, 1);
-//                        }
-//                    }
-//                    images = [];
-//                    fancybox.removeAllFiles();
-//                });
-
-//                this.on("removedfile",
-//                    function(file) {
-//                        console.log('removed file event for ' + file.name);
-//                        var index = -1;
-//                        for (var i = 0; i < images.length; i++) {
-//                            if (images[i].name === file.name) {
-
-//                                console.log('file.name to delete = ' + file.name);
-
-//                                var fileName = images[i].savedName;
-//                                var fileNameInListWithoutex = apprId + '__' + file.name.substr(0, file.name.lastIndexOf("."));
-
-//                                var blockElementWithImage = $('#showImageBlock_' + fileName.replace('.', ''));
-//                                blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
-//                                var stringElement = $('#DocumentImagesListStringApprs');
-//                                var stringElement2 = $('#DocumentImagesListStringApprs' + apprId);
-
-//                                var fileNameInList = fileNameInHiddenList(fileNameInListWithoutex, stringElement);
-//                                console.log('fileNameInList = ' + fileNameInList);
-//                                if (fileNameInList !== null) {
-//                                    deleteImage(fileNameInList);
-//                                }
-
-//                                deleteFileFromHiddenList(fileNameInListWithoutex, stringElement);
-//                                deleteFileFromHiddenList(fileNameInListWithoutex, stringElement2);
-
-//                                index = i;
-//                                break;
-//                            }
-//                        }
-//                        if (index !== -1)
-//                            images.splice(index, 1);
-//                    });
-//            },
-//            success: function(file, response) {
-
-//                images.push({ name: file.name, savedName: response.Message });
-//                console.log('Download on server image with name: ' + file.name);
-//                console.log('response.Message: ' + response.Message);
-//                file.previewElement.classList.add("dz-success");
-
-//                var ext = file.name.split('.').pop();
-
-//                var imageString = $('#DocumentImagesListStringApprs').val();
-//                if (imageString.includes(file.name)) {
-//                    console.log('imageString already shows(' + file.name + ')');
-//                    return;
-//                }
-
-//                showDocsPreview(file, ext);
-//                showDocsImageOnPage(response);
-//            },
-//            error: function(file, response) {
-//                if (response === "You can not upload any more files.") {
-//                    this.removeFile(file);
-//                    return;
-//                }
-//                file.previewElement.classList.add("dz-error");
-
-//                var fileSizeMB = file.size / 1024 / 1024;
-//                if (fileSizeMB > 5) {
-//                    alertify.error('ErrorMaxUploadFileSize');
-//                }
-
-//            },
-//            maxfilesexceeded: function(file) {
-//                this.removeFile(file);
-//            }
-//        });
-//});

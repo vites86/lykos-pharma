@@ -1,4 +1,5 @@
-﻿@model List<Olga.Models.CountryViewModel>
+﻿@using Olga.Models
+@model List<Olga.Models.CountryViewModel>
 
 <ul class="list-unstyled navigation mb-0">
     <li class="sidebar-category">Main</li>
@@ -16,12 +17,21 @@
         <ul id="collapse1" class="list-unstyled collapse">
             @for (var i = 0; i < Model.Count; i++)
             {
+                var hasAccess = false;
+                if (@ViewBag.User.Countries != null)
+                {
+                    hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a=>a.Id == @Model[i].Id);
+                }
+                
                 <li>
                     <a href="#">@Model[i].Name</a>
                     <ul>
                         <li>@Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null)</li>
-                        <li>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) </li>
-                        <li>@Html.ActionLink("EditInfo", "Index", "Settings", new { id = @Model[i].Id }, null) </li>
+                        @if (@ViewBag.User.Role.Equals("Admin") || hasAccess)
+                        {
+                            <li>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) </li>
+                            <li>@Html.ActionLink("EditInfo", "Index", "Settings", new { id = @Model[i].Id }, null) </li>
+                        }
                     </ul>
                 </li>
             }
@@ -55,7 +65,8 @@
             }
         </ul>
     </li>
-    
+@if (@ViewBag.User.Role.Equals("Admin"))
+{
     <li class="panel">
         <a role="button"
            data-toggle="collapse"
@@ -74,5 +85,6 @@
             <li>@Html.ActionLink("Users", "Users", "Account")</li>
         </ul>
     </li>
+}
 
 </ul>

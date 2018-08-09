@@ -120,4 +120,58 @@ namespace Olga.Models
         public List<ProcedureViewModel> Procedures { get; set; }
         public List<ProductDocument> Documents { get; set; }
     }
+
+    public class ShowProductModel
+    {
+        public ShowProductModel()
+        {
+            this.Artworks = new List<ArtworkViewModel>();
+            this.Manufacturers = new List<ManufacturerViewModel>();
+            this.DocumentImagesApprs = new List<string>();
+            this.DocumentImagesArtworks = new List<string>();
+            this.Procedures = new List<ProcedureViewModel>();
+            this.Documents = new List<ProductDocument>();
+        }
+
+        public int? Id { get; set; }
+
+        public string IssuedDate { get; set; }
+        public string ExpiredDate { get; set; }
+
+        public bool UnLimited { get; set; }
+
+        public string Country { get; set; }
+
+        [Display(Name = "Marketing Authorize Holder")]
+        public string MarketingAuthorizHolder { get; set; }
+
+        [Display(Name = "Marketing Authorize Number")]
+        public string MarketingAuthorizNumber { get; set; }
+
+        [Display(Name = "Pack Size")]
+        public string PackSize { get; set; }
+
+        [Display(Name = "Pharmaceutical Form")]
+        public string PharmaceuticalForm { get; set; }
+
+        [Display(Name = "Product Code")]
+        public string  ProductCode { get; set; }
+
+        [Display(Name = "Product Name")]
+        public string ProductName { get; set; }
+
+        public string  Strength { get; set; }
+
+        public List<ArtworkViewModel> Artworks { get; set; }
+        public List<ManufacturerViewModel> Manufacturers { get; set; }
+
+        public string DocumentImagesListStringApprs { get; set; }
+        public List<string> DocumentImagesApprs { get; set; }
+
+        public string DocumentImagesListStringArtworks { get; set; }
+        public List<string> DocumentImagesArtworks { get; set; }
+
+        public List<ProcedureViewModel> Procedures { get; set; }
+        public List<ProductDocument> Documents { get; set; }
+    }
 }

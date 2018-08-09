@@ -11,7 +11,11 @@
   where clnt.id like '936ff493-725b-43dd-863d-d6a533b7007a'  
 
 
-SELECT *  FROM [Olga2].[dbo].[AspNetUsers]
+SELECT *  FROM  [Olga2].[dbo].[AspNetRoles]
+SELECT *  FROM  [Olga2].[dbo].[AspNetUsers]
+SELECT *  FROM  [Olga2].[dbo].[ClientProfiles]
+
+update [Olga2].[dbo].[AspNetRoles] set name = 'User' where name like 'Watcher'
 
     delete from [Olga2].[dbo].[AspNetUsers] where email like 'test@email.ua'
     delete from [Olga2].[dbo].[ClientProfiles] where Name like 'Tester'

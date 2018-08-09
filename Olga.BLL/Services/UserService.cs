@@ -13,6 +13,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Olga.BLL.AutoMapper;
+using Olga.DAL.Entities;
 
 namespace Olga.BLL.Services
 {
@@ -34,11 +35,21 @@ namespace Olga.BLL.Services
                 var result = Database.UserManager.Create(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
-                // добавляем роль
                 Database.UserManager.AddToRole(user.Id, userDto.Role);
-                // создаем профиль клиента
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, Rank = userDto.Rank, Name = userDto.Name };
-                Database.ClientManager.Create(clientProfile);
+                ClientProfile clientProfile = new ClientProfile
+                {
+                    Id = user.Id,
+                    Rank = userDto.Rank,
+                    Name = userDto.Name
+                };
+
+                foreach (var country in userDto.Countries)
+                {
+                    var item = Database.GetCountry(country.Id);
+                    clientProfile.Countries.Add(item);
+                }
+                
+                Database.ClientManager.CreateClientProfile(clientProfile);
                 Database.SaveChanges();
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
@@ -57,18 +68,17 @@ namespace Olga.BLL.Services
                     {
                        var res0 = Database.UserManager.RemoveFromRole(userId, userRole);
                     }
-
-                    Database.ClientManager.Delete(userId);
+                    
+                    Database.ClientManager.DeleteClientProfile(userId);
                     var res1 = Database.UserManager.Delete(user);
                     Database.SaveChanges();
                     return new OperationDetails(true, "Пользователь удален", "");
                 }
-                return new OperationDetails(false, "Пользователь не существует", "Email");
+                return new OperationDetails(false, "Пользователь не существует", "");
             }
             catch (Exception e)
             {
-                return new OperationDetails(false, e.Message + " " + e.InnerException, "Email");
-
+                return new OperationDetails(false, e.Message + " " + e.InnerException, "");
             }
         }
 
@@ -77,13 +87,19 @@ namespace Olga.BLL.Services
             ApplicationUser user = Database.UserManager.FindByEmail(userDto.Email);
             if (user != null)
             {
-                //var userService = new UserService(Database);
                 user.Email = userDto.Email;
                 user.UserName = userDto.Email;
-                var res = Database.UserManager.RemoveFromRole(user.Id, userDto.OldRole);
-                var res2 = Database.UserManager.AddToRole(user.Id, userDto.Role);
+                Database.UserManager.RemoveFromRole(user.Id, userDto.OldRole);
+                Database.UserManager.AddToRole(user.Id, userDto.Role);
                 user.ClientProfile.Name = userDto.Name;
                 user.ClientProfile.Rank = userDto.Rank;
+
+                user.ClientProfile.Countries.Clear();
+                foreach (var country in userDto.Countries)
+                {
+                    var item = Database.GetCountry(country.Id);
+                    user.ClientProfile.Countries.Add(item);
+                }
 
                 //var userMapper = MapperForUser.GetUserMapperForEdit(userService);
                 //user.ClientProfile = userMapper.Map<UserDTO, ClientProfile>(userDto);
@@ -170,7 +186,6 @@ namespace Olga.BLL.Services
                 ? GetAll().FirstOrDefault(m => m.Email.Equals(email))
                 : GetAll().FirstOrDefault(m => m.Id.Equals(userId));
         }
-
         
     }
 }

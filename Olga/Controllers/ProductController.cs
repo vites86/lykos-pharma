@@ -6,9 +6,13 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
+using Olga.AutoMapper;
 using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
+using Olga.BLL.Services;
 using Olga.DAL.Entities;
 using Olga.Models;
 using Olga.Util;
@@ -30,6 +34,7 @@ namespace Olga.Controllers
         IMarketingAuthorizHolder _marketingAuthorizHolderService;
         IPharmaceuticalForm _pharmaceuticalFormService;
         IProductService _productService;
+        UserViewModel currentUser;
 
 
         // GET: Settings
@@ -51,6 +56,14 @@ namespace Olga.Controllers
             _productService = product;
         }
 
+        private IUserService UserService
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<IUserService>();
+            }
+        }
+
         // GET: Product
         public ActionResult Index(int? id)
         {
@@ -60,6 +73,8 @@ namespace Olga.Controllers
                 @ViewBag.Country = countryDto.Name;
                 @ViewBag.CountryId = id;
                 var productsDto  = _productService.GetProducts(id).ToList();
+                currentUser = GetCurrentUser();
+                ViewBag.User = currentUser;
                 if (productsDto.Count > 0)
                 {
                     var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto);
@@ -129,6 +144,7 @@ namespace Olga.Controllers
                 var products = Mapper.Map<IEnumerable<ProductDTO>, IEnumerable<ProductViewModel>>(_productService.GetProducts(model.CountryId));
                 @ViewBag.CountryId = model.CountryId;
                 @ViewBag.Country = CountryName;
+                @ViewBag.User = GetCurrentUser();
                 return View("Index",products.ToList());
             }
             catch (Exception ex)
@@ -185,6 +201,42 @@ namespace Olga.Controllers
         }
 
         [HttpGet]
+        public ActionResult ShowDocuments(string id, int? countryId)
+        {
+            if (string.IsNullOrEmpty(id) || countryId == null)
+            {
+                @ViewBag.Error = nameof(id);
+                return View("Error");
+            }
+            try
+            {
+                InitialiseModel(countryId);
+
+                var prod = _productService.GetProduct(int.Parse(id));
+                var product = Mapper.Map<ProductDTO, ShowProductModel>(prod);
+
+                var userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
+                var userDocumentsArtworks = prod?.ProductDocuments.Where(a => a.ArtworkId != null).Select(m => m.PathToDocument).ToList();
+
+                product.DocumentImagesArtworks = userDocumentsArtworks;
+                product.DocumentImagesApprs = userDocumentsApprs;
+                product.DocumentImagesListStringApprs = userDocumentsApprs != null ? String.Join(",", userDocumentsApprs) : String.Empty;
+                product.DocumentImagesListStringArtworks = userDocumentsArtworks != null ? String.Join(",", userDocumentsArtworks) : String.Empty;
+
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: ShowProduct() {ex.Message} ");
+
+                @ViewBag.Error = ex.Message;
+                return View("Error");
+            }
+        }
+       
+
+        [HttpGet]
         public ActionResult DeleteProduct(string Id, string CountryId)
         {
             if (string.IsNullOrEmpty(Id) || string.IsNullOrEmpty(CountryId))
@@ -204,6 +256,7 @@ namespace Olga.Controllers
                 var countryDto = _countryService.GetItem(int.Parse(CountryId));
                 @ViewBag.Country = countryDto.Name;
                 @ViewBag.CountryId = CountryId;
+                @ViewBag.User = GetCurrentUser();
                 var productsDto = _productService.GetProducts(int.Parse(CountryId));
                 if (productsDto != null)
                 {
@@ -269,6 +322,7 @@ namespace Olga.Controllers
             @ViewBag.PackSizes = country.PackSizes.OrderBy(a => a.Size);
             @ViewBag.ContryName = country.Name;
             @ViewBag.ContryId = countryId;
+            @ViewBag.User = GetCurrentUser();
 
             var allApprDocsTypes = _apprDocsTypeService.GetItems();
             var apprDocsTypes = Mapper.Map<IEnumerable<ApprDocsTypeDTO>, IEnumerable<ApprDocsTypeViewModel>>(allApprDocsTypes).ToList();
@@ -339,8 +393,6 @@ namespace Olga.Controllers
                     {
                         apprFolder = GetApprFolder(apprId);
                         var targetFolder = Server.MapPath($"~/Upload/Documents/{apprFolder}");
-                        var id = apprId != null ? apprId.ToString() : "";
-                        //var localFileName = String.Format("document_{0}_{1}{2}", id, Guid.NewGuid(), Path.GetExtension(file.FileName));
                         var localFileName = String.Format("{0}_{1}{2}", apprId + "__" + Path.GetFileNameWithoutExtension(file.FileName), Guid.NewGuid().ToString().Substring(0,6), Path.GetExtension(file.FileName));
                         targetPath = Path.Combine(targetFolder, localFileName);
                         fName = localFileName;
@@ -478,6 +530,20 @@ namespace Olga.Controllers
                 Logger.Log.Error($"{userName}: DeleteFile() {ex.Message} ");
 
                 return Json(new { Message = ex.Message });
+            }
+        }
+        public UserViewModel GetCurrentUser()
+        {
+            try
+            {
+                var userId = HttpContext.User.Identity.GetUserId();
+                var user = UserService.GetUser(userId);
+                var userMapper = MapperForUser.GetUserMapperForView(UserService);
+                return userMapper.Map<UserDTO, UserViewModel>(user);
+            }
+            catch (Exception ex)
+            {
+                return new UserViewModel();
             }
         }
     }

@@ -31,6 +31,13 @@ namespace Olga
         {
             Mapper.Initialize(cfg =>
             {
+                cfg.CreateMap<CountryDTO, Country>().MaxDepth(3)
+                    .ForMember(m => m.MarketingAuthorizNumbers, opt => opt.Ignore())
+                    .ForMember(m => m.PackSizes, opt => opt.Ignore())
+                    .ForMember(m => m.ProductCodes, opt => opt.Ignore())
+                    .ForMember(m => m.ProductNames, opt => opt.Ignore())
+                ;
+
                 cfg.CreateMap<Product, ProductDTO>().MaxDepth(3);
 
                 cfg.CreateMap<Product, Product>()
@@ -77,6 +84,32 @@ namespace Olga
                     .ForMember(m => m.DocumentImagesListStringArtworks, opt => opt.Ignore())
                     .ForMember(m => m.DocumentImagesApprs, opt => opt.Ignore())
                     .ForMember(m => m.DocumentImagesListStringApprs, opt => opt.Ignore());
+
+                cfg.CreateMap<ProductDTO, ShowProductModel>().MaxDepth(3)
+                    .ForMember(m => m.DocumentImagesArtworks, opt => opt.Ignore())
+                    .ForMember(m => m.DocumentImagesListStringArtworks, opt => opt.Ignore())
+                    .ForMember(m => m.DocumentImagesApprs, opt => opt.Ignore())
+                    .ForMember(x => x.Country, o => o.MapFrom(s => s.Country.Name))
+                    .ForMember(m => m.ProductName,
+                        opt => opt.MapFrom(m => m.ProductName == null ? "No Product Name" : m.ProductName.Name))
+                    .ForMember(m => m.ProductCode,
+                        opt => opt.MapFrom(m => m.ProductCode == null ? "No Product Code" : m.ProductCode.Code))
+                    .ForMember(m => m.MarketingAuthorizHolder,
+                        opt => opt.MapFrom(m => m.MarketingAuthorizHolder == null ? "No Marketing Authoriz. Holder" : m.MarketingAuthorizHolder.Name))
+                    .ForMember(m => m.MarketingAuthorizNumber,
+                        opt => opt.MapFrom(m => m.MarketingAuthorizNumber == null ? "No Marketing Authoriz. Number" : m.MarketingAuthorizNumber.Number))
+                    .ForMember(m => m.PackSize,
+                        opt => opt.MapFrom(m => m.PackSize == null ? "No Pack Size" : m.PackSize.Size))
+                    .ForMember(m => m.Strength,
+                        opt => opt.MapFrom(m => m.Strength == null ? "No Strength" : m.Strength.Strngth))
+                    .ForMember(m => m.PharmaceuticalForm,
+                        opt => opt.MapFrom(m => m.PharmaceuticalForm == null ? "No Pharmaceutical Form" : m.PharmaceuticalForm.PharmaForm))
+                    .ForMember(m => m.Country,
+                        opt => opt.MapFrom(m => m.Country == null ? "No Country" : m.Country.Name))
+                    .ForMember(m => m.IssuedDate,
+                        opt => opt.MapFrom(m => m.IssuedDate == null ? null : m.IssuedDate.ToString()))
+                    .ForMember(m => m.ExpiredDate,
+                        opt => opt.MapFrom(m => m.ExpiredDate == null ? null : m.ExpiredDate.ToString()));
 
                 cfg.CreateMap<ApprDocsTypeViewModel, ApprDocsTypeDTO>();
                     //.ForMember(x => x.Products, opt => opt.Ignore());

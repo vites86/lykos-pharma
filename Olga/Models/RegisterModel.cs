@@ -25,5 +25,7 @@ namespace Olga.Models
         public string Name { get; set; }
 
         public Roles Role { get; set; }
+
+        public List<CountryViewModel> Countries { get; set; }
     }
 }

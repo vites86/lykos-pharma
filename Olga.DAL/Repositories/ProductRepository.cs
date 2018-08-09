@@ -50,16 +50,6 @@ namespace Olga.DAL.Repositories
                 return;
             }
 
-            //if (selectedApprDocsTypes != null)
-            //{
-            //    foreach (var id in selectedApprDocsTypes)
-            //    {
-            //        if (string.IsNullOrEmpty(id)) continue;
-            //        var apprDocsTypeToAdd = db.ApprDocsTypes.Find(int.Parse(id));
-            //        product.ApprDocsTypes.Add(apprDocsTypeToAdd);
-            //    }
-            //}
-
             if (selectedManufacturers != null)
             {
                 foreach (var id in selectedManufacturers)

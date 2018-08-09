@@ -18,7 +18,7 @@ namespace Olga.DAL.Migrations
 
         protected override void Seed(Olga.DAL.EF.ProductContext context)
         {
-            AddRoles(context);
+           // AddRoles(context);
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
@@ -32,7 +32,8 @@ namespace Olga.DAL.Migrations
 
             CreateRole(roleManager, Roles.Admin);
             CreateRole(roleManager, Roles.Manager);
-            CreateRole(roleManager, Roles.Watcher);
+            CreateRole(roleManager, Roles.User);
+            CreateRole(roleManager, Roles.Quality);
             db.SaveChanges();
         }
 

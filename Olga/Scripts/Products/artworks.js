@@ -180,7 +180,8 @@
             uploadMultiple: true,
             maxFiles: 10,
             acceptedFiles: "image/*, .pdf, .txt, .xlsx, .docx, .ai, .cdr, .xls, .doc",
-            maxFilesize: 1500000,
+            maxFilesize: 2500000000,
+            maxThumbnailFilesize: 2500000000,
             addRemoveLinks: true,
             createImageThumbnails: true,
             init: function () {
@@ -307,11 +308,10 @@
                 }
                 file.previewElement.classList.add("dz-error");
 
-                var fileSizeMB = file.size / 1024 / 1024;
-                if (fileSizeMB > 5) {
-                    alertify.error('ErrorMaxUploadFileSize');
+                var fileSizeMB = file.size / 2500000 / 2500000;
+                if (fileSizeMB > 2500000) {
+                    toastr.error('Error in  File Size - Too Big File Size!');
                 }
-
             },
             maxfilesexceeded: function (file) {
                 this.removeFile(file);

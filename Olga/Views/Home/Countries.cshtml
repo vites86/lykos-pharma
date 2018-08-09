@@ -1,4 +1,5 @@
-﻿@model List<Olga.Models.CountryViewModel>
+﻿@using Olga.Models
+@model List<Olga.Models.CountryViewModel>
 
 <div class="container">
     <h2>Countries</h2>
@@ -12,12 +13,21 @@
             <tbody>
             @for (var i = 0; i < Model.Count; i++)
             {
+                var hasAccess = false;
+                if (@ViewBag.User.Countries != null)
+                {
+                    hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
+                }
+
                 <tr data-rowid="@i">
                     <td>@Model[i].Name</td>
                     <td>
-                        @Html.ActionLink("Create product", "CreateProduct", "Product", new {countryId = @Model[i].Id}, null) |
-                        @Html.ActionLink("Products", "Index", "Product", new {id = @Model[i].Id}, null) |
-                        @Html.ActionLink("EditInfo", "Index", "Settings", new {id = @Model[i].Id}, null)
+                    @Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null) |
+                    @if (User.IsInRole("Admin") || hasAccess)
+                    {
+                        <span>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) |</span>
+                        <span>@Html.ActionLink("EditInfo", "Index", "Settings", new {id = @Model[i].Id}, null)</span>
+                    }
                     </td>
                 </tr>
             }

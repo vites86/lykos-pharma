@@ -13,117 +13,126 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="form-horizontal">
-                <br />
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.Product)
-                <input type="hidden" name="countryId" id="countryId" value="@ViewBag.CountryId"/>
-                <div class="form-group">
-                    @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info" value="@ViewBag.ContryName" text="">@ViewBag.CountryName</label>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProcedureType, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EnumDropDownListFor(model => model.ProcedureType, new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Product, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @*@Html.DropDownListFor(model => model.ProductId, new SelectList(ViewBag.products, "Id", "ProductName"), new { @class = "form-control" })*@
-                        @Html.DropDownListFor(model => model.ProductId, (IEnumerable<SelectListItem>)ViewBag.Products, new { @class = "form-control" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ApprovalDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @{
-                            var dateValue =
-                                DateTime.MinValue == Model.ApprovalDate
-                                    ? String.Empty
-                                    : Model.ApprovalDate.ToString();
-                        }
-                        <input class="form-control rounded"
-                               data-val="true"
-                               id="ApprovalDate"
-                               name="ApprovalDate"
-                               value="@dateValue" />
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @{
-                            var dateValue2 =
-                                DateTime.MinValue == Model.SubmissionDate
-                                    ? String.Empty
-                                    : Model.SubmissionDate.ToString();
-                        }
-                        <input class="form-control rounded"
-                               data-val="true"
-                               id="SubmissionDate"
-                               name="SubmissionDate"
-                               value="@dateValue2" />
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
-                    </div>
-                </div>
-                <br />
-
-                @*<div class="form-group">
-                    <label class="control-label col-md-2">Documents:</label>
-                    <div class="col-md-10">
-                        @{
-                            foreach (var item in Model.DocumentImages)
-                            {
-                                var ext = item.Substring(item.IndexOf("."), item.Length - item.IndexOf("."));
-                                var docImage = "/Upload/Documents/" + item;
-                                if (ext.Equals(".txt")) { docImage = "/Content/images/extentions/txt.jpg"; }
-                                if (ext.Equals(".pdf")) { docImage = "/Content/images/extentions/pdf.jpg"; }
-                                if (ext.Equals(".ai")) { docImage = "/Content/images/extentions/ai.jpg"; }
-                                if (ext.Equals(".docx")) { docImage = "/Content/images/extentions/docx.jpg"; }
-                                if (ext.Equals(".xlsx")) { docImage = "/Content/images/extentions/xlsx.jpg"; }
-                                if (ext.Equals(".cdr")) { docImage = "/Content/images/extentions/cdr.jpg"; }
-                                <a href="~/Upload/Documents/@item" target="_blank">
-                                    <img class="col-md-1 col-xs-1" src="@docImage" />
-                                </a>
-                            }
-                        }
-                    </div>
-                </div>
-                @Html.HiddenFor(m => m.DocumentImagesListString)
-                <hr />*@
-                <div class="form-group">
-                    <div class="col-md-1 col-xs-1 col-md-offset-1">
-                        <input type="submit" value="Save" class="btn btn-primary" id="submit-all" />
-                    </div>
-                    <div class="col-md-1 col-xs-1 col-md-offset-1">
-                        <a class="btn btn-default" href="#"
-                           data-toggle="modal" data-target="#uploadImageModal"
-                           id="UploadImg">Upload Documents</a>
-                    </div>
+        <div class="form-horizontal">
+            <br />
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Product)
+            <input type="hidden" name="countryId" id="countryId" value="@ViewBag.CountryId" />
+            <div class="form-group">
+                @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info" value="@ViewBag.ContryName" text="">@ViewBag.CountryName</label>
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProcedureType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.ProcedureType, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Product, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.DropDownListFor(model => model.ProductId, new SelectList(ViewBag.products, "Id", "ProductName"), new { @class = "form-control" })*@
+                    @Html.DropDownListFor(model => model.ProductId, (IEnumerable<SelectListItem>)ViewBag.Products, new { @class = "form-control" })
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProcedureType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.ProcedureType, new { @class = "form-control" })
+                </div>
+            </div>
+            <hr />
+            <hr />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApprovalDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                        var dateValue =
+                            DateTime.MinValue == Model.ApprovalDate
+                                ? String.Empty
+                                : Model.ApprovalDate.ToString();
+                    }
+                    <input class="form-control rounded"
+                           data-val="true"
+                           id="ApprovalDate"
+                           name="ApprovalDate"
+                           value="@dateValue" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                        var dateValue2 =
+                            DateTime.MinValue == Model.SubmissionDate
+                                ? String.Empty
+                                : Model.SubmissionDate.ToString();
+                    }
+                    <input class="form-control rounded"
+                           data-val="true"
+                           id="SubmissionDate"
+                           name="SubmissionDate"
+                           value="@dateValue2" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+
+            @*<div class="form-group">
+            <label class="control-label col-md-2">Documents:</label>
+            <div class="col-md-10">
+                @{
+                    foreach (var item in Model.DocumentImages)
+                    {
+                        var ext = item.Substring(item.IndexOf("."), item.Length - item.IndexOf("."));
+                        var docImage = "/Upload/Documents/" + item;
+                        if (ext.Equals(".txt")) { docImage = "/Content/images/extentions/txt.jpg"; }
+                        if (ext.Equals(".pdf")) { docImage = "/Content/images/extentions/pdf.jpg"; }
+                        if (ext.Equals(".ai")) { docImage = "/Content/images/extentions/ai.jpg"; }
+                        if (ext.Equals(".docx")) { docImage = "/Content/images/extentions/docx.jpg"; }
+                        if (ext.Equals(".xlsx")) { docImage = "/Content/images/extentions/xlsx.jpg"; }
+                        if (ext.Equals(".cdr")) { docImage = "/Content/images/extentions/cdr.jpg"; }
+                        <a href="~/Upload/Documents/@item" target="_blank">
+                            <img class="col-md-1 col-xs-1" src="@docImage" />
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.DocumentImagesListString)
+        <hr />*@
+            <div class="form-group">
+                <div class="col-md-1 col-xs-1 col-md-offset-1">
+                    <input type="submit" value="Save" class="btn btn-primary" id="submit-all" />
+                </div>
+                <div class="col-md-1 col-xs-1 col-md-offset-1">
+                    <a class="btn btn-default" href="#"
+                       data-toggle="modal" data-target="#uploadImageModal"
+                       id="UploadImg">Upload Documents</a>
+                </div>
+            </div>
+        </div>
             <div class="empty"></div>
          }
     </div>

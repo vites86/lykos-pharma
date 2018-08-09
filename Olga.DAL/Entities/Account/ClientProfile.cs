@@ -18,12 +18,19 @@ namespace Olga.DAL.Entities.Account
         public string Rank { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ICollection<Country> Countries { get; set; }
+
+        public ClientProfile()
+        {
+            Countries = new List<Country>();
+        }
     }
 
     public enum Roles
     {
         Admin,
         Manager,
-        Watcher
+        User,
+        Quality
     }
 }

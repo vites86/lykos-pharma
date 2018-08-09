@@ -7,6 +7,7 @@ using Olga.BLL.Interfaces;
 using Olga.BLL.Services;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.Util
@@ -39,6 +40,8 @@ namespace Olga.Util
             builder.RegisterType<ProductNameService>().As<IProductName>().WithParameter("context", context);
             builder.RegisterType<StrengthService>().As<IStrength>().WithParameter("context", context);
             builder.RegisterType<ProcedureService>().As<IProcedure>().WithParameter("context", context);
+
+            builder.RegisterType<EFUnitOfWorkGeneral>().As<IUnitOfWorkGeneral>().WithParameter("connectionString", cs);
 
             // создаем новый контейнер с теми зависимостями, которые определены выше
             var container = builder.Build();

@@ -16,6 +16,7 @@ namespace Olga.App_Start
     public class Startup
     {
         IServiceCreator serviceCreator = new ServiceCreator();
+
         public void Configuration(IAppBuilder app)
         {
             app.CreatePerOwinContext<IUserService>(CreateUserService);

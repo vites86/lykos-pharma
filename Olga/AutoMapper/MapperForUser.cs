@@ -59,6 +59,6 @@ namespace Olga.AutoMapper
             var configuration = new MapperConfiguration(confExpressMap);
             return configuration.CreateMapper();
         }
-
+        
     }
 }

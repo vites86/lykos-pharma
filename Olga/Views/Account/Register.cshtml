@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-8">
             <section id="loginForm">
-                <h2>Регистрация пользователя</h2>
+                <h2>@Resources.Labels.RegisterNewUser</h2>
                 <hr />
                 @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.returnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
@@ -55,6 +55,22 @@
                         @Html.LabelFor(m => m.Role, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
                             @Html.EnumDropDownListFor(model => model.Role, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Countries, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            <ul style="list-style-type: none; padding-left: 0px">
+                                @foreach (var country in ViewBag.userCountries)
+                                {
+                                    <li>
+                                        <input type="checkbox" name="selectedCountries" value="@country.Value" id="@country.Value"
+                                               @{ if (Model != null) { var foundItem = Model.Countries.FirstOrDefault(i => i.Name == country.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                                        <label for="@country.Value">@country.Text</label>
+                                    </li>
+                                }
+                            </ul>
                         </div>
                     </div>
 

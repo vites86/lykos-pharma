@@ -17,5 +17,7 @@ namespace Olga.Models
         //public string OldEmail { get; set; }
         public Roles OldRole { get; set; }
         public Roles Role { get; set; }
+        public List<CountryViewModel> Countries { get; set; }
+
     }
 }

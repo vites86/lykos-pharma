@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Olga.DAL.Entities;
 using Olga.DAL.Entities.Account;
 using Olga.DAL.Identity;
 
@@ -18,6 +19,7 @@ namespace Olga.DAL.Interfaces
         void SaveChanges();
         DbContext GetContext();
         IQueryable<ClientProfile> GetAll();
+        Country GetCountry(int countryId);
 
     }
 }

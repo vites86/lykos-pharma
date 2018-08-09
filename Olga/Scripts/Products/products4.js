@@ -39,7 +39,7 @@ $(document).ready(function(event) {
             uploadMultiple: true,
             maxFiles: 10,
             acceptedFiles: "image/*,application/pdf, .txt,.xlsx,.docx,.ai,.cdr",
-            maxFilesize: 10,
+            maxFilesize: 2500000000,
             addRemoveLinks: true,
             init: function() {
                 var fancybox = this;

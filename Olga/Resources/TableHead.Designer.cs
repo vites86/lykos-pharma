@@ -36,7 +36,7 @@ namespace Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Olga.Resources.TableHead", typeof(TableHead).Assembly);
@@ -51,7 +51,7 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
-        internal static string Account {
+        public static string Account {
             get {
                 return ResourceManager.GetString("Account", resourceCulture);
             }
@@ -72,16 +72,25 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
-        internal static string Action {
+        public static string Action {
             get {
                 return ResourceManager.GetString("Action", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Countries.
+        /// </summary>
+        public static string Countries {
+            get {
+                return ResourceManager.GetString("Countries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сотрудник.
         /// </summary>
-        internal static string Coworker {
+        public static string Coworker {
             get {
                 return ResourceManager.GetString("Coworker", resourceCulture);
             }
@@ -90,7 +99,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Дата создания.
         /// </summary>
-        internal static string DateCreated {
+        public static string DateCreated {
             get {
                 return ResourceManager.GetString("DateCreated", resourceCulture);
             }
@@ -108,7 +117,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Event.
         /// </summary>
-        internal static string Event {
+        public static string Event {
             get {
                 return ResourceManager.GetString("Event", resourceCulture);
             }
@@ -126,7 +135,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to От.
         /// </summary>
-        internal static string From {
+        public static string From {
             get {
                 return ResourceManager.GetString("From", resourceCulture);
             }
@@ -144,7 +153,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Имя.
         /// </summary>
-        internal static string Name {
+        public static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
             }
@@ -153,16 +162,25 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to №.
         /// </summary>
-        internal static string Number {
+        public static string Number {
             get {
                 return ResourceManager.GetString("Number", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rank.
+        /// </summary>
+        public static string Rank {
+            get {
+                return ResourceManager.GetString("Rank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Result.
         /// </summary>
-        internal static string Result {
+        public static string Result {
             get {
                 return ResourceManager.GetString("Result", resourceCulture);
             }
@@ -189,7 +207,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Телефон.
         /// </summary>
-        internal static string Telephone {
+        public static string Telephone {
             get {
                 return ResourceManager.GetString("Telephone", resourceCulture);
             }
@@ -198,7 +216,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Кому.
         /// </summary>
-        internal static string To {
+        public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
             }
@@ -207,7 +225,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Тип.
         /// </summary>
-        internal static string Type {
+        public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
             }
@@ -216,7 +234,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
-        internal static string User {
+        public static string User {
             get {
                 return ResourceManager.GetString("User", resourceCulture);
             }
@@ -225,7 +243,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Who created.
         /// </summary>
-        internal static string WhoCreated {
+        public static string WhoCreated {
             get {
                 return ResourceManager.GetString("WhoCreated", resourceCulture);
             }
