@@ -36,7 +36,7 @@ namespace Olga.DAL.Repositories
 
         public void Create(PackSize packSize)
         {
-            if (!db.PackSizes.Any(e => e.Size == packSize.Size))
+            if (!db.PackSizes.Any(e => e.Size == packSize.Size && e.CountryId == packSize.CountryId))
             {
                 db.PackSizes.Add(packSize);
             }

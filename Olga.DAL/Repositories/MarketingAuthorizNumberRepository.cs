@@ -36,7 +36,7 @@ namespace Olga.DAL.Repositories
 
         public void Create(MarketingAuthorizNumber marketingAuthorizNumber)
         {
-            if (!db.MarketingAuthorizNumbers.Any(e => e.Number == marketingAuthorizNumber.Number))
+            if (!db.MarketingAuthorizNumbers.Any(e => e.Number == marketingAuthorizNumber.Number && e.CountryId == marketingAuthorizNumber.CountryId))
             {
                 db.MarketingAuthorizNumbers.Add(marketingAuthorizNumber);
             }

@@ -36,7 +36,7 @@ namespace Olga.DAL.Repositories
 
         public void Create(ProductCode productCode)
         {
-            if (!db.ProductCodes.Any(e => e.Code == productCode.Code))
+            if (!db.ProductCodes.Any(e => e.Code == productCode.Code && e.CountryId == productCode.CountryId))
             {
                 db.ProductCodes.Add(productCode);
             }
