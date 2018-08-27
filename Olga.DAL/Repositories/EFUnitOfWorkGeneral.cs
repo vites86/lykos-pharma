@@ -15,12 +15,11 @@ namespace Olga.DAL.Repositories
         {
             db = new ProductContext(connectionString);
         }
-        public IRepository<Product> Products
+        public IProductRepository<Product> Products
         {
             get
             {
-                if (productRepository == null)
-                    productRepository = new ProductRepository(db);
+                if (productRepository == null) productRepository = new ProductRepository(db);
                 return productRepository;
             }
         }
@@ -29,8 +28,7 @@ namespace Olga.DAL.Repositories
         {
             get
             {
-                if (procedurerRepository == null)
-                    procedurerRepository = new ProcedureRepository(db);
+                if (procedurerRepository == null) procedurerRepository = new ProcedureRepository(db);
                 return procedurerRepository;
             }
         }

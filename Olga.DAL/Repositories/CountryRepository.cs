@@ -34,6 +34,11 @@ namespace Olga.DAL.Repositories
             return db.Countries.FirstOrDefault(a=>a.Id == id);
         }
 
+        public void Create(Country country, string[] selectedManufacturers = null, string[] selectedArtworks = null)
+        {
+            db.Countries.Add(country);
+        }
+
         public void Create(Country country)
         {
             db.Countries.Add(country);

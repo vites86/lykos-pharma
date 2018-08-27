@@ -188,17 +188,9 @@
     <Compile Include="Migrations\201806172152316_DataMigration_unLimited.Designer.cs">
       <DependentUpon>201806172152316_DataMigration_unLimited.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201806281959413_DataMigration_countryRoles.cs" />
-    <Compile Include="Migrations\201806281959413_DataMigration_countryRoles.Designer.cs">
-      <DependentUpon>201806281959413_DataMigration_countryRoles.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806282022244_DataMigration_countryRoles2.cs" />
-    <Compile Include="Migrations\201806282022244_DataMigration_countryRoles2.Designer.cs">
-      <DependentUpon>201806282022244_DataMigration_countryRoles2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807101654136_DataMigration_unitContexts.cs" />
-    <Compile Include="Migrations\201807101654136_DataMigration_unitContexts.Designer.cs">
-      <DependentUpon>201807101654136_DataMigration_unitContexts.cs</DependentUpon>
+    <Compile Include="Migrations\201808261457070_DataMigration_20180826.cs" />
+    <Compile Include="Migrations\201808261457070_DataMigration_20180826.Designer.cs">
+      <DependentUpon>201808261457070_DataMigration_20180826.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -263,14 +255,8 @@
     <EmbeddedResource Include="Migrations\201806172152316_DataMigration_unLimited.resx">
       <DependentUpon>201806172152316_DataMigration_unLimited.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806281959413_DataMigration_countryRoles.resx">
-      <DependentUpon>201806281959413_DataMigration_countryRoles.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806282022244_DataMigration_countryRoles2.resx">
-      <DependentUpon>201806282022244_DataMigration_countryRoles2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807101654136_DataMigration_unitContexts.resx">
-      <DependentUpon>201807101654136_DataMigration_unitContexts.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808261457070_DataMigration_20180826.resx">
+      <DependentUpon>201808261457070_DataMigration_20180826.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

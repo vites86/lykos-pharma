@@ -8,7 +8,10 @@
         hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Name.Equals(@ViewBag.Country));
     }
 }
+/*Todo Delete class="container",
+  Add padding-left: 100px; overflow: auto;*/
 <div class="container">
+
     <div class="row" style="overflow: auto;">
         <h2>Products</h2>
         <h3 class="alert-success">@ViewBag.Country</h3>
@@ -31,7 +34,12 @@
                             @*<td>ApprDocsType</td>*@
                             <th>Artwork</th>
                             <th>Documents</th>
-                            <th style="width: 250px !important">Action</th>
+                            <th>
+                                <span class="action_span">
+                                    View|Edit|Delete
+                                </span>
+                            </th>
+                            <th>Procedures</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,25 +100,29 @@
                                         }
                                     </ul>
                                 </td>
-                                <td style="width: 250px !important">
+                                <td>
                                     <div>
-                                    @{
-                                        if (User.IsInRole("Admin") || hasAccess)
-                                        {
-                                            <span>@Html.ActionLink("   ", "EditProduct", "Product", new {id = @Model[i].Id, countryId = @ViewBag.CountryId}, new {@class = "glyphicon glyphicon-pencil", @target = "_blank" }) | </span>
-                                            <span>
-                                                @Html.ActionLink("   ", "DeleteProduct", "Product", new {id = @Model[i].Id, countryId = @ViewBag.CountryId}, new
-                                           {
-                                               @onclick = "return confirm('Are you sure you wish to delete this product?');",
-                                               @class = "glyphicon glyphicon-trash text-warning",
-                                               @target = "_blank"
+                                        @{
+                                            <span>@Html.ActionLink("   ", "ShowDocuments", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-eye-open", @target = "_blank" })</span>
+                                            if (User.IsInRole("Admin") || hasAccess)
+                                            {
+                                                <span>| @Html.ActionLink("   ", "EditProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-pencil", @target = "_blank" }) | </span>
+                                                <span>
+                                                    @Html.ActionLink("   ", "DeleteProduct", "Product", new {id = @Model[i].Id, countryId = @ViewBag.CountryId}, new
+                                                    {
+                                                        @onclick = "return confirm('Are you sure you wish to delete this product?');",
+                                                        @class = "glyphicon glyphicon-trash text-warning",
+                                                        @target = "_blank"
 
-                                           })
-                                                | </span>
+                                                    })
+                                                    
+                                                </span>
+                                            }
                                         }
-                                        <span>@Html.ActionLink("   ", "ShowDocuments", "Product", new {id = @Model[i].Id, countryId = @ViewBag.CountryId}, new {@class = "glyphicon glyphicon-eye-open", @target = "_blank" })</span>
-                                    }
                                     </div>
+                                </td>
+                                <td>
+                                    Procedure
                                 </td>
                             </tr>
                         }
@@ -129,7 +141,7 @@
     <div>
         @if (User.IsInRole("Admin") || hasAccess)
         {
-            @Html.ActionLink("Create product", "CreateProduct", "Product", new {countryId = @ViewBag.CountryId}, new {@class = "btn btn-primary", data_icon = "gear"})
+            @Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @ViewBag.CountryId }, new { @class = "btn btn-primary", data_icon = "gear" })
         }
     </div>
     <div class="empty"></div>
@@ -138,4 +150,13 @@
     table td {
         /*float: left;*/
     }
+    .glyphicon {
+        font-size: 20px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .action_span {
+        margin-left: 5px;
+        margin-right: 5px;
+    }   
 </style>

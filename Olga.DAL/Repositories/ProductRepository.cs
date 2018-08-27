@@ -11,7 +11,7 @@ using Olga.DAL.Interfaces;
 
 namespace Olga.DAL.Repositories
 {
-    public class ProductRepository : IRepository<Product>
+    public class ProductRepository : IProductRepository<Product>
     {
         private ProductContext db;
 
