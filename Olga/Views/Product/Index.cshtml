@@ -8,155 +8,158 @@
         hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Name.Equals(@ViewBag.Country));
     }
 }
-/*Todo Delete class="container",
-  Add padding-left: 100px; overflow: auto;*/
-<div class="container">
 
-    <div class="row" style="overflow: auto;">
-        <h2>Products</h2>
-        <h3 class="alert-success">@ViewBag.Country</h3>
-        @{
-            if (Model != null)
-            {
-                <table class="table table-striped table-bordered" id="product-table" style='overflow: auto'>
-                    <thead style='font-weight: bold; text-align: center;'>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Pharmaceutical Form</th>
-                            <th>Strength</th>
-                            <th>ProductCode</th>
-                            <th>Manufacturer</th>
-                            <th>Marketing Authoriz Holder</th>
-                            <th>Marketing Authoriz Number</th>
-                            <th>IssuedDate</th>
-                            <th>ExpiredDate</th>
-                            <th>PackSize</th>
-                            @*<td>ApprDocsType</td>*@
-                            <th>Artwork</th>
-                            <th>Documents</th>
-                            <th>
-                                <span class="action_span">
-                                    View|Edit|Delete
-                                </span>
-                            </th>
-                            <th>Procedures</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (var i = 0; i < Model.Count; i++)
-                        {
-                            <tr data-rowid="@i">
-                                <td>@Model[i].ProductName</td>
-                                <td>@Model[i].PharmaceuticalForm</td>
-                                <td>@Model[i].Strength</td>
-                                <td>@Model[i].ProductCode</td>
-                                <td>
-                                    <ul>
-                                        @foreach (var item in Model[i].Manufacturers)
-                                        {
-                                            <li>@item.Name</li>
-                                        }
-                                    </ul>
-                                </td>
-                                <td>@Model[i].MarketingAuthorizHolder</td>
-                                <td>@Model[i].MarketingAuthorizNumber</td>
-                                <td>@{ var issuedDate = Model[i].IssuedDate != null ? DateTime.Parse(@Model[i].IssuedDate.ToString()).ToString("u").Substring(0, 10) : null; } @issuedDate</td>
-                                <td>
-
-                                    @{
-                                        var unLimited = @Model[i].UnLimited;
-                                    }
-                                    @if (unLimited != null && (bool)unLimited)
-                                    {
-                                        <input type="hidden" value="@(unLimited)" />
-                                        <text> UnLimited </text>
-                                    }
-                                    else
-                                    {
-                                        var expiredDate = Model[i].ExpiredDate != null ? DateTime.Parse(@Model[i].ExpiredDate.ToString()).ToString("u").Substring(0, 10) : null;
-                                        <text> @expiredDate </text>
-                                    }
-                                </td>
-                                <td>@Model[i].PackSize</td>
-                                <td>
-                                    <ul>
-                                        @foreach (var item in Model[i].Artworks)
-                                        {
-                                            <li>@item.Artwork_name</li>
-                                        }
-                                    </ul>
-                                </td>
-                                <td>
-                                    <ul>
-                                        @{
-                                            var k = 0;
-                                            foreach (var doc in Model[i].ProductDocuments)
-                                            {
-                                                k++;
-                                                var alt = @doc.PathToDocument.Substring(@doc.PathToDocument.IndexOf("_") + 2, @doc.PathToDocument.LastIndexOf("_") - 3);
-                                                var ext = @doc.PathToDocument.Substring(@doc.PathToDocument.LastIndexOf("."), @doc.PathToDocument.Length - @doc.PathToDocument.LastIndexOf("."));
-                                                <li>@alt@ext</li>
-                                            }
-                                        }
-                                    </ul>
-                                </td>
-                                <td>
-                                    <div>
-                                        @{
-                                            <span>@Html.ActionLink("   ", "ShowDocuments", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-eye-open", @target = "_blank" })</span>
-                                            if (User.IsInRole("Admin") || hasAccess)
-                                            {
-                                                <span>| @Html.ActionLink("   ", "EditProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-pencil", @target = "_blank" }) | </span>
-                                                <span>
-                                                    @Html.ActionLink("   ", "DeleteProduct", "Product", new {id = @Model[i].Id, countryId = @ViewBag.CountryId}, new
-                                                    {
-                                                        @onclick = "return confirm('Are you sure you wish to delete this product?');",
-                                                        @class = "glyphicon glyphicon-trash text-warning",
-                                                        @target = "_blank"
-
-                                                    })
-                                                    
-                                                </span>
-                                            }
-                                        }
-                                    </div>
-                                </td>
-                                <td>
-                                    Procedure
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-            }
-            else
-            {
-                <div>No Products yet!</div>
-            }
-
-        }
-    </div>
-    <hr />
+@*<div class="container">*@
     <div>
-        @if (User.IsInRole("Admin") || hasAccess)
-        {
-            @Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @ViewBag.CountryId }, new { @class = "btn btn-primary", data_icon = "gear" })
-        }
+        <div class="row" style="overflow: auto; margin-left:  10px;margin-right: 10px;">
+            <h2>Products</h2>
+            <div class="alert-success" style="width: 100%">
+                <h1>@ViewBag.Country</h1>
+            </div>
+            @{
+                if (Model != null)
+                {
+                    <table class="table table-striped table-bordered table-responsive" id="product-table" style='overflow: auto'>
+                        <thead style='font-weight: bold; text-align: center;'>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Pharmaceutical Form</th>
+                                <th>Strength</th>
+                                <th>ProductCode</th>
+                                <th>Manufacturer</th>
+                                <th>Marketing Authoriz Holder</th>
+                                <th>Marketing Authoriz Number</th>
+                                <th>IssuedDate</th>
+                                <th>ExpiredDate</th>
+                                @*<th>PackSize</th>*@
+                                @*<td>ApprDocsType</td>*@
+                                @*<th>Artwork</th>
+                                    <th>Documents</th>*@
+                                <th>
+                                    <span class="action_span">
+                                        Action
+                                    </span>
+                                </th>
+                                <th>Proc.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Count; i++)
+                            {
+                                <tr data-rowid="@i">
+                                    <td>@Model[i].ProductName</td>
+                                    <td>@Model[i].PharmaceuticalForm</td>
+                                    <td>@Model[i].Strength</td>
+                                    <td>@Model[i].ProductCode</td>
+                                    <td>
+                                        <ul style="padding-left: 10px;">
+                                            @foreach (var item in Model[i].Manufacturers)
+                                            {
+                                                <li>@item.Name</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td>@Model[i].MarketingAuthorizHolder</td>
+                                    <td>@Model[i].MarketingAuthorizNumber</td>
+                                    <td>@{ var issuedDate = Model[i].IssuedDate != null ? DateTime.Parse(@Model[i].IssuedDate.ToString()).ToString("u").Substring(0, 10) : null; } @issuedDate</td>
+                                    <td>
+
+                                        @{
+                                            var unLimited = @Model[i].UnLimited;
+                                        }
+                                        @if (unLimited != null && (bool)unLimited)
+                                        {
+                                            <input type="hidden" value="@(unLimited)" />
+                                            <text> UnLimited </text>
+                                        }
+                                        else
+                                        {
+                                            var expiredDate = Model[i].ExpiredDate != null ? DateTime.Parse(@Model[i].ExpiredDate.ToString()).ToString("u").Substring(0, 10) : null;
+                                            <text> @expiredDate </text>
+                                        }
+                                    </td>
+                                    @*<td>@Model[i].PackSize</td>*@
+                                    @*<td>
+                                            <ul>
+                                                @foreach (var item in Model[i].Artworks)
+                                                {
+                                                    <li>@item.Artwork_name</li>
+                                                }
+                                            </ul>
+                                        </td>*@
+                                    @*<td>
+                                            <ul>
+                                                @{
+                                                    var k = 0;
+                                                    foreach (var doc in Model[i].ProductDocuments)
+                                                    {
+                                                        k++;
+                                                        var alt = @doc.PathToDocument.Substring(@doc.PathToDocument.IndexOf("_") + 2, @doc.PathToDocument.LastIndexOf("_") - 3);
+                                                        var ext = @doc.PathToDocument.Substring(@doc.PathToDocument.LastIndexOf("."), @doc.PathToDocument.Length - @doc.PathToDocument.LastIndexOf("."));
+                                                        <li>@alt@ext</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </td>*@
+                                    <td>
+                                        <div style="text-align: center;">
+                                            @{
+                                                <span>@Html.ActionLink("   ", "ShowDocuments", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-eye-open", @target = "_blank" })</span>
+                                                if (User.IsInRole("Admin") || hasAccess)
+                                                {
+                                                    <br/><br/><span>@Html.ActionLink("   ", "EditProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-pencil", @target = "_blank" })</span><br/><br/>
+                                                    <span>
+                                                        @Html.ActionLink("   ", "DeleteProduct", "Product", new {id = @Model[i].Id, countryId = @ViewBag.CountryId}, new
+                                                        {
+                                                            @onclick = "return confirm('Are you sure you wish to delete this product?');",
+                                                            @class = "glyphicon glyphicon-trash text-warning",
+                                                            @target = "_blank"
+
+                                                        })
+
+                                                    </span>
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span>@Html.ActionLink("   ", "ShowDocuments", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-eye-open", @target = "_blank" })</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                }
+                else
+                {
+                    <div>No Products yet!</div>
+                }
+
+            }
+        </div>
+        <hr />
+        <div>
+            @if (User.IsInRole("Admin") || hasAccess)
+            {
+                @Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @ViewBag.CountryId }, new { @class = "btn btn-primary", data_icon = "gear" })
+            }
+        </div>
+        <div class="empty"></div>
     </div>
-    <div class="empty"></div>
-</div>
-<style>
-    table td {
-        /*float: left;*/
-    }
-    .glyphicon {
-        font-size: 20px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
-    .action_span {
-        margin-left: 5px;
-        margin-right: 5px;
-    }   
-</style>
+    <style>
+        table td {
+            /*float: left;*/
+        }
+
+        .glyphicon {
+            font-size: 20px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .action_span {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+    </style>
