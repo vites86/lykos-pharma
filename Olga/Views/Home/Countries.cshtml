@@ -13,25 +13,34 @@
             <tbody>
             @for (var i = 0; i < Model.Count; i++)
             {
-                var hasAccess = false;
-                if (@ViewBag.User.Countries != null)
-                {
-                    hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
-                }
-
+                //var hasAccess = false;
+                //if (@ViewBag.User.Countries != null)
+                //{
+                //    hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
+                //}
+                //if (hasAccess || User.IsInRole("Admin"))
+                //{
                 <tr data-rowid="@i">
                     <td>@Model[i].Name</td>
                     <td>
-                    @Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null) |
-                    @if (User.IsInRole("Admin") || hasAccess)
-                    {
-                        <span>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) |</span>
-                        <span>@Html.ActionLink("EditInfo", "Index", "Settings", new {id = @Model[i].Id}, null)</span>
-                    }
+                        @Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null)
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <span>|</span>
+                            <span>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) |</span>
+                            <span>@Html.ActionLink("EditInfo", "Index", "Settings", new { id = @Model[i].Id }, null)</span>
+                        }
                     </td>
                 </tr>
+                //}
             }
+            
             </tbody>
         </table>
+        @if(Model.Count<13)
+        {
+            <div style="height: 500px;"><br/></div>
+            <br/>
+        }
     </div>
 </div>

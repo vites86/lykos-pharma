@@ -21,6 +21,7 @@ namespace Olga.AutoMapper
             buildMap.ForMember(dest => dest.Email, opt => opt.MapFrom(c => c.Email));
             buildMap.ForMember(dest => dest.Role, opt => opt.MapFrom(m => m.Role));
             buildMap.ForMember(dest => dest.Rank, opt => opt.MapFrom(m => m.Rank));
+            buildMap.ForMember(dest => dest.NcAccess, opt => opt.MapFrom(m => m.NcAccess));
             var configuration = new MapperConfiguration(confExpressMap);
             return configuration.CreateMapper();
         }
@@ -35,6 +36,7 @@ namespace Olga.AutoMapper
             buildMap.ForMember(dest => dest.OldRole, opt => opt.MapFrom(m => m.Role));
             buildMap.ForMember(dest => dest.Rank, opt => opt.MapFrom(m => m.Rank));
             buildMap.ForMember(dest => dest.Name, opt => opt.MapFrom(m => m.Name));
+            buildMap.ForMember(dest => dest.NcAccess, opt => opt.MapFrom(m => m.NcAccess));
             buildMap.ForMember(dest => dest.Password, opt => opt.Ignore());
 
             //buildMap.ForMember(dest => dest.OldRole, opt => opt.MapFrom(m => accountService.GetRoleNameById(m.ApplicationUser.Roles.FirstOrDefault().RoleId.ToString())));
@@ -54,11 +56,24 @@ namespace Olga.AutoMapper
             //buildMap.ForMember(dest => dest.OldEmail, opt => opt.MapFrom(m => m.OldEmail));
             buildMap.ForMember(dest => dest.Rank, opt => opt.MapFrom(m => m.Rank));
             buildMap.ForMember(dest => dest.Name, opt => opt.MapFrom(m => m.Name));
+            buildMap.ForMember(dest => dest.NcAccess, opt => opt.MapFrom(m => m.NcAccess));
             buildMap.ForMember(dest => dest.Password, opt => opt.Ignore());
 
             var configuration = new MapperConfiguration(confExpressMap);
             return configuration.CreateMapper();
         }
-        
+
+        public static IMapper GetUserMapperForClientProfile(IUserService accountService)
+        {
+            var confExpressMap = new MapperConfigurationExpression();
+            var buildMap = confExpressMap.CreateMap<UserDTO, ClientProfile>();
+            buildMap.ForMember(dest => dest.ApplicationUser, opt => opt.Ignore());
+            buildMap.ForMember(dest => dest.Rank, opt => opt.MapFrom(m => m.Rank));
+            buildMap.ForMember(dest => dest.NcAccess, opt => opt.MapFrom(m => m.NcAccess));
+            buildMap.ForMember(dest => dest.Countries, opt => opt.MapFrom(m => m.Countries));
+            var configuration = new MapperConfiguration(confExpressMap);
+            return configuration.CreateMapper();
+        }
+
     }
 }

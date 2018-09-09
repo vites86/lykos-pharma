@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -12,6 +13,8 @@ namespace Olga.Models
         public string Rank { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        [DisplayName("ND/MQC")]
+        public bool NcAccess { get; set; }
         public List<CountryViewModel> Countries { get; set; }
 
     }

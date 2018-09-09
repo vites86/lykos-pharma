@@ -14,6 +14,7 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.BLL.Services;
 using Olga.DAL.Entities;
+using Olga.DAL.Entities.Account;
 using Olga.Models;
 using Olga.Util;
 
@@ -22,19 +23,19 @@ namespace Olga.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        ICountry _countryService;
-        IProductName _productNameService;
-        IProductCode _productCodeService;
-        IMarketingAuthorizNumber _marketingAuthorizNumberService;
-        IPackSize _packSizeService;
-        IApprDocsType _apprDocsTypeService;
-        IStrength _strengthService;
-        IManufacturer _manufacturerService;
-        IArtwork _artworkService;
-        IMarketingAuthorizHolder _marketingAuthorizHolderService;
-        IPharmaceuticalForm _pharmaceuticalFormService;
-        IProductService _productService;
-        UserViewModel currentUser;
+        readonly ICountry _countryService;
+        //IProductName _productNameService;
+        //IProductCode _productCodeService;
+        //IMarketingAuthorizNumber _marketingAuthorizNumberService;
+        //IPackSize _packSizeService;
+        readonly IApprDocsType _apprDocsTypeService;
+        readonly IStrength _strengthService;
+        readonly IManufacturer _manufacturerService;
+        readonly IArtwork _artworkService;
+        readonly IMarketingAuthorizHolder _marketingAuthorizHolderService;
+        readonly IPharmaceuticalForm _pharmaceuticalFormService;
+        readonly IProductService _productService;
+        UserViewModel _currentUser;
 
 
         // GET: Settings
@@ -43,10 +44,10 @@ namespace Olga.Controllers
             IPharmaceuticalForm pharmaceuticalForm, IProductService product)
         {
             _countryService = serv;
-            _productNameService = prodName;
-            _productCodeService = prodCode;
-            _packSizeService = packSize;
-            _marketingAuthorizNumberService = marketingAuthorizNumber;
+            //_productNameService = prodName;
+            //_productCodeService = prodCode;
+            //_packSizeService = packSize;
+            //_marketingAuthorizNumberService = marketingAuthorizNumber;
             _apprDocsTypeService = apprDocsType;
             _strengthService = strength;
             _manufacturerService = manufacturer;
@@ -56,13 +57,7 @@ namespace Olga.Controllers
             _productService = product;
         }
 
-        private IUserService UserService
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<IUserService>();
-            }
-        }
+        private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
 
         // GET: Product
         public ActionResult Index(int? id)
@@ -73,8 +68,13 @@ namespace Olga.Controllers
                 @ViewBag.Country = countryDto.Name;
                 @ViewBag.CountryId = id;
                 var productsDto  = _productService.GetProducts(id).ToList();
-                currentUser = GetCurrentUser();
-                ViewBag.User = currentUser;
+                _currentUser = GetCurrentUser();
+                if (_currentUser.Countries.All(a => a.Id != id) && !User.IsInRole("Admin"))
+                {
+                    @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                    return View("Error");
+                }
+                ViewBag.User = _currentUser;
                 if (productsDto.Count > 0)
                 {
                     var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto);
@@ -141,11 +141,11 @@ namespace Olga.Controllers
                 var userName = User.Identity.Name;
                 Logger.Log.Info($"{userName}: Created/Updated Product {model.Id} ");
 
-                var products = Mapper.Map<IEnumerable<ProductDTO>, IEnumerable<ProductViewModel>>(_productService.GetProducts(model.CountryId));
-                @ViewBag.CountryId = model.CountryId;
-                @ViewBag.Country = CountryName;
-                @ViewBag.User = GetCurrentUser();
-                return View("Index",products.ToList());
+                //var products = Mapper.Map<IEnumerable<ProductDTO>, IEnumerable<ProductViewModel>>(_productService.GetProducts(model.CountryId));
+                //@ViewBag.CountryId = model.CountryId;
+                //@ViewBag.Country = CountryName;
+                //@ViewBag.User = GetCurrentUser();
+                return RedirectToAction("Index", new {id = model.CountryId});
             }
             catch (Exception ex)
             {
@@ -208,14 +208,31 @@ namespace Olga.Controllers
                 @ViewBag.Error = nameof(id);
                 return View("Error");
             }
+            var currentUser = GetCurrentUser();
+            if (currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin"))
+            {
+                @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                return View("Error");
+            }
             try
             {
                 InitialiseModel(countryId);
-
                 var prod = _productService.GetProduct(int.Parse(id));
                 var product = Mapper.Map<ProductDTO, ShowProductModel>(prod);
+                var userDocumentsApprs = new List<string>();
+               
+                if (!User.IsInRole("Admin") && !currentUser.NcAccess)
+                {
+                    userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null && a.ApprDocsTypeId != 3).Select(m => m.PathToDocument).ToList();
+                    ViewBag.NcAccess = false;
+                }
+                else if(User.IsInRole("Admin") || currentUser.NcAccess)
+                {
+                    ViewBag.NcAccess = true;
+                    userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
+                }
 
-                var userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
+                //var userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
                 var userDocumentsArtworks = prod?.ProductDocuments.Where(a => a.ArtworkId != null).Select(m => m.PathToDocument).ToList();
 
                 product.DocumentImagesArtworks = userDocumentsArtworks;
@@ -248,6 +265,7 @@ namespace Olga.Controllers
             {
                 _productService.DeleteProduct(int.Parse(Id));
                 _productService.Commit();
+                TempData["Success"] = Resources.ErrorMessages.ProductDeleteSuccess;
 
                 var userName = User.Identity.Name;
                 Logger.Log.Info($"{userName}: Deleted Product {Id} ");
@@ -271,6 +289,7 @@ namespace Olga.Controllers
                 Logger.Log.Error($"{userName}: DeleteProduct() {ex.Message} ");
 
                 @ViewBag.Error = ex.Message;
+                TempData["Error"] = ex.Message;
                 return View("Error");
             }
         }
@@ -547,5 +566,6 @@ namespace Olga.Controllers
                 return new UserViewModel();
             }
         }
+        
     }
 }

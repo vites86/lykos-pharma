@@ -61,11 +61,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have permissions for this operation!.
+        /// </summary>
+        internal static string NoPermission {
+            get {
+                return ResourceManager.GetString("NoPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not correct login/password.
         /// </summary>
         internal static string NotCorrectLogin {
             get {
                 return ResourceManager.GetString("NotCorrectLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The product deleted successfully!.
+        /// </summary>
+        internal static string ProductDeleteSuccess {
+            get {
+                return ResourceManager.GetString("ProductDeleteSuccess", resourceCulture);
             }
         }
     }

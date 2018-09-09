@@ -11,6 +11,17 @@ namespace Olga.DAL.Interfaces
     {
         IProductRepository<Product> Products { get; }
         IRepository<Procedure> Procedures { get; }
+        IRepository<Country> Countries { get; }
+        IRepository<ApprDocsType> ApprDocsTypes { get; }
+        IRepository<Strength> Strengths { get; }
+        IRepository<Manufacturer> Manufacturers { get; }
+        IRepository<Artwork> Artworks { get; }
+        IRepository<MarketingAuthorizHolder> MarketingAuthorizHolders { get; }
+        IRepository<MarketingAuthorizNumber> MarketingAuthorizNumbers { get; }
+        IRepository<PharmaceuticalForm> PharmaceuticalForms { get; }
+        IRepository<ProductName> ProductNames { get; }
+        IRepository<ProductCode> ProductCodes { get; }
+
         void Save();
     }
 }

@@ -9,39 +9,41 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
 {
-public class StrengthService: IStrength
+    public class StrengthService : IStrength
     {
 
-        private StrengthRepository Database { get; set; }
+        IUnitOfWorkGeneral Database { get; set; }
+        //private StrengthRepository Database { get; set; }
 
-        public StrengthService(ProductContext context)
+        public StrengthService(IUnitOfWorkGeneral uow)
         {
-            Database = new StrengthRepository(context);
+            Database = uow;
         }
 
         public void AddItem(StrengthDTO strengthDto)
         {
             var StrengthDto = Mapper.Map<StrengthDTO, Strength>(strengthDto);
-            Database.Create(StrengthDto);
+            Database.Strengths.Create(StrengthDto);
         }
 
         public StrengthDTO GetItem(int id)
         {
-            return Mapper.Map<Strength, StrengthDTO>(Database.Get(id));
+            return Mapper.Map<Strength, StrengthDTO>(Database.Strengths.Get(id));
         }
 
         public IEnumerable<StrengthDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<Strength>, IEnumerable<StrengthDTO>>(Database.GetAll().ToList());
+            return Mapper.Map<IEnumerable<Strength>, IEnumerable<StrengthDTO>>(Database.Strengths.GetAll().ToList());
         }
 
         public void DeleteItem(int id)
         {
-            Database.Delete(id);
+            Database.Strengths.Delete(id);
         }
 
         public void Dispose()
@@ -50,7 +52,7 @@ public class StrengthService: IStrength
         }
         public void Commit()
         {
-            Database.Commit();
+            Database.Strengths.Commit();
         }
 
     }

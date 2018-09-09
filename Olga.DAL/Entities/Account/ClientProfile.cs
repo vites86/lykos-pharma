@@ -24,6 +24,7 @@ namespace Olga.DAL.Entities.Account
         {
             Countries = new List<Country>();
         }
+        public bool NcAccess { get; set; }
     }
 
     public enum Roles

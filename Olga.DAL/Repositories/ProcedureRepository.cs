@@ -11,7 +11,7 @@ namespace Olga.DAL.Repositories
 {
     public class ProcedureRepository : IRepository<Procedure>
     {
-        private ProductContext db;
+        private readonly ProductContext db;
 
         public ProcedureRepository(ProductContext context)
         {

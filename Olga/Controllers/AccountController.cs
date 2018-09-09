@@ -24,6 +24,7 @@ using Olga.Util;
 namespace Olga.Controllers
 {
     [Authorize(Roles = "Admin")]
+    //[AllowAnonymous]
     public class AccountController : Controller
     {
         ICountry _countryService;
@@ -121,6 +122,7 @@ namespace Olga.Controllers
                     Rank = model.Rank,
                     Name = model.Name,
                     Role = model.Role.ToString(),
+                    NcAccess = model.NcAccess
                 };
                 userDto = AddCountriesToUser(userDto, selectedCountries);
                 OperationDetails operationDetails = await UserService.Create(userDto);
@@ -248,12 +250,12 @@ namespace Olga.Controllers
             return View(userViewModels.ToList());
         }
 
-        public ClientProfile GetCurrentUser()
+        public UserViewModel GetCurrentUser()
         {
             var userId = HttpContext.User.Identity.GetUserId();
             var user = UserService.GetUser(userId);
             var userMapper = MapperForUser.GetUserMapperToEdit(UserService);
-            return userMapper.Map<UserDTO, ClientProfile>(user);
+            return userMapper.Map<UserDTO, UserViewModel>(user);
         }
     }
 }

@@ -9,6 +9,7 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
@@ -16,32 +17,33 @@ namespace Olga.BLL.Services
 public class ApprDocsTypeService: IApprDocsType
     {
 
-        private ApprDocsTypeRepository Database { get; set; }
+        IUnitOfWorkGeneral Database { get; set; }
+        //private ApprDocsTypeRepository Database { get; set; }
 
-        public ApprDocsTypeService(ProductContext context)
+        public ApprDocsTypeService(IUnitOfWorkGeneral uow)
         {
-            Database = new ApprDocsTypeRepository(context);
+            Database = uow;
         }
 
         public void AddItem(ApprDocsTypeDTO apprDocsTypeDTO)
         {
             var apprDocsTypeDto = Mapper.Map<ApprDocsTypeDTO, ApprDocsType>(apprDocsTypeDTO);
-            Database.Create(apprDocsTypeDto);
+            Database.ApprDocsTypes.Create(apprDocsTypeDto);
         }
 
         public ApprDocsTypeDTO GetItem(int id)
         {
-            return Mapper.Map<ApprDocsType, ApprDocsTypeDTO>(Database.Get(id));
+            return Mapper.Map<ApprDocsType, ApprDocsTypeDTO>(Database.ApprDocsTypes.Get(id));
         }
 
         public IEnumerable<ApprDocsTypeDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<ApprDocsType>, IEnumerable<ApprDocsTypeDTO>>(Database.GetAll().ToList());
+            return Mapper.Map<IEnumerable<ApprDocsType>, IEnumerable<ApprDocsTypeDTO>>(Database.ApprDocsTypes.GetAll().ToList());
         }
 
         public void DeleteItem(int id)
         {
-            Database.Delete(id);
+            Database.ApprDocsTypes.Delete(id);
         }
 
         public void Dispose()
@@ -51,7 +53,7 @@ public class ApprDocsTypeService: IApprDocsType
 
         public void Commit()
         {
-            Database.Commit();
+            Database.ApprDocsTypes.Commit();
         }
     }
 }

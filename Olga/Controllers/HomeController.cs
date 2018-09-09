@@ -19,27 +19,22 @@ namespace Olga.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        UserViewModel currentUser;
-        readonly ICountry countryService;
+        readonly ICountry _countryService;
 
         public HomeController(ICountry serv)
         {
-            countryService = serv;
+            _countryService = serv;
         }
 
-        private IUserService UserService
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<IUserService>();
-            }
-        }
+        private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
 
         public ActionResult Index()
         {
-            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(countryService.GetItems());
-            ViewBag.User = GetCurrentUser();
-            return View(countries);
+            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(_countryService.GetItems());
+            var user = GetCurrentUser();
+            var userCountries = User.IsInRole("Admin") ? countries : user.Countries;
+            ViewBag.User = user;
+            return View(userCountries);
         }
 
         //public ActionResult GetCountries()
@@ -49,7 +44,7 @@ namespace Olga.Controllers
 
         public ActionResult Menu()
         {
-            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(countryService.GetItems());
+            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(_countryService.GetItems());
             ViewBag.User = GetCurrentUser();
             return PartialView("_Navigation", countries);
         }

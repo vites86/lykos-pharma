@@ -150,6 +150,9 @@
   <data name="Name" xml:space="preserve">
     <value>Имя</value>
   </data>
+  <data name="NcAccess" xml:space="preserve">
+    <value>ND/MQC access</value>
+  </data>
   <data name="Number" xml:space="preserve">
     <value>№</value>
   </data>

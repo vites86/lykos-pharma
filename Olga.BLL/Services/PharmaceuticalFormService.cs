@@ -9,39 +9,39 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
 {
-public class PharmaceuticalFormService: IPharmaceuticalForm
+    public class PharmaceuticalFormService : IPharmaceuticalForm
     {
+        IUnitOfWorkGeneral Database { get; set; }
 
-        private PharmaceuticalFormRepository Database { get; set; }
-
-        public PharmaceuticalFormService(ProductContext context)
+        public PharmaceuticalFormService(IUnitOfWorkGeneral uow)
         {
-            Database = new PharmaceuticalFormRepository(context);
+            Database = uow;
         }
 
         public void AddItem(PharmaceuticalFormDTO pharmaceuticalFormDto)
         {
             var PharmaceuticalFormDto = Mapper.Map<PharmaceuticalFormDTO, PharmaceuticalForm>(pharmaceuticalFormDto);
-            Database.Create(PharmaceuticalFormDto);
+            Database.PharmaceuticalForms.Create(PharmaceuticalFormDto);
         }
 
         public PharmaceuticalFormDTO GetItem(int id)
         {
-            return Mapper.Map<PharmaceuticalForm, PharmaceuticalFormDTO>(Database.Get(id));
+            return Mapper.Map<PharmaceuticalForm, PharmaceuticalFormDTO>(Database.PharmaceuticalForms.Get(id));
         }
 
         public IEnumerable<PharmaceuticalFormDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<PharmaceuticalForm>, IEnumerable<PharmaceuticalFormDTO>>(Database.GetAll().ToList());
+            return Mapper.Map<IEnumerable<PharmaceuticalForm>, IEnumerable<PharmaceuticalFormDTO>>(Database.PharmaceuticalForms.GetAll().ToList());
         }
 
         public void DeleteItem(int id)
         {
-            Database.Delete(id);
+            Database.PharmaceuticalForms.Delete(id);
         }
 
         public void Dispose()
@@ -50,7 +50,7 @@ public class PharmaceuticalFormService: IPharmaceuticalForm
         }
         public void Commit()
         {
-            Database.Commit();
+            Database.PharmaceuticalForms.Commit();
         }
 
     }

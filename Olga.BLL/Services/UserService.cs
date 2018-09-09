@@ -33,14 +33,15 @@ namespace Olga.BLL.Services
             {
                 user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email };
                 var result = Database.UserManager.Create(user, userDto.Password);
-                if (result.Errors.Count() > 0)
+                if (result.Errors.Any())
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
                 Database.UserManager.AddToRole(user.Id, userDto.Role);
                 ClientProfile clientProfile = new ClientProfile
                 {
                     Id = user.Id,
                     Rank = userDto.Rank,
-                    Name = userDto.Name
+                    Name = userDto.Name,
+                    NcAccess = userDto.NcAccess
                 };
 
                 foreach (var country in userDto.Countries)
@@ -93,6 +94,7 @@ namespace Olga.BLL.Services
                 Database.UserManager.AddToRole(user.Id, userDto.Role);
                 user.ClientProfile.Name = userDto.Name;
                 user.ClientProfile.Rank = userDto.Rank;
+                user.ClientProfile.NcAccess = userDto.NcAccess;
 
                 user.ClientProfile.Countries.Clear();
                 foreach (var country in userDto.Countries)

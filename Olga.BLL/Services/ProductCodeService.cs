@@ -9,45 +9,45 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
 {
-public class ProductCodeService: IProductCode
+    public class ProductCodeService : IProductCode
     {
 
-        private ProductCodeRepository Database { get; set; }
+        IUnitOfWorkGeneral Database { get; set; }
 
-        public ProductCodeService(ProductContext context)
+        public ProductCodeService(IUnitOfWorkGeneral uow)
         {
-            Database = new ProductCodeRepository(context);
+            Database = uow;
         }
 
         public void AddItem(ProductCodeDTO productCodeDto)
         {
             var ProductCodeDto = Mapper.Map<ProductCodeDTO, ProductCode>(productCodeDto);
-            Database.Create(ProductCodeDto);
+            Database.ProductCodes.Create(ProductCodeDto);
         }
 
         public ProductCodeDTO GetItem(int id)
         {
-            return Mapper.Map<ProductCode, ProductCodeDTO>(Database.Get(id));
+            return Mapper.Map<ProductCode, ProductCodeDTO>(Database.ProductCodes.Get(id));
         }
 
         public IEnumerable<ProductCodeDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<ProductCode>, IEnumerable<ProductCodeDTO>>(Database.GetAll().ToList());
+            return Mapper.Map<IEnumerable<ProductCode>, IEnumerable<ProductCodeDTO>>(Database.ProductCodes.GetAll().ToList());
         }
 
         public IEnumerable<ProductCodeDTO> GetItems(int countryId)
         {
-            return Mapper.Map<IEnumerable<ProductCode>, IEnumerable<ProductCodeDTO>>(Database.GetAll(countryId).ToList());
-
+            return Mapper.Map<IEnumerable<ProductCode>, IEnumerable<ProductCodeDTO>>(Database.ProductCodes.GetAll(countryId).ToList());
         }
 
         public void DeleteItem(int id)
         {
-            Database.Delete(id);
+            Database.ProductCodes.Delete(id);
         }
 
         public void Dispose()
@@ -56,7 +56,7 @@ public class ProductCodeService: IProductCode
         }
         public void Commit()
         {
-            Database.Commit();
+            Database.ProductCodes.Commit();
         }
     }
 }

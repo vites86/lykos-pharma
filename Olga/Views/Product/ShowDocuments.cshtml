@@ -78,19 +78,25 @@
                                     <label class="text-info">@apprDocsType.Text</label>
                                 </td>
                                 <td>
-                                      @foreach (var fileName in Model.DocumentImagesApprs)
-                                      {
-                                          if (fileName.Contains(@apprId + "__"))
-                                          {
-                                              var folder = GetApprFolder(apprDocsType.Text);
-                                             
-                                              <label class="control-label text-info"><span class="glyphicon glyphicon-file"/>
-                                              <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                  @fileName
-                                              </a></label>
-                                          }
-                                      }
-                                 </td>
+                                    @foreach (var fileName in Model.DocumentImagesApprs)
+                                    {
+                                        if (fileName.Contains(@apprId + "__"))
+                                        {
+                                            var folder = GetApprFolder(apprDocsType.Text);
+
+                                            <label class="control-label text-info">
+                                                <span class="glyphicon glyphicon-file" />
+                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
+                                                    @fileName
+                                                </a>
+                                            </label>
+                                        }
+                                    }
+                                    @if (apprId.Equals("3") && !ViewBag.NcAccess && !User.IsInRole("Admin"))
+                                    {
+                                        <img src="~/Content/images/locked.jpg" width="50" />
+                                    }
+                                </td>
                                 </tr>
                             }
                         </table>

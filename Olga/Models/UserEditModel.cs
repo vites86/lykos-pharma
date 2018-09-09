@@ -18,6 +18,7 @@ namespace Olga.Models
         public Roles OldRole { get; set; }
         public Roles Role { get; set; }
         public List<CountryViewModel> Countries { get; set; }
+        public bool NcAccess { get; set; }
 
     }
 }

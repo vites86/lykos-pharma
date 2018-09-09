@@ -16,74 +16,74 @@ namespace Olga.BLL.Interfaces
         void Dispose();
         void Commit();
         //IEnumerable<T> GetItems(int countryId);
-        //IEnumerable<T> GetItems();
+        IEnumerable<T> GetItems();
     }
 
     public interface IProcedure : IBase<ProcedureDTO>
     {
-        IEnumerable<ProcedureDTO> GetItems();
+        //IEnumerable<ProcedureDTO> GetItems();
         IEnumerable<ProcedureDTO> GetItems(int productId);
     }
 
     public interface IApprDocsType : IBase<ApprDocsTypeDTO>
     {
-        IEnumerable<ApprDocsTypeDTO> GetItems();
+        //IEnumerable<ApprDocsTypeDTO> GetItems();
     }
 
     public interface IArtwork : IBase<ArtworkDTO>
     {
-        IEnumerable<ArtworkDTO> GetItems();
+       // IEnumerable<ArtworkDTO> GetItems();
     }
 
     public interface ICountry : IBase<CountryDTO>
     {
-        IEnumerable<CountryDTO> GetItems();
+        //IEnumerable<CountryDTO> GetItems();
     }
 
     public interface IManufacturer : IBase<ManufacturerDTO>
     {
-        IEnumerable<ManufacturerDTO> GetItems();
+        //IEnumerable<ManufacturerDTO> GetItems();
     }
 
     public interface IMarketingAuthorizHolder : IBase<MarketingAuthorizHolderDTO>
     {
-        IEnumerable<MarketingAuthorizHolderDTO> GetItems();
+        //IEnumerable<MarketingAuthorizHolderDTO> GetItems();
     }
 
     public interface IMarketingAuthorizNumber : IBase<MarketingAuthorizNumberDTO>
     {
         IEnumerable<MarketingAuthorizNumberDTO> GetItems(int countryId);
-        IEnumerable<MarketingAuthorizNumberDTO> GetItems();
+        //IEnumerable<MarketingAuthorizNumberDTO> GetItems();
     }
 
     public interface IPackSize : IBase<PackSizeDTO>
     {
-        IEnumerable<PackSizeDTO> GetItems();
+        //IEnumerable<PackSizeDTO> GetItems();
         IEnumerable<PackSizeDTO> GetItems(int countryId);
     }
 
     public interface IPharmaceuticalForm : IBase<PharmaceuticalFormDTO>
     {
-        IEnumerable<PharmaceuticalFormDTO> GetItems();
+        //IEnumerable<PharmaceuticalFormDTO> GetItems();
     }
 
 
     public interface IProductCode : IBase<ProductCodeDTO>
     {
-        IEnumerable<ProductCodeDTO> GetItems();
+        //IEnumerable<ProductCodeDTO> GetItems();
         IEnumerable<ProductCodeDTO> GetItems(int countryId);
     }
 
 
     public interface IProductName : IBase<ProductNameDTO>
     {
-        IEnumerable<ProductNameDTO> GetItems();
+       // IEnumerable<ProductNameDTO> GetItems();
         IEnumerable<ProductNameDTO> GetItems(int countryId);
     }
 
     public interface IStrength : IBase<StrengthDTO>
     {
-        IEnumerable<StrengthDTO> GetItems();
+       // IEnumerable<StrengthDTO> GetItems();
     }
 
 }

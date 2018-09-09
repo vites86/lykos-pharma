@@ -9,6 +9,7 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
@@ -16,32 +17,33 @@ namespace Olga.BLL.Services
 public class ArtworkService: IArtwork
     {
 
-        private ArtworkRepository Database { get; set; }
+        IUnitOfWorkGeneral Database { get; set; }
+        //private ArtworkRepository Database { get; set; }
 
-        public ArtworkService(ProductContext context)
+        public ArtworkService(IUnitOfWorkGeneral uow)
         {
-            Database = new ArtworkRepository(context);
+            Database = uow;
         }
 
         public void AddItem(ArtworkDTO artworkDto)
         {
             var ArtworkDto = Mapper.Map<ArtworkDTO, Artwork>(artworkDto);
-            Database.Create(ArtworkDto);
+            Database.Artworks.Create(ArtworkDto);
         }
 
         public ArtworkDTO GetItem(int id)
         {
-            return Mapper.Map<Artwork, ArtworkDTO>(Database.Get(id));
+            return Mapper.Map<Artwork, ArtworkDTO>(Database.Artworks.Get(id));
         }
 
         public IEnumerable<ArtworkDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<Artwork>, IEnumerable<ArtworkDTO>>(Database.GetAll().ToList());
+            return Mapper.Map<IEnumerable<Artwork>, IEnumerable<ArtworkDTO>>(Database.Artworks.GetAll().ToList());
         }
 
         public void DeleteItem(int id)
         {
-            Database.Delete(id);
+            Database.Artworks.Delete(id);
         }
 
         public void Dispose()
@@ -50,7 +52,7 @@ public class ArtworkService: IArtwork
         }
         public void Commit()
         {
-            Database.Commit();
+            Database.Artworks.Commit();
         }
 
     }

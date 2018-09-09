@@ -5,50 +5,55 @@ using Olga.DAL.Interfaces;
 
 namespace Olga.DAL.Repositories
 {
-    public class EFUnitOfWorkGeneral : IUnitOfWorkGeneral
+    public class EfUnitOfWorkGeneral : IUnitOfWorkGeneral
     {
-        private ProductContext db;
-        private ProductRepository productRepository;
-        private ProcedureRepository procedurerRepository;
+        private readonly ProductContext _db;
+        private ProductRepository _productRepository;
+        private ProcedureRepository _procedurerRepository;
+        private CountryRepository _countryRepository;
+        private StrengthRepository _strengthRepository;
+        private ManufacturerRepository _manufacturerRepository;
+        private ArtworkRepository _artworkRepository;
+        private ApprDocsTypeRepository _apprDocsTypeRepository;
+        private MarketingAuthorizNumberRepository _marketingAuthorizNumberRepository;
+        private MarketingAuthorizHolderRepository _marketingAuthorizHolderRepository;
+        private PharmaceuticalFormRepository _pharmaceuticalFormRepository;
+        private ProductNameRepository _productNameRepository;
+        private ProductCodeRepository _productCodeRepository;
 
-        public EFUnitOfWorkGeneral(string connectionString)
+        public EfUnitOfWorkGeneral(string connectionString)
         {
-            db = new ProductContext(connectionString);
+            _db = new ProductContext(connectionString);
         }
-        public IProductRepository<Product> Products
-        {
-            get
-            {
-                if (productRepository == null) productRepository = new ProductRepository(db);
-                return productRepository;
-            }
-        }
-
-        public IRepository<Procedure> Procedures
-        {
-            get
-            {
-                if (procedurerRepository == null) procedurerRepository = new ProcedureRepository(db);
-                return procedurerRepository;
-            }
-        }
+        public IProductRepository<Product> Products => _productRepository ?? (_productRepository = new ProductRepository(_db));
+        public IRepository<Procedure> Procedures => _procedurerRepository ?? (_procedurerRepository = new ProcedureRepository(_db));
+        public IRepository<Country> Countries => _countryRepository ?? (_countryRepository = new CountryRepository(_db));
+        public IRepository<ApprDocsType> ApprDocsTypes => _apprDocsTypeRepository ?? (_apprDocsTypeRepository = new ApprDocsTypeRepository(_db));
+        public IRepository<Strength> Strengths => _strengthRepository ?? (_strengthRepository = new StrengthRepository(_db));
+        public IRepository<Manufacturer> Manufacturers => _manufacturerRepository ?? (_manufacturerRepository = new ManufacturerRepository(_db));
+        public IRepository<Artwork> Artworks => _artworkRepository ?? (_artworkRepository = new ArtworkRepository(_db));
+        public IRepository<MarketingAuthorizNumber> MarketingAuthorizNumbers => _marketingAuthorizNumberRepository ?? (_marketingAuthorizNumberRepository = new MarketingAuthorizNumberRepository(_db));
+        public IRepository<MarketingAuthorizHolder> MarketingAuthorizHolders => _marketingAuthorizHolderRepository ?? (_marketingAuthorizHolderRepository = new MarketingAuthorizHolderRepository(_db));
+        public IRepository<PharmaceuticalForm> PharmaceuticalForms => _pharmaceuticalFormRepository ?? (_pharmaceuticalFormRepository = new PharmaceuticalFormRepository(_db));
+        public IRepository<ProductName> ProductNames => _productNameRepository ?? (_productNameRepository = new ProductNameRepository(_db));
+        public IRepository<ProductCode> ProductCodes => _productCodeRepository ?? (_productCodeRepository = new ProductCodeRepository(_db));
 
         public void Save()
         {
-            db.SaveChanges();
+            _db.SaveChanges();
         }
 
-        private bool disposed = false;
+        private bool _disposed;
 
         public virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!this._disposed)
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    _db.Dispose();
                 }
-                this.disposed = true;
+                this._disposed = true;
             }
         }
 

@@ -13,7 +13,7 @@ namespace Olga.DAL.Repositories
 {
     public class ProductRepository : IProductRepository<Product>
     {
-        private ProductContext db;
+        private readonly ProductContext db;
 
         public ProductRepository(ProductContext context)
         {

@@ -136,62 +136,6 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUnitOfWorkGeneral.cs" />
-    <Compile Include="Migrations\201804091003550_MigrationCountryDeps.cs" />
-    <Compile Include="Migrations\201804091003550_MigrationCountryDeps.Designer.cs">
-      <DependentUpon>201804091003550_MigrationCountryDeps.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805152117191_DataMigration_collections.cs" />
-    <Compile Include="Migrations\201805152117191_DataMigration_collections.Designer.cs">
-      <DependentUpon>201805152117191_DataMigration_collections.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805172013299_DataMigration_lists.cs" />
-    <Compile Include="Migrations\201805172013299_DataMigration_lists.Designer.cs">
-      <DependentUpon>201805172013299_DataMigration_lists.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805201823143_DataMigration_20180520.cs" />
-    <Compile Include="Migrations\201805201823143_DataMigration_20180520.Designer.cs">
-      <DependentUpon>201805201823143_DataMigration_20180520.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805202117142_DataMigration_20180521.cs" />
-    <Compile Include="Migrations\201805202117142_DataMigration_20180521.Designer.cs">
-      <DependentUpon>201805202117142_DataMigration_20180521.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805202120298_DataMigration_20180521_1.cs" />
-    <Compile Include="Migrations\201805202120298_DataMigration_20180521_1.Designer.cs">
-      <DependentUpon>201805202120298_DataMigration_20180521_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805211953504_DataMigration_20180521_2.cs" />
-    <Compile Include="Migrations\201805211953504_DataMigration_20180521_2.Designer.cs">
-      <DependentUpon>201805211953504_DataMigration_20180521_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805212013453_DataMigration_20180521_3.cs" />
-    <Compile Include="Migrations\201805212013453_DataMigration_20180521_3.Designer.cs">
-      <DependentUpon>201805212013453_DataMigration_20180521_3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805232045314_DataMigration_20180523_2.cs" />
-    <Compile Include="Migrations\201805232045314_DataMigration_20180523_2.Designer.cs">
-      <DependentUpon>201805232045314_DataMigration_20180523_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805281401063_DataMigration_documents.cs" />
-    <Compile Include="Migrations\201805281401063_DataMigration_documents.Designer.cs">
-      <DependentUpon>201805281401063_DataMigration_documents.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805312211506_DataMigration_addProcedure.cs" />
-    <Compile Include="Migrations\201805312211506_DataMigration_addProcedure.Designer.cs">
-      <DependentUpon>201805312211506_DataMigration_addProcedure.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806020729032_DataMigration_docsToApps.cs" />
-    <Compile Include="Migrations\201806020729032_DataMigration_docsToApps.Designer.cs">
-      <DependentUpon>201806020729032_DataMigration_docsToApps.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806172152316_DataMigration_unLimited.cs" />
-    <Compile Include="Migrations\201806172152316_DataMigration_unLimited.Designer.cs">
-      <DependentUpon>201806172152316_DataMigration_unLimited.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808261457070_DataMigration_20180826.cs" />
-    <Compile Include="Migrations\201808261457070_DataMigration_20180826.Designer.cs">
-      <DependentUpon>201808261457070_DataMigration_20180826.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
@@ -214,50 +158,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804091003550_MigrationCountryDeps.resx">
-      <DependentUpon>201804091003550_MigrationCountryDeps.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805152117191_DataMigration_collections.resx">
-      <DependentUpon>201805152117191_DataMigration_collections.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805172013299_DataMigration_lists.resx">
-      <DependentUpon>201805172013299_DataMigration_lists.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805201823143_DataMigration_20180520.resx">
-      <DependentUpon>201805201823143_DataMigration_20180520.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805202117142_DataMigration_20180521.resx">
-      <DependentUpon>201805202117142_DataMigration_20180521.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805202120298_DataMigration_20180521_1.resx">
-      <DependentUpon>201805202120298_DataMigration_20180521_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805211953504_DataMigration_20180521_2.resx">
-      <DependentUpon>201805211953504_DataMigration_20180521_2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805212013453_DataMigration_20180521_3.resx">
-      <DependentUpon>201805212013453_DataMigration_20180521_3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805232045314_DataMigration_20180523_2.resx">
-      <DependentUpon>201805232045314_DataMigration_20180523_2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805281401063_DataMigration_documents.resx">
-      <DependentUpon>201805281401063_DataMigration_documents.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805312211506_DataMigration_addProcedure.resx">
-      <DependentUpon>201805312211506_DataMigration_addProcedure.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806020729032_DataMigration_docsToApps.resx">
-      <DependentUpon>201806020729032_DataMigration_docsToApps.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806172152316_DataMigration_unLimited.resx">
-      <DependentUpon>201806172152316_DataMigration_unLimited.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808261457070_DataMigration_20180826.resx">
-      <DependentUpon>201808261457070_DataMigration_20180826.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

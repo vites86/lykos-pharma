@@ -21,8 +21,8 @@ namespace Olga.BLL.DTO
         //public string OldEmail { get; set; }
         public string Role { get; set; }
         public string OldRole { get; set; }
-
-        public  List<CountryDTO> Countries { get; set; }
+        public bool NcAccess { get; set; }
+        public List<CountryDTO> Countries { get; set; }
 
     }
 }

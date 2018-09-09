@@ -17,20 +17,14 @@ namespace Olga.BLL.Services
 {
     public class ProductService : IProductService
     {
-        //private ProductRepository Database { get; set; }
-
-        //public ProductService(ProductContext context)
-        //{
-        //   Database = new ProductRepository(context);
-        //}
-
         IUnitOfWorkGeneral Database { get; set; }
+
         public ProductService(IUnitOfWorkGeneral uow)
         {
             Database = uow;
         }
 
-        public  void AddProduct(ProductDTO productDto, string[] selectedManufacturers, string[] selectedArtworks)
+        public void AddProduct(ProductDTO productDto, string[] selectedManufacturers, string[] selectedArtworks)
         {
             Product product = Mapper.Map<ProductDTO, Product>(productDto);
             //Database.Create(product, selectedManufacturers, selectedArtworks);

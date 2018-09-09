@@ -20,6 +20,7 @@
                     <td>@Resources.TableHead.Login</td>
                     <td>@Resources.TableHead.Role</td>
                     <td>@Resources.TableHead.Rank</td>
+                    <td>@Resources.TableHead.NcAccess</td>
                     <td>@Resources.TableHead.Countries</td>
                     <td>Action</td>
                 </tr>
@@ -32,6 +33,7 @@
                     <td>@Model[i].Email</td>
                     <td>@Model[i].Role</td>
                     <td>@Model[i].Rank</td>
+                    <td>@Model[i].NcAccess</td>
                     <td>
                         @if (@Model[i].Role.Equals("Admin"))
                         {
@@ -42,7 +44,7 @@
                             foreach (var country in @Model[i].Countries)
                             {
                                 <span>@country.Name</span>
-                                <br/>
+                                <br />
                             }
                         }
                     </td>

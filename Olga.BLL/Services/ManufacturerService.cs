@@ -9,39 +9,41 @@ using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
 using Olga.DAL.Entities;
+using Olga.DAL.Interfaces;
 using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
 {
-public class ManufacturerService: IManufacturer
+    public class ManufacturerService : IManufacturer
     {
 
-        private ManufacturerRepository Database { get; set; }
+        IUnitOfWorkGeneral Database { get; set; }
+        //private ManufacturerRepository Database { get; set; }
 
-        public ManufacturerService(ProductContext context)
+        public ManufacturerService(IUnitOfWorkGeneral uow)
         {
-            Database = new ManufacturerRepository(context);
+            Database = uow;
         }
 
         public void AddItem(ManufacturerDTO manufacturerDto)
         {
             var ManufacturerDto = Mapper.Map<ManufacturerDTO, Manufacturer>(manufacturerDto);
-            Database.Create(ManufacturerDto);
+            Database.Manufacturers.Create(ManufacturerDto);
         }
 
         public ManufacturerDTO GetItem(int id)
         {
-            return Mapper.Map<Manufacturer, ManufacturerDTO>(Database.Get(id));
+            return Mapper.Map<Manufacturer, ManufacturerDTO>(Database.Manufacturers.Get(id));
         }
 
         public IEnumerable<ManufacturerDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<Manufacturer>, IEnumerable<ManufacturerDTO>>(Database.GetAll().ToList());
+            return Mapper.Map<IEnumerable<Manufacturer>, IEnumerable<ManufacturerDTO>>(Database.Manufacturers.GetAll().ToList());
         }
 
         public void DeleteItem(int id)
         {
-            Database.Delete(id);
+            Database.Manufacturers.Delete(id);
         }
 
         public void Dispose()
@@ -50,7 +52,7 @@ public class ManufacturerService: IManufacturer
         }
         public void Commit()
         {
-            Database.Commit();
+            Database.Manufacturers.Commit();
         }
     }
 }

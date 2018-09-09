@@ -41,7 +41,7 @@ namespace Olga.Util
             builder.RegisterType<StrengthService>().As<IStrength>().WithParameter("context", context);
             builder.RegisterType<ProcedureService>().As<IProcedure>().WithParameter("context", context);
 
-            builder.RegisterType<EFUnitOfWorkGeneral>().As<IUnitOfWorkGeneral>().WithParameter("connectionString", cs);
+            builder.RegisterType<EfUnitOfWorkGeneral>().As<IUnitOfWorkGeneral>().WithParameter("connectionString", cs);
 
             // создаем новый контейнер с теми зависимостями, которые определены выше
             var container = builder.Build();
