@@ -2,7 +2,7 @@
     Dropzone.autoDiscover = false;
     var images = [];
     //var artworkId = 1;
-    var accept = ".pdf,.doc,.docx,.odt";
+    //var accept = ".pdf,.doc,.docx,.odt";
 
     function removeArtworkImages(artworkId) {
         console.log("removeArtworkImages() artworkId=" + artworkId);

@@ -37,6 +37,7 @@ namespace Olga.BLL.Interfaces
 
     public interface ICountry : IBase<CountryDTO>
     {
+        List<string> GetCountryUsersEmails(int id);
         //IEnumerable<CountryDTO> GetItems();
     }
 

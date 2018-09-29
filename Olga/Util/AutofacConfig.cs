@@ -43,6 +43,8 @@ namespace Olga.Util
 
             builder.RegisterType<EfUnitOfWorkGeneral>().As<IUnitOfWorkGeneral>().WithParameter("connectionString", cs);
 
+            builder.RegisterType<BaseEmailerService>().As<IBaseEmailService>();
+
             // создаем новый контейнер с теми зависимостями, которые определены выше
             var container = builder.Build();
 

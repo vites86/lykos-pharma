@@ -40,6 +40,12 @@ namespace Olga.BLL.Services
             return Mapper.Map<IEnumerable<Country>, IEnumerable<CountryDTO>>(Database.Countries.GetAll().ToList());
         }
 
+        public List<string> GetCountryUsersEmails(int id)
+        {
+            var country = Database.Countries.Get(id);
+            return country.Users.Select(a=>a.ApplicationUser.Email.ToString()).ToList();
+        }
+
         public void DeleteItem(int id)
         {
             Database.Countries.Delete(id);

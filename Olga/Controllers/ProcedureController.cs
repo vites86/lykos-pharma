@@ -55,7 +55,7 @@ namespace Olga.Controllers
                 return View("Error");
             }
             var errorMessage = String.Empty;
-            if (!InitialiseModel(countryId,out errorMessage))
+            if (!InitialiseModel(countryId, out errorMessage))
             {
                 @ViewBag.Error = errorMessage;
                 return View("Error");

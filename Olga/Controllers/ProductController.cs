@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
@@ -33,15 +34,21 @@ namespace Olga.Controllers
         readonly IManufacturer _manufacturerService;
         readonly IArtwork _artworkService;
         readonly IMarketingAuthorizHolder _marketingAuthorizHolderService;
+        readonly IMarketingAuthorizNumber _marketingAuthorizNumber;
         readonly IPharmaceuticalForm _pharmaceuticalFormService;
         readonly IProductService _productService;
+        readonly IProductName _productNameService;
+        readonly IProductCode _productCode;
+        readonly IBaseEmailService _emailService;
+        readonly IPackSize _packSizeService;
         UserViewModel _currentUser;
 
 
         // GET: Settings
         public ProductController(ICountry serv, IProductName prodName, IProductCode prodCode, IMarketingAuthorizNumber marketingAuthorizNumber, IPackSize packSize,
             IApprDocsType apprDocsType, IStrength strength, IManufacturer manufacturer, IArtwork artwork, IMarketingAuthorizHolder marketingAuthorizHolder,
-            IPharmaceuticalForm pharmaceuticalForm, IProductService product)
+            IPharmaceuticalForm pharmaceuticalForm, IProductService product, IBaseEmailService emailService, IProductName productNameService, IPackSize packSizeService,
+            IProductCode productCode)
         {
             _countryService = serv;
             //_productNameService = prodName;
@@ -55,6 +62,11 @@ namespace Olga.Controllers
             _marketingAuthorizHolderService = marketingAuthorizHolder;
             _pharmaceuticalFormService = pharmaceuticalForm;
             _productService = product;
+            _emailService = emailService;
+            _productNameService = productNameService;
+            _marketingAuthorizNumber = marketingAuthorizNumber;
+            _packSizeService = packSizeService;
+            _productCode = productCode;
         }
 
         private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
@@ -117,7 +129,7 @@ namespace Olga.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProduct(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks, string CountryName)
+        public async Task<ActionResult> CreateProduct(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks, string countryName)
         {
             if (!ModelState.IsValid)
             {
@@ -129,11 +141,10 @@ namespace Olga.Controllers
 
             try
             {
-                var productDto = Mapper.Map<ProductCreateModel, ProductDTO>(model);
-                //var prodName = model.ProductNameId !=null ? _productNameService.GetItem((int)model.ProductNameId) : null;
-                //productDto.ProductName = Mapper.Map<ProductNameDTO, ProductName> (prodName);
-                //productDto.ProductNameId = model.ProductNameId;
+                var userEmailsToNotify = _countryService.GetCountryUsersEmails((int)model.CountryId);
+                await SenEmailAboutAddUpdateProduct(model, selectedManufacturers, selectedArtworks, countryName, documentNamesApprs, documentNamesArtworks, userEmailsToNotify);
 
+                var productDto = Mapper.Map<ProductCreateModel, ProductDTO>(model);
                 AddDocumentsToProduct(ref productDto, documentNamesApprs, documentNamesArtworks);
                 _productService.AddProduct(productDto, selectedManufacturers, selectedArtworks);
                 _productService.Commit();
@@ -141,10 +152,8 @@ namespace Olga.Controllers
                 var userName = User.Identity.Name;
                 Logger.Log.Info($"{userName}: Created/Updated Product {model.Id} ");
 
-                //var products = Mapper.Map<IEnumerable<ProductDTO>, IEnumerable<ProductViewModel>>(_productService.GetProducts(model.CountryId));
-                //@ViewBag.CountryId = model.CountryId;
-                //@ViewBag.Country = CountryName;
-                //@ViewBag.User = GetCurrentUser();
+                
+
                 return RedirectToAction("Index", new {id = model.CountryId});
             }
             catch (Exception ex)
@@ -167,15 +176,14 @@ namespace Olga.Controllers
                     var apprNumberString = name.Substring(0, name.IndexOf("__"));
                     var apprNumber = Int32.Parse(apprNumberString);
                     //if (apprNumberString.Length > 15) apprNumberString = apprNumberString.Substring(apprNumberString.LastIndexOf("/"), apprNumberString.Length - apprNumberString.LastIndexOf("/")).Replace("/", "");
-                    var newProduct =
+                    var newProductDocument =
                         new ProductDocument() {PathToDocument = name, ApprDocsTypeId = apprNumber };
                     var res = product.ProductDocuments.FirstOrDefault(a=>a.PathToDocument == name && a.ApprDocsTypeId == apprNumber);
-                    var res2 = product.ProductDocuments.Contains(newProduct);
+                    var res2 = product.ProductDocuments.Contains(newProductDocument);
                     if (res == null && !res2)
                     {
-                        product.ProductDocuments.Add(newProduct);
+                        product.ProductDocuments.Add(newProductDocument);
                     }
-                    
                 }
             }
 
@@ -534,14 +542,10 @@ namespace Olga.Controllers
                         if (fileToDeleteList.Length == 0) continue;
                         var fileToDel = fileToDeleteList[0];
                         if(string.IsNullOrEmpty(fileToDel)) continue;
-                        if (System.IO.File.Exists(fileToDel))
-                        {
-                            System.IO.File.Delete(fileToDel);
-                            _productService.DeleteDocument(fileName);
-                        }
+                        if (!System.IO.File.Exists(fileToDel)) continue;
+                        System.IO.File.Delete(fileToDel);
+                        _productService.DeleteDocument(fileName);
                     }
-
-                   
                 }
                 return Json(new { Message = "File deleted!" });
             }
@@ -566,6 +570,210 @@ namespace Olga.Controllers
                 return new UserViewModel();
             }
         }
-        
+
+        public async Task SenEmailAboutAddUpdateProduct(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks, 
+            string countryName, string[] documentNamesApprs, string[] documentNamesArtworks, IEnumerable<string> emailsToNotify)
+        {
+            try
+            {
+                if (model.ProductNameId == null) return;
+                //var country = _countryService.GetItem();
+
+                string subject;
+                var body = new StringBuilder();
+
+                var productName = _productNameService.GetItem((int)model.ProductNameId).Name;
+
+                if (model.Id == null)
+                {
+                    subject = Resources.Email.SubjectProductCreate.Replace("name", productName);
+                    body.Append(Resources.Email.BodyProductCreate.Replace("name", productName) + Resources.Email.Signature);
+                    await _emailService.SendEmailNotification(body.ToString(), subject, emailsToNotify);
+                }
+                else
+                {
+                    subject = Resources.Email.SubjectProductUpdate.Replace("name", productName);
+                    body.Append(Resources.Email.BodyProductUpdate.Replace("name", productName));
+                    var bodyCompared = CreateBodyText(model, selectedManufacturers, selectedArtworks, documentNamesApprs, documentNamesArtworks);
+                    if (!string.IsNullOrEmpty(bodyCompared))
+                    {
+                        body.Append(":<br>");
+                        body.Append(bodyCompared);
+                        body.Append(Resources.Email.Signature);
+                        await _emailService.SendEmailNotification(body.ToString(), subject, emailsToNotify);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: SenEmailAboutAddUpdateProduct() {ex.Message} ");
+            }
+        }
+
+        public string CreateBodyText(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks, string[] documentNamesApprs, string[] documentNamesArtworks)
+        {
+            var bodyStr = new StringBuilder();
+            var bodyForDropdowns = GetBodyForDropDowns(model).GetAwaiter().GetResult();
+            var bodyForArtworks = GetBodyForArtworks(model, selectedArtworks).GetAwaiter().GetResult();
+            var bodyForManufacturers = GetBodyForManufacturers(model, selectedManufacturers).GetAwaiter().GetResult();
+            var bodyForDocuments = GetBodyForDocuments(model, documentNamesApprs, documentNamesArtworks).GetAwaiter().GetResult();
+            bodyStr.Append(bodyForDropdowns);
+            bodyStr.Append(bodyForArtworks);
+            bodyStr.Append(bodyForManufacturers);
+            bodyStr.Append(bodyForDocuments);
+            return bodyStr.ToString();
+        }
+
+        public async Task<string> GetBodyForDropDowns(ProductCreateModel model)
+        {
+            var bodyStr = new StringBuilder();
+            if (model.Id == null) return string.Empty;
+            var oldProduct = _productService.GetProduct((int)model.Id);
+
+            if (oldProduct.IssuedDate != model.IssuedDate)
+            {
+                bodyStr.Append($"<strong>IssuedDate</strong> changed to {model.IssuedDate.ToString().Substring(0, 10)}<br>");
+            }
+            if (oldProduct.MarketingAuthorizHolderId != model.MarketingAuthorizHolderId && model.MarketingAuthorizHolderId != null)
+            {
+                var marketingAuthorizHolder = _marketingAuthorizHolderService.GetItem((int)model.MarketingAuthorizHolderId);
+                bodyStr.Append($"<strong>MarketingAuthorizHolder</strong> changed to {marketingAuthorizHolder.Name}<br>");
+            }
+            if (oldProduct.MarketingAuthorizNumberId != model.MarketingAuthorizNumberId && model.MarketingAuthorizNumberId != null)
+            {
+                var marketingAuthorizNumber = _marketingAuthorizNumber.GetItem((int)model.MarketingAuthorizNumberId);
+                bodyStr.Append($"<strong>MarketingAuthorizNumber</strong> changed to {marketingAuthorizNumber.Number}<br>");
+            }
+            if (oldProduct.PackSizeId != model.PackSizeId && model.PackSizeId != null)
+            {
+                var packSize = _packSizeService.GetItem((int)model.PackSizeId);
+                bodyStr.Append($"<strong>PackSize</strong> changed to {packSize.Size}<br>");
+            }
+            if (oldProduct.PharmaceuticalFormId != model.PharmaceuticalFormId && model.PharmaceuticalFormId != null)
+            {
+                var pharmaceuticalForm = _pharmaceuticalFormService.GetItem((int)model.PharmaceuticalFormId);
+                bodyStr.Append($"<strong>PharmaceuticalForm</strong> changed to {pharmaceuticalForm.PharmaForm}<br>");
+            }
+            if (oldProduct.ProductNameId != model.ProductNameId && model.ProductNameId != null)
+            {
+                var productName = _productNameService.GetItem((int)model.ProductNameId);
+                bodyStr.Append($"<strong>ProductName</strong> changed to {productName.Name}<br>");
+            }
+            if (oldProduct.ProductCodeId != model.ProductCodeId && model.ProductCodeId != null)
+            {
+                var productCode = _productCode.GetItem((int)model.ProductCodeId);
+                bodyStr.Append($"<strong>ProductCode</strong> changed to {productCode.Code}<br>");
+            }
+            if (oldProduct.StrengthId != model.StrengthId && model.StrengthId != null)
+            {
+                var strength = _strengthService.GetItem((int)model.StrengthId);
+                bodyStr.Append($"<strong>Strength</strong> changed to {strength.Strngth}<br>");
+            }
+            if (oldProduct.UnLimited != model.UnLimited && model.UnLimited)
+            {
+                bodyStr.Append($"<strong>ExpiredDate</strong> changed to UnLimited");
+            }
+            else if (!model.UnLimited && oldProduct.ExpiredDate != model.ExpiredDate)
+            {
+                bodyStr.Append($"<strong>ExpiredDate</strong> changed to {model.ExpiredDate}<br>");
+            }
+            return bodyStr.ToString();
+        }
+
+        public async Task<string> GetBodyForArtworks(ProductCreateModel model, string[] selectedArtworks)
+        {
+            var bodyStr = new StringBuilder();
+            if (model.Id == null || selectedArtworks == null) return string.Empty;
+            var oldProduct = _productService.GetProduct((int)model.Id);
+
+            foreach (var id in selectedArtworks)
+            {
+                if (string.IsNullOrEmpty(id)) continue;
+                var newArtworkId = int.Parse(id);
+                if (oldProduct.Artworks.Any(a => a.Id == newArtworkId)) continue;
+                var artwork = _artworkService.GetItem(newArtworkId);
+                bodyStr.Append($"<strong>To Artworks added </strong> {artwork.Artwork_name}<br>");
+            }
+
+            foreach (var oldArtwork in oldProduct.Artworks)
+            {
+                if (selectedArtworks.Contains(oldArtwork.Id.ToString())) continue;
+                var artwork = _artworkService.GetItem(oldArtwork.Id);
+                bodyStr.Append($"<strong>From Artworks was deleted: </strong> {artwork.Artwork_name}<br>");
+            }
+
+            return bodyStr.ToString();
+
+        }
+
+        public async Task<string> GetBodyForManufacturers(ProductCreateModel model, string[] selectedManufacturers)
+        {
+            var bodyStr = new StringBuilder();
+            if (model.Id == null || selectedManufacturers == null) return string.Empty;
+            var oldProduct = _productService.GetProduct((int)model.Id);
+
+            foreach (var id in selectedManufacturers)
+            {
+                if (string.IsNullOrEmpty(id)) continue;
+                var newManufacturerId = int.Parse(id);
+                if (oldProduct.Manufacturers.Any(a => a.Id == newManufacturerId)) continue;
+                var manufacturer = _manufacturerService.GetItem(newManufacturerId);
+                bodyStr.Append($"<strong>To Manufacturers added </strong> {manufacturer.Name}<br>");
+            }
+
+            foreach (var oldManufecturer in oldProduct.Manufacturers)
+            {
+                if (selectedManufacturers.Contains(oldManufecturer.Id.ToString())) continue;
+                var manufacturer = _manufacturerService.GetItem(oldManufecturer.Id);
+                bodyStr.Append($"<strong>From Manufecturers was deleted: </strong> {manufacturer.Name}<br>");
+            }
+
+            return bodyStr.ToString();
+        }
+
+        public async Task<string> GetBodyForDocuments(ProductCreateModel model, string[] documentNamesApprs, string[] documentNamesArtworks)
+        {
+            var bodyStr = new StringBuilder();
+            if (model.Id == null) return string.Empty;
+            var productDto = Mapper.Map<ProductCreateModel, ProductDTO>(model);
+            var oldProduct = _productService.GetProduct((int)model.Id);
+
+            if (documentNamesApprs != null && documentNamesApprs.Length > 0)
+            {
+                foreach (var name in documentNamesApprs)
+                {
+                    if (name.IndexOf("__") == -1) continue;
+                    var apprNumberString = name.Substring(0, name.IndexOf("__"));
+                    var apprNumber = Int32.Parse(apprNumberString);
+                    var newProductDocument = new ProductDocument() { PathToDocument = name, ApprDocsTypeId = apprNumber };
+                    var res = oldProduct.ProductDocuments.FirstOrDefault(a => a.PathToDocument == name && a.ApprDocsTypeId == apprNumber);
+                    var res2 = oldProduct.ProductDocuments.Contains(newProductDocument);
+                    if (res == null && !res2)
+                    {
+                        bodyStr.Append($"<strong>To ApprDocsTypes added document:</strong> {name}<br>");
+                    }
+                }
+            }
+
+            if (documentNamesArtworks != null && documentNamesArtworks.Length > 0)
+            {
+                foreach (var name in documentNamesArtworks)
+                {
+                    if (name.IndexOf("__") == -1) continue;
+                    var artworkNumberString = name.Substring(0, name.IndexOf("__"));
+                    var artworkNumber = Int32.Parse(artworkNumberString);
+                    var newProductDocument = new ProductDocument() { PathToDocument = name, ArtworkId = artworkNumber };
+                    var res = oldProduct.ProductDocuments.FirstOrDefault(a => a.PathToDocument == name && a.ArtworkId == artworkNumber);
+                    var res2 = oldProduct.ProductDocuments.Contains(newProductDocument);
+                    if (res == null && !res2)
+                    {
+                        bodyStr.Append($"<strong>To Artworks Documents added document:</strong> {name}<br>");
+                    }
+                }
+            }
+            return bodyStr.ToString();
+        }
+       
     }
 }

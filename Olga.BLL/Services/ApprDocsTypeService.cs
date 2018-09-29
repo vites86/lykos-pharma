@@ -14,11 +14,9 @@ using Olga.DAL.Repositories;
 
 namespace Olga.BLL.Services
 {
-public class ApprDocsTypeService: IApprDocsType
+    public class ApprDocsTypeService : IApprDocsType
     {
-
         IUnitOfWorkGeneral Database { get; set; }
-        //private ApprDocsTypeRepository Database { get; set; }
 
         public ApprDocsTypeService(IUnitOfWorkGeneral uow)
         {
