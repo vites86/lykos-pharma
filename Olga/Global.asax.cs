@@ -132,6 +132,9 @@ namespace Olga
                     .ForMember(x => x.CountryId, o => o.MapFrom(s => s.CountryId))
                     .ForMember(x => x.Name, o => o.MapFrom(s => s.Name));
 
+
+                cfg.CreateMap<ProductDTO, ProductCompareModel>();
+
             });
 
         }

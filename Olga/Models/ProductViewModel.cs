@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 using System.Web.Mvc;
 using Olga.BLL.Interfaces;
@@ -173,5 +174,24 @@ namespace Olga.Models
 
         public List<ProcedureViewModel> Procedures { get; set; }
         public List<ProductDocument> Documents { get; set; }
+    }
+
+    public class ProductCompareModel
+    {
+        [IgnoreDataMember]
+        public int? Id { get; set; }
+        public DateTime? IssuedDate { get; set; }
+        public DateTime? ExpiredDate { get; set; }
+        public bool UnLimited { get; set; }
+        [IgnoreDataMember]
+        public virtual Country Country { get; set; }
+        public int? CountryId { get; set; }
+        public int? MarketingAuthorizHolderId { get; set; }
+        public int? MarketingAuthorizNumberId { get; set; }
+        public int? PackSizeId { get; set; }
+        public int? PharmaceuticalFormId { get; set; }
+        public int? ProductCodeId { get; set; }
+        public int? ProductNameId { get; set; }
+        public int? StrengthId { get; set; }
     }
 }

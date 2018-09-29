@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -594,7 +596,7 @@ namespace Olga.Controllers
                 {
                     subject = Resources.Email.SubjectProductUpdate.Replace("name", productName);
                     body.Append(Resources.Email.BodyProductUpdate.Replace("name", productName));
-                    var bodyCompared = CreateBodyText(model, selectedManufacturers, selectedArtworks, documentNamesApprs, documentNamesArtworks);
+                    var bodyCompared = await CreateBodyText(model, selectedManufacturers, selectedArtworks, documentNamesApprs, documentNamesArtworks);
                     if (!string.IsNullOrEmpty(bodyCompared))
                     {
                         body.Append(":<br>");
@@ -611,13 +613,19 @@ namespace Olga.Controllers
             }
         }
 
-        public string CreateBodyText(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks, string[] documentNamesApprs, string[] documentNamesArtworks)
+        public async Task<string> CreateBodyText(ProductCreateModel model, string[] selectedManufacturers, string[] selectedArtworks, string[] documentNamesApprs, string[] documentNamesArtworks)
         {
             var bodyStr = new StringBuilder();
-            var bodyForDropdowns = GetBodyForDropDowns(model).GetAwaiter().GetResult();
-            var bodyForArtworks = GetBodyForArtworks(model, selectedArtworks).GetAwaiter().GetResult();
-            var bodyForManufacturers = GetBodyForManufacturers(model, selectedManufacturers).GetAwaiter().GetResult();
-            var bodyForDocuments = GetBodyForDocuments(model, documentNamesApprs, documentNamesArtworks).GetAwaiter().GetResult();
+            var _bodyForDropdowns = GetBodyForDropDowns(model);
+            var _bodyForArtworks = GetBodyForArtworks(model, selectedArtworks);
+            var _bodyForManufacturers = GetBodyForManufacturers(model, selectedManufacturers);
+            var _bodyForDocuments = GetBodyForDocuments(model, documentNamesApprs, documentNamesArtworks);
+            await Task.WhenAll(_bodyForDropdowns, _bodyForArtworks, _bodyForManufacturers, _bodyForDocuments);
+            var bodyForDropdowns = _bodyForDropdowns.Result;
+            var bodyForArtworks = _bodyForArtworks.Result;
+            var bodyForManufacturers = _bodyForManufacturers.Result;
+            var bodyForDocuments = _bodyForDocuments.Result;
+
             bodyStr.Append(bodyForDropdowns);
             bodyStr.Append(bodyForArtworks);
             bodyStr.Append(bodyForManufacturers);
@@ -630,6 +638,26 @@ namespace Olga.Controllers
             var bodyStr = new StringBuilder();
             if (model.Id == null) return string.Empty;
             var oldProduct = _productService.GetProduct((int)model.Id);
+            //var _oldProduct = Mapper.Map<ProductDTO, ProductCompareModel>(oldProduct); 
+
+            //Type newType = Type.GetType("Olga.Models.ProductCreateModel", false, true);
+            //Type oldType = Type.GetType("Olga.Models.ProductCompareModel", false, true);
+
+            //foreach (var property in newType.GetProperties())
+            //{
+            //    var oldProperty = oldType.GetProperties().FirstOrDefault(a => a.Name.Equals(property.Name));
+            //    if (oldProperty==null) continue;
+            //    object[] attrs = oldProperty.GetCustomAttributes(true);
+            //    if (!attrs.Any(a => a is IgnoreDataMemberAttribute))
+            //    {
+            //        var newValue = property.GetValue(model) == null ? "No value" : property.GetValue(model).ToString();
+            //        var oldValue = oldProperty.GetValue(_oldProduct) == null ? "No value" : oldProperty.GetValue(_oldProduct).ToString();
+            //        if (!oldValue.Equals(newValue))
+            //        {
+            //            bodyStr.Append($"<strong>{property.Name}</strong> changed to {newValue}<br>");
+            //        }
+            //    }
+            //}
 
             if (oldProduct.IssuedDate != model.IssuedDate)
             {
