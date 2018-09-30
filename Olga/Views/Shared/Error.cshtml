@@ -2,18 +2,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width" />
     <title>Ошибка</title>
 </head>
 <body>
 <div class="container">
+    <div style="text-align: center">
+        <img height="80px;" src="~/Content/images/error.png"/>
+    </div>
     <hgroup>
-        <h1 class="danger">Ошибка.</h1>
-        <h2 class="danger">При обработке запроса произошла ошибка:</h2>
+        @*<h1 class="danger">Ошибка.</h1>*@
+        <h1 class="danger" id="danger_h">При обработке запроса произошла ошибка:</h1>
     </hgroup>
-    <div class="danger read">@ViewBag.Error</div>
+    <div id="danger_text" class="danger read">
+        <span>@ViewBag.Error</span>
+    </div>
 </div>
 <div style="height:800px"><br/></div>
 </body>
 </html>
+<style>
+    #danger_text, #danger_h span {
+        margin-top: 55px;
+        color: darkred;
+        font-size: 30px;
+    }
+</style>

@@ -50,13 +50,19 @@ namespace Olga.BLL.Services
 
         public IEnumerable<ProcedureDTO> GetItems()
         {
-            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(Database.Procedures.GetAll()).ToArray();
+            var procedures = Database.Procedures.GetAll().ToArray();
+            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(procedures);
         }
 
         public IEnumerable<ProcedureDTO> GetItems(int productId)
         {
             return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(Database.Procedures.GetAll(productId).ToArray());  
         }
-       
+
+        public void Update(ProcedureDTO procedureDto)
+        {
+            var procedure = Mapper.Map<ProcedureDTO, Procedure>(procedureDto);
+            Database.Procedures.Update(procedure);
+        }
     }
 }

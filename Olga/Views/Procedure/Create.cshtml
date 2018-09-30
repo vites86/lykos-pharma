@@ -39,14 +39,7 @@
                     @Html.EnumDropDownListFor(model => model.ProcedureType, new { @class = "form-control" })
                 </div>
             </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Product, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @*@Html.DropDownListFor(model => model.ProductId, new SelectList(ViewBag.products, "Id", "ProductName"), new { @class = "form-control" })*@
-                    @Html.DropDownListFor(model => model.ProductId, (IEnumerable<SelectListItem>)ViewBag.Products, new { @class = "form-control" })
-                </div>
-            </div>
+            
             <hr />
             <div class="form-group">
                 @Html.LabelFor(model => model.ProcedureType, htmlAttributes: new { @class = "control-label col-md-2" })

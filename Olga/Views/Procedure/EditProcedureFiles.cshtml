@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "EditProcedureFiles";
+}
+@using System.Web.Mvc.Html
+@using Olga.DAL.Entities
+@model Olga.Models.ProcedureViewModel
+
+<div>
+    <div class="row" style="overflow: auto; margin-left:  20px;margin-right: 10px;">
+        <div class="alert-success" style="width: 100%">
+            <h2>@ViewBag.Country</h2>
+        </div>
+        <h1>Update Procedure for:</h1>
+        <div class="product_span">
+            <span>@ViewBag.Product.ProductName</span><br />
+            <span>@ViewBag.Product.PharmaceuticalForm</span><br />
+            <span>@ViewBag.Product.ProductCode</span><br />
+            <span>@ViewBag.Product.Strength</span><br />
+            <span>@ViewBag.Product.MarketingAuthorizNumber</span><br />
+        </div>
+
+
+        <br />
+        <br />
+        <div class="form-group" id="documentsGroup" name="documentsGroup">
+            <div class="row">
+                <div class="col-md-10">
+                    @foreach (var period in ViewBag.DocsType)
+                    {
+                        switch (period)
+                        {
+                            case ProcedureDocsType.ObtainedFromM:
+                                <span>Obtained from MAH</span>
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.ObtainedFromM)
+                                    {
+                                        <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                            case ProcedureDocsType.SubmittedToAuth:
+                                <span>Submitted to Authority</span>
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.SubmittedToAuth)
+                                    {
+                                        <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                            case ProcedureDocsType.RemarksFromAuth:
+                                <span>Remarks obtained from Authority</span>
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth)
+                                    {
+                                        <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                            case ProcedureDocsType.RemarksToAuth:
+                                <span>Responses submitted to Authority</span>
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.RemarksToAuth)
+                                    {
+                                        <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                            default:
+                                <span>@period</span>
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.Dossier)
+                                    {
+                                        <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                        }
+
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <h3>Choose file to download:</h3>
+                    @using (Ajax.BeginForm("EditProcedureFiles",
+                        new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "documentsGroup", LoadingElementId = "loading", LoadingElementDuration = 1000}))
+                    {
+                        <input type="hidden" id="procedureId" name="procedureId" value="@Model.Id" />
+                        <input type="hidden" id="productId" name="productId" value="@Model.ProductId" />
+
+                        <div class="form-group">
+                            @Html.Label("Document type:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("procedureDocsType", EnumHelper.GetSelectList(typeof(ProcedureDocsType)), "Select Type", new { @class = "form-control" })
+                            </div>
+                        </div><br/><br/><br /><br />
+                        <div class="form-group">
+                            @Html.Label("Document sources:", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                Browse for file ...<input type="file" name="uploads" /><br><br>
+                                <label class="btn btn-default">Browse for file ...<input type="file" name="uploads" hidden /></label><br><br>
+                                <label class="btn btn-default">Browse for file ...<input type="file" name="uploads" hidden /></label><br><br><br><br>
+                                <input type="submit" value="Download" class="btn btn-info" />
+                            </div>
+                        </div>
+                    }
+                    <div id="loading" style="display: none; font-weight: bold;">
+                        <img src="~/Content/images/loading2.gif" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
+}
+<style>
+    [hidden] {
+        display: none !important;
+    }
+</style>

@@ -38,7 +38,8 @@ namespace Olga
                     .ForMember(m => m.ProductNames, opt => opt.Ignore())
                 ;
 
-                cfg.CreateMap<Product, ProductDTO>().MaxDepth(3);
+                cfg.CreateMap<Product, ProductDTO>().MaxDepth(3)
+                .ForMember(m => m.Procedures, opt => opt.Ignore());
 
                 cfg.CreateMap<Product, Product>()
                     .ForMember(m => m.ProductDocuments,
@@ -134,6 +135,25 @@ namespace Olga
 
 
                 cfg.CreateMap<ProductDTO, ProductCompareModel>();
+
+                cfg.CreateMap<Procedure, ProcedureDTO>()
+                    //.ForMember(m => m.Product, opt => opt.Ignore())
+                    .ForMember(x => x.ApprovalDate, o => o.MapFrom(s => s.ApprovalDate))
+                    .ForMember(x => x.Comments, o => o.MapFrom(s => s.Comments))
+                    .ForMember(x => x.ProductId, o => o.MapFrom(s => s.ProductId))
+                    .ForMember(x => x.Name, o => o.MapFrom(s => s.Name))
+                    .ForMember(x => x.ProcedureType, o => o.MapFrom(s => s.ProcedureType))
+                    .ForMember(x => x.SubmissionDate, o => o.MapFrom(s => s.SubmissionDate));
+
+                cfg.CreateMap<ProcedureDTO, ProcedureViewModel>();
+
+                cfg.CreateMap<ProcedureEditModel, ProcedureDTO>()
+                .ForMember(x => x.ProductId, o => o.Ignore())
+                .ForMember(x => x.Product, o => o.Ignore())
+                .ForMember(x => x.ProcedureDocuments, o => o.Ignore())
+                ;
+
+
 
             });
 

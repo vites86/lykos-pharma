@@ -52,6 +52,7 @@ namespace Olga.Models
 
         public virtual List<ArtworkDTO> Artworks { get; set; }
         public virtual List<ManufacturerDTO> Manufacturers { get; set; }
+        public virtual List<ProcedureDTO> Procedures { get; set; }
     }
 
     public class ProductCreateModel

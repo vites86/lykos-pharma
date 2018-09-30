@@ -68,14 +68,14 @@ namespace Olga.BLL.Services
                         //mail.Bcc.Add("activeseach@gmail.com");
                     }
 
-                    //mail.To.Add(new MailAddress(DirectorMail));
+                    mail.To.Add(new MailAddress(DirectorMail));
                     mail.To.Add(new MailAddress(DeveloperMail));
                     await client.SendMailAsync(mail);
                 }
             }
             catch (Exception ex)
             {
-                throw;
+                
             }
         }
         

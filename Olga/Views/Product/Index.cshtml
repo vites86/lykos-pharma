@@ -31,10 +31,6 @@
                             <th>Marketing Authoriz Number</th>
                             <th>IssuedDate</th>
                             <th>ExpiredDate</th>
-                            @*<th>PackSize</th>*@
-                            @*<td>ApprDocsType</td>*@
-                            @*<th>Artwork</th>
-                                <th>Documents</th>*@
                             <th>
                                 <span class="action_span">
                                     Action
@@ -128,20 +124,22 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @*<span>@Html.ActionLink("   ", "ShowDocuments", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-eye-open", @target = "_blank" })</span>*@
-                                    <a href="#"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                @{
+                                    if (User.IsInRole("Admin") || hasAccess)
+                                    {
+                                        <span>@Html.ActionLink("   ", "ProductProcedures", "Procedure", new {id = @Model[i].Id}, new {@class = "glyphicon glyphicon-forward", @target = "_blank"})</span>
+                                    }
+                                }
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-
             }
             else
             {
                 <div>No Products yet!</div>
             }
-
         }
     </div>
     <hr />
@@ -154,10 +152,6 @@
     <div class="empty"></div>
 </div>
 <style>
-    table td {
-        /*float: left;*/
-    }
-
     .glyphicon {
         font-size: 20px;
         margin-left: 5px;

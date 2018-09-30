@@ -30,12 +30,18 @@ namespace Olga.DAL.Repositories
 
         Procedure IRepository<Procedure>.Get(int id)
         {
-            throw new NotImplementedException();
+            return db.Procedures.FirstOrDefault(a => a.Id == id);
         }
 
         public void Update(Procedure item)
         {
-            throw new NotImplementedException();
+            var existingProcedure = db.Procedures.FirstOrDefault(a => a.Id == item.Id);
+            if (existingProcedure == null) return;
+            existingProcedure.Name = item.Name;
+            existingProcedure.ApprovalDate = item.ApprovalDate;
+            existingProcedure.Comments = item.Comments;
+            existingProcedure.ProcedureType = item.ProcedureType;
+            existingProcedure.SubmissionDate = item.SubmissionDate;
         }
 
         public void Delete(int id)

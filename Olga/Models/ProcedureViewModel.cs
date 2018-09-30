@@ -10,25 +10,53 @@ namespace Olga.Models
 {
     public class ProcedureViewModel
     {
+        public ProcedureViewModel()
+        {
+            this.ProcedureDocuments = new List<ProcedureDocument>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
+
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionDate { get; set; }
+
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ApprovalDate { get; set; }
+
         public string Comments { get; set; }
+
         [Required]
         public ProcedureType ProcedureType { get; set; }
+
         public int? ProductId { get; set; }
+
         public virtual ProductViewModel Product { get; set; }
-        public IEnumerable<RemarkViewModel> Remarks { get; set; }
+
+        public List<ProcedureDocument> ProcedureDocuments { get; set; }
+
     }
 
-    public class RemarkViewModel
+    public class ProcedureEditModel
     {
         public int Id { get; set; }
-        public DateTime RemarkDate { get; set; }
+        public string Name { get; set; }
+
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime SubmissionDate { get; set; }
+
+        [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime ApprovalDate { get; set; }
+
         public string Comments { get; set; }
-        public ProcedureViewModel Procedure { get; set; }
+
+        [Required]
+        public ProcedureType ProcedureType { get; set; }
+
+        public int? ProductId { get; set; }
     }
 }

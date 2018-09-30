@@ -18,7 +18,6 @@
                         <td>Approval Date</td>
                         <td>Comments</td>
                         <td>Product</td>
-                        <td>Remarks</td>
                         <td>Action</td>
                     </tr>
                 </thead>
@@ -32,11 +31,6 @@
                             <td>@{ var approvalDate = Model[i].ApprovalDate != null ? @Model[i].ApprovalDate.ToString().Substring(0, 10) : null; }  @approvalDate</td>
                             <td>@Model[i].Comments</td>
                             <td>@Model[i].Product.ProductName @Model[i].Product.ProductCode</td>
-                            <td>
-                                @Html.ActionLink("Remarks", "Index", "Remarks", new { id = @Model[i].Id }, new { @class = "glyphicon glyphicon-pencil" }) |
-                                @Html.ActionLink("Create New", "Create", "Remarks", new { id = @Model[i].Id }, new { @class = "glyphicon glyphicon-pencil" }) 
-                                
-                            </td>
                             <td>
                                 @Html.ActionLink("   ", "Index", "Procedure", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-pencil" }) |
                                 @Html.ActionLink("   ", "Delete", "Procedure", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new
@@ -59,7 +53,7 @@
     }
     <hr />
     <div>
-        @Html.ActionLink("Create procedure", "Create", "Procedure", new { countryId = @ViewBag.CountryId }, new { @class = "btn btn-primary", data_icon = "gear" })
+        @Html.ActionLink("Create procedure", "CreateProcedure", "Procedure", new { id = @ViewBag.Product.Id }, new { @class = "btn btn-primary", data_icon = "gear" })
     </div>
     <div class="empty"></div>
 </div>

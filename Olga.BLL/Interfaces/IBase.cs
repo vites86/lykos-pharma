@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations.Model;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace Olga.BLL.Interfaces
     {
         //IEnumerable<ProcedureDTO> GetItems();
         IEnumerable<ProcedureDTO> GetItems(int productId);
+        void Update(ProcedureDTO procedure);
     }
 
     public interface IApprDocsType : IBase<ApprDocsTypeDTO>

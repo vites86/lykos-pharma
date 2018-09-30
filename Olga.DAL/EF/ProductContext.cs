@@ -32,7 +32,7 @@ namespace Olga.DAL.EF
         public DbSet<Strength> Strengths { get; set; }
         public DbSet<ProductDocument> ProductDocuments { get; set; }
         public DbSet<Procedure> Procedures { get; set; }
-        public DbSet<Remark> Remarks { get; set; }
+        public DbSet<ProcedureDocument> ProcedureDocuments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
