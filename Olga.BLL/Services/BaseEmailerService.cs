@@ -25,7 +25,7 @@ namespace Olga.BLL.Services
             Pass = "superv1s0r";
             From = "pharma.no-reply@outlook.com";
             //From = "Regulatory Affairs Database notification";
-            DirectorMail = "pharma.no-reply@outlook.com";
+            DirectorMail = "ok@lykospharma.com";
             DeveloperMail = "vites@outlook.com";
         }
 

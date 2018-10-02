@@ -602,7 +602,7 @@ namespace Olga.Controllers
                         body.Append(":<br>");
                         body.Append(bodyCompared);
                         body.Append(Resources.Email.Signature);
-                        //await _emailService.SendEmailNotification(body.ToString(), subject, emailsToNotify);
+                        await _emailService.SendEmailNotification(body.ToString(), subject, emailsToNotify);
                     }
                 }
             }
