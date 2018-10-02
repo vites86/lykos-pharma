@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Olga.AutoMapper;
@@ -14,6 +15,7 @@ using Olga.BLL.Interfaces;
 using Olga.BLL.Services;
 using Olga.DAL.Entities;
 using Olga.Models;
+using Olga.Util;
 
 namespace Olga.Controllers
 {
@@ -290,7 +292,7 @@ namespace Olga.Controllers
                 var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
                 var _currentUser = GetCurrentUser();
 
-                procedureDto.ProductId = id;
+                procedureDto.ProductId = (int)productId;
                 ViewBag.Country = product.Country;
                 ViewBag.Product = product;
                 ViewBag.User = _currentUser;
@@ -305,34 +307,45 @@ namespace Olga.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditProcedureFiles(IEnumerable<HttpPostedFileBase> uploads, string procedureDocsType, string procedureId, string productId)
+        [ValidateAntiForgeryToken]
+        public void EditProcedureFiles(IEnumerable<HttpPostedFileBase> uploads, string procedureDocsType, string procedureId, string productId)
         {
             if (!ModelState.IsValid)
             {
                 CreateError();
-                return View("Error");
             }
             try
             {
+                if (uploads == null) return;
                 var targetFolder = Server.MapPath($"~/Upload/Documents/Procedures/");
 
                 foreach (var file in uploads)
                 {
-                    if (file == null) continue;
+                    if (file == null || file.ContentLength <= 0) continue;
                     var fileTrimmName = file.FileName.Replace(",", "_");
                     var localFileName =
                         $"{Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{Path.GetExtension(fileTrimmName)}";
                     var targetPath = Path.Combine(targetFolder, localFileName);
                     file.SaveAs(targetPath);
+                    
+                    var procId = int.Parse(procedureId);
+                    var prodId = int.Parse(productId);
+                    var procDocType = int.Parse(procedureDocsType);
+                    var doc = new ProcedureDocument()
+                    {
+                        PathToDocument = localFileName,
+                        ProcedureId = procId,
+                        ProcedureDocsType = (ProcedureDocsType)procDocType
+                    };
+                    var procedure = _procedureService.GetItem(procId);
+                    procedure.ProcedureDocuments.Add(doc);
+                    _procedureService.Update(procedure);
                 }
 
-                TempData["Success"] = Resources.Messages.FilesDownoadSuccess;
-                return RedirectToAction("EditProcedureFiles", new { id = 0 });
             }
             catch (Exception ex)
             {
-                @ViewBag.Error = ex.ToString();
-                return View("Error");
+                Logger.Log.Error($"{ex}");
             }
         }
 
@@ -353,7 +366,7 @@ namespace Olga.Controllers
                     errorMessage.Append(error.Exception.Message);
                 }
             }
-            @ViewBag.Error = errorMessage.ToString();
+            Logger.Log.Error($"{errorMessage}");
         }
     }
 }

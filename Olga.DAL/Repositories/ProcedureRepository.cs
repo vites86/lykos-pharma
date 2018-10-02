@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Olga.DAL.EF;
@@ -42,6 +43,27 @@ namespace Olga.DAL.Repositories
             existingProcedure.Comments = item.Comments;
             existingProcedure.ProcedureType = item.ProcedureType;
             existingProcedure.SubmissionDate = item.SubmissionDate;
+
+            foreach (var document in item.ProcedureDocuments)
+            {
+                var res = existingProcedure.ProcedureDocuments.FirstOrDefault(a => a.PathToDocument.Equals(document.PathToDocument));
+                if (res != null) continue;
+                existingProcedure.ProcedureDocuments.Add(document);
+                Commit();
+            }
+        }
+
+        public void UpdateDocument(Procedure item)
+        {
+            var existingProcedure = db.Procedures.FirstOrDefault(a => a.Id == item.Id);
+            if (existingProcedure == null) return;
+            foreach (var document in item.ProcedureDocuments)
+            {
+                var res = existingProcedure.ProcedureDocuments.FirstOrDefault(a => a.PathToDocument.Equals(document.PathToDocument));
+                if(res==null) continue;
+                existingProcedure.ProcedureDocuments.Add(document);
+                Commit();
+            }
         }
 
         public void Delete(int id)

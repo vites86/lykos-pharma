@@ -25,6 +25,7 @@ namespace Olga.BLL.Interfaces
         //IEnumerable<ProcedureDTO> GetItems();
         IEnumerable<ProcedureDTO> GetItems(int productId);
         void Update(ProcedureDTO procedure);
+        //void UpdateDocument(ProcedureDTO procedure);
     }
 
     public interface IApprDocsType : IBase<ApprDocsTypeDTO>
