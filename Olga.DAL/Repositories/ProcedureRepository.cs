@@ -49,8 +49,17 @@ namespace Olga.DAL.Repositories
                 var res = existingProcedure.ProcedureDocuments.FirstOrDefault(a => a.PathToDocument.Equals(document.PathToDocument));
                 if (res != null) continue;
                 existingProcedure.ProcedureDocuments.Add(document);
-                Commit();
             }
+
+            var listOfDocs = existingProcedure.ProcedureDocuments.ToList();
+            foreach (var doc in listOfDocs)
+            {
+                var res = item.ProcedureDocuments.FirstOrDefault(a => a.PathToDocument.Equals(doc.PathToDocument));
+                if (res != null) continue;
+                existingProcedure.ProcedureDocuments.Remove(doc);
+                DeleteDocument(doc.Id);
+            }
+            Commit();
         }
 
         public void UpdateDocument(Procedure item)
@@ -66,11 +75,28 @@ namespace Olga.DAL.Repositories
             }
         }
 
+        public void DeleteDocument(int id)
+        {
+            var doc = db.ProcedureDocuments.FirstOrDefault(a => a.Id == id);
+            if (doc != null)
+            {
+                db.ProcedureDocuments.Remove(doc);
+            }
+            Commit();
+        }
+
         public void Delete(int id)
         {
             Procedure procedure = db.Procedures.Find(id);
             if (procedure != null)
+            {
+                var documents = procedure.ProcedureDocuments.ToList();
+                foreach (var doc in documents)
+                {
+                    DeleteDocument(doc.Id);
+                }
                 db.Procedures.Remove(procedure);
+            }
         }
 
         public void Commit()

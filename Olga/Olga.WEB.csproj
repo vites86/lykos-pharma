@@ -263,8 +263,11 @@
     <Content Include="Content\images\extentions\pdf.jpg" />
     <Content Include="Content\images\extentions\txt.jpg" />
     <Content Include="Content\images\extentions\xlsx.jpg" />
+    <Content Include="Content\images\loading-bg.png" />
+    <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\loading2.gif" />
     <Content Include="Content\images\locked.jpg" />
+    <Content Include="Content\images\remove.png" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
     <Content Include="Content\images\ui-icons_777620_256x240.png" />

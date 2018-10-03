@@ -206,6 +206,13 @@ namespace Olga.Controllers
             }
             try
             {
+                var procedureDocs = _procedureService.GetItem(id).ProcedureDocuments.ToList();
+                var targetFolder = Server.MapPath($"~/Upload/Documents/Procedures/");
+
+                foreach (var doc in procedureDocs)
+                {
+                    DeleteFile(doc.PathToDocument, targetFolder);
+                }
                 _procedureService.DeleteItem(id);
                 _procedureService.Commit();
 
@@ -329,7 +336,6 @@ namespace Olga.Controllers
                     file.SaveAs(targetPath);
                     
                     var procId = int.Parse(procedureId);
-                    var prodId = int.Parse(productId);
                     var procDocType = int.Parse(procedureDocsType);
                     var doc = new ProcedureDocument()
                     {
@@ -350,11 +356,23 @@ namespace Olga.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveUploadedFile()
+        public void DeleteProcedureFile(string documentId, int procedureId)
         {
-            return Json(new { Message = "Page not ready yet" });
+            if (documentId == null || procedureId == 0 ) throw new ArgumentNullException();
+            var targetFolder = Server.MapPath($"~/Upload/Documents/Procedures/");
+            var procedure = _procedureService.GetItem(procedureId);
+            var documentID = int.Parse(documentId);
+            var document = procedure.ProcedureDocuments.FirstOrDefault(a => a.Id == documentID);
+            var deleteRes = DeleteFile(document.PathToDocument, targetFolder);
+            if (deleteRes)
+            {
+                procedure.ProcedureDocuments.Remove(document);
+                _procedureService.Update(procedure);
+            }
+
         }
 
+        
         /*----------------------------------------------------------------------------*/
         public void CreateError()
         {
@@ -367,6 +385,26 @@ namespace Olga.Controllers
                 }
             }
             Logger.Log.Error($"{errorMessage}");
+        }
+
+        public bool DeleteFile(string fileName, string targetFolder)
+        {
+            try
+            {
+                var targetPath = Path.Combine(targetFolder, fileName);
+                if (System.IO.File.Exists(targetPath))
+                {
+                    System.IO.File.Delete($"{targetPath}");
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Log.Error(e.Message);
+                return false;
+            }
+            
+
         }
     }
 }

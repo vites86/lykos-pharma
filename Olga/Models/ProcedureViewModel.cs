@@ -58,5 +58,8 @@ namespace Olga.Models
         public ProcedureType ProcedureType { get; set; }
 
         public int? ProductId { get; set; }
+
+        public List<ProcedureDocument> ProcedureDocuments { get; set; }
+
     }
 }

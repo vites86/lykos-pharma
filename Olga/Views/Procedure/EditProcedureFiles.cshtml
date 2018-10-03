@@ -17,9 +17,10 @@
             <span>@ViewBag.Product.Strength</span><br />
             <span>@ViewBag.Product.MarketingAuthorizNumber</span><br />
             <span>@ViewBag.Product.ProductCode</span><br />
-
+            <div id="load" class="load" align="center" style="padding-left: 40px;">
+                <img src="~/Content/images/loading.gif" width="28" height="20" /> Loading...
+            </div>
         </div>
-
 
         <br />
         <br />
@@ -30,24 +31,35 @@
                     {
                         switch (period)
                         {
-                            case ProcedureDocsType.ObtainedFromM:
-                                <span>Obtained from MAH</span>
+                            case ProcedureDocsType.DossierObtainedFromM:
+                                <span>Dossier Obtained from MAH</span>
                                 foreach (var document in Model.ProcedureDocuments)
                                 {
-                                    if (document.ProcedureDocsType == ProcedureDocsType.ObtainedFromM)
+                                    if (document.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM)
                                     {
-                                        <br /><br /><a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+
+                                        <br /><br />
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
                                     }
                                 }
                                 <hr />
                                 break;
-                            case ProcedureDocsType.SubmittedToAuth:
-                                <span>Submitted to Authority</span>
+                            case ProcedureDocsType.DossierSubmittedToAuth:
+                                <span>Dossier Submitted to Authority</span>
                                 foreach (var document in Model.ProcedureDocuments)
                                 {
-                                    if (document.ProcedureDocsType == ProcedureDocsType.SubmittedToAuth)
+                                    if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
                                     {
-                                        <br /><br /><a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                        <br /><br />
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
                                     }
                                 }
                                 <hr />
@@ -58,7 +70,12 @@
                                 {
                                     if (document.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth)
                                     {
-                                        <br /><br /><a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                        <br /><br />
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
                                     }
                                 }
                                 <hr />
@@ -69,18 +86,12 @@
                                 {
                                     if (document.ProcedureDocsType == ProcedureDocsType.RemarksToAuth)
                                     {
-                                        <br /><br /><a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
-                                    }
-                                }
-                                <hr />
-                                break;
-                            default:
-                                <span>@period</span>
-                                foreach (var document in Model.ProcedureDocuments)
-                                {
-                                    if (document.ProcedureDocsType == ProcedureDocsType.Dossier)
-                                    {
-                                        <br /><br /><a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
+                                        <br /><br />
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
                                     }
                                 }
                                 <hr />
@@ -93,7 +104,6 @@
             <div class="row">
                 <div class="col-md-10">
                     <h3>Choose file to download:</h3>
-                    @*@using (Html.BeginForm("EditProcedureFiles", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "documentsGroup", LoadingElementId = "loading", LoadingElementDuration = 1000 }))*@
                     @using (Html.BeginForm("EditProcedureFiles", "Procedure"))
                     {
                         @Html.AntiForgeryToken()
@@ -115,8 +125,6 @@
                                 @Html.Label("Document sources:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
                             </div>
                             <div class="col-md-8">
-                                @*Browse for file ...<input type="file" name="uploads" /><br><br>*@
-                                @*Browse for file ...<input type="file" name="uploads" /><br><br>*@
                                 <label id="FileLable" class="btn btn-default">Browse for file ...<input type="file" id="uploads" name="uploads" onchange="getFileData(this);" hidden /></label>
                                 <label style="margin-left: 20px;" id="choosenFile" name="choosenFile" />
                             </div>
@@ -221,7 +229,7 @@
                 $('#FileLable').css('background-color', 'lightcoral');
                 toastr.error("Please select a Document to download!");
                 console.log("no file chosen");
-            }else {
+            } else {
                 $('#FileLable').css('background-color', 'lightgrey');
                 var file = myFile.files[0];
                 var filename = file.name;
@@ -242,6 +250,42 @@
         function timeRefresh(timeoutPeriod) {
             setTimeout("location.reload(true);", timeoutPeriod);
         }
+
+        $(document).ready(function() {
+            //$('#load').hide();
+            //document.getElementById(id).style.display = 'block';
+            document.getElementById('load').style.visibility = "hidden";
+        });
+
+        $(function() {
+            $(".delete").click(function() {
+                var commentContainer = $(this).parent();
+                var link = '@Url.Action("DeleteProcedureFile", "Procedure")';
+                var documentId = $(this).attr("id");
+                var procedureId = $('#procedureId').val();
+                console.log("documentId = " + documentId);
+                console.log("procedureId = " + procedureId);
+
+                $.ajax({
+                    type: "POST",
+                    url: link,
+                    data: { documentId: documentId, procedureId: procedureId },
+                    cache: false,
+                    beforeSend: function() {
+                        $('#load').show();
+                        document.getElementById('load').style.visibility = "visible";
+                        toastr.info("Wait a moment! File deleting...");},
+                    success: function() {
+                        commentContainer.slideUp('slow', function() { $(this).remove(); });
+                        $('#load').fadeOut();
+                        document.getElementById('load').style.visibility = "hidden";
+                        console.log("deleted success!");
+                        toastr.info("File deleted successfuly!");
+                    }
+                });
+                return false;
+            });
+        });
     </script>
 }
 <style>
@@ -283,5 +327,45 @@
         display: inline-block;
         top: 3px;
         left: 48%;
+    }
+
+    /*delete files*/
+    #load {
+        position: absolute;
+        left: 225px;
+        background-image: url(~/Content/images/loading-bg.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 159px;
+        color: #999;
+        font-size: 18px;
+        font-family: Arial, Helvetica, sans-serif;
+        height: 40px;
+        font-weight: 300;
+        padding-top: 14px;
+        top: 23px;
+    }
+
+   
+    .delete {
+        /*margin-top: 7px;*/
+        /*float: left;*/
+        margin-left: 30px;
+    }
+
+    a.delete {
+        padding: 3px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #C00;
+    }
+        a.delete:hover {
+            background-color: #900;
+            color: #FFF;
+        }
+    .load {
+
     }
 </style>

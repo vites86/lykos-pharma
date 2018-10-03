@@ -150,7 +150,7 @@ namespace Olga
                 cfg.CreateMap<ProcedureEditModel, ProcedureDTO>()
                 .ForMember(x => x.ProductId, o => o.Ignore())
                 .ForMember(x => x.Product, o => o.Ignore())
-                .ForMember(x => x.ProcedureDocuments, o => o.Ignore())
+                //.ForMember(x => x.ProcedureDocuments, o => o.Ignore())
                 ;
 
 

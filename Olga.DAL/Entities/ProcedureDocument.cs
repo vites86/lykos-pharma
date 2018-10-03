@@ -22,9 +22,9 @@ namespace Olga.DAL.Entities
 
     public enum ProcedureDocsType
     {
-        Dossier,
-        ObtainedFromM,
-        SubmittedToAuth,
+        //Dossier,
+        DossierObtainedFromM,
+        DossierSubmittedToAuth,
         RemarksFromAuth,
         RemarksToAuth
     }

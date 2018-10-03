@@ -53,22 +53,22 @@
                                     {
                                         switch (period)
                                         {
-                                            case ProcedureDocsType.ObtainedFromM:
-                                                <span> Obtained from MAH</span>
+                                            case ProcedureDocsType.DossierObtainedFromM:
+                                    <span>Dossier Obtained from MAH</span>
                                                 foreach (var document in Model[i].ProcedureDocuments)
                                                 {
-                                                    if (document.ProcedureDocsType == ProcedureDocsType.ObtainedFromM)
+                                                    if (document.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM)
                                                     {
                                                         <br /><br /><a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
                                                     }
                                                 }
                                                 <hr />
                                                 break;
-                                            case ProcedureDocsType.SubmittedToAuth:
-                                                <span>Submitted to Authority</span>
+                                            case ProcedureDocsType.DossierSubmittedToAuth:
+                                                <span>Dossier Submitted to Authority</span>
                                                 foreach (var document in Model[i].ProcedureDocuments)
                                                 {
-                                                    if (document.ProcedureDocsType == ProcedureDocsType.SubmittedToAuth)
+                                                    if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
                                                     {
                                                         <br /><br /><a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a><br />
                                                     }
@@ -97,7 +97,7 @@
                                                 }
                                                 <hr />
                                                 break;
-                                            default:
+                                            @*default:
                                                 <span>@period</span>
                                                 foreach (var document in Model[i].ProcedureDocuments)
                                                 {
@@ -107,7 +107,7 @@
                                                     }
                                                 }
                                                 <hr />
-                                                break;
+                                                break;*@
                                         }
 
                                     }

@@ -65,6 +65,12 @@ namespace Olga.BLL.Services
             Database.Procedures.Update(procedure);
         }
 
-        
+        public void DeleteDocument(ProcedureDTO procedureDto)
+        {
+            var procedure = Mapper.Map<ProcedureDTO, Procedure>(procedureDto);
+            Database.Procedures.Update(procedure);
+        }
+
+
     }
 }
