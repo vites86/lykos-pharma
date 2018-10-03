@@ -1,22 +1,24 @@
 ﻿<div id="marketingAuthorizNumbers">
     <h3>Marketing Authoriz. Numbers: </h3>
+    <span id="loading3" style="display: none; color: Red; font-weight: bold;">Loading...</span>
     <table class="table">
         @foreach (var item in @ViewBag.MarketingAuthorizNumbers)
         {
+            var loadingElement = $"loading{@item.Id}";
             <tr>
                 <td>
                     @using (Ajax.BeginForm("DeleteMarketingAuthorizNumber", new AjaxOptions
                     {
                         UpdateTargetId = "marketingAuthorizNumbers",
-                        LoadingElementId = "loading",
+                        LoadingElementId = @loadingElement,
                         LoadingElementDuration = 1000
                     }))
                     {
                         <input type="hidden" id="Id" name="Id" value="@item.Id" />
                         <input type="hidden" id="CountryId" name="CountryId" value="@item.CountryId" />
                         <span>@item.Number</span>
+                        <span id="@loadingElement" style="display: none; color: Red; font-weight: bold; margin-left: 10px;">Loading...</span>
                         <input type="submit" value="Delete" style="float: right" />
-                        <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
                     }
                 </td>
             </tr>

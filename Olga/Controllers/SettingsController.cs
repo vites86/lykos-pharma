@@ -132,9 +132,8 @@ namespace Olga.Controllers
             {
                 var userName = User.Identity.Name;
                 Logger.Log.Error($"{userName}: DeleteProductName() {Id} ");
-
                 @ViewBag.Error = ex.Message;
-                return View("Error");
+                return RedirectToAction("Error", "Home", new { message = ex.Message });
             }
         }
 
@@ -210,8 +209,8 @@ namespace Olga.Controllers
                 var userName = User.Identity.Name;
                 Logger.Log.Error($"{userName}: DeleteProductCode() {Id} ");
 
-                @ViewBag.Error = ex.Message;
-                return View("Error");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home", new { message = ex.Message });
             }
         }
 
@@ -339,7 +338,7 @@ namespace Olga.Controllers
                 Logger.Log.Error($"{userName}: DeletePackSize() {Id} ");
 
                 @ViewBag.Error = ex.Message;
-                return View("Error");
+                return RedirectToAction("Error", "Home", new { message = ex.Message });
             }
         }
 

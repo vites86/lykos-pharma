@@ -50,8 +50,16 @@ namespace Olga.DAL.Repositories
         public void Delete(int id)
         {
             PharmaceuticalForm pharmaceuticalForm = db.PharmaceuticalForms.Find(id);
-            if (pharmaceuticalForm != null)
-                db.PharmaceuticalForms.Remove(pharmaceuticalForm);
+            if (pharmaceuticalForm == null) return;
+            var products = db.Products.Where(a => a.PharmaceuticalFormId == id);
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.PharmaceuticalForm = null;
+                }
+            }
+            db.PharmaceuticalForms.Remove(pharmaceuticalForm);
         }
 
         public void Commit()

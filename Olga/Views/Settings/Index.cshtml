@@ -13,14 +13,14 @@
             @using (Ajax.BeginForm("AddProductName", new AjaxOptions
             {
                 UpdateTargetId = "product_names",
-                LoadingElementId = "loading",
+                LoadingElementId = "loadingP",
                 LoadingElementDuration = 1000
             }))
             {
                 <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
                 <input type="text" id="Name" name="Name" />
                 <input type="submit" value="Add Product Name" />
-                <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                <span id="loadingP" style="display: none; color: Red; font-weight: bold;">Loading...</span>
             }
         </div>
         <div class="col-md-4">
@@ -30,14 +30,14 @@
             @using (Ajax.BeginForm("AddProductCode", new AjaxOptions
             {
                 UpdateTargetId = "product_codes",
-                LoadingElementId = "loading",
+                LoadingElementId = "loadingC",
                 LoadingElementDuration = 1000
             }))
             {
                 <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
                 <input type="text" id="Code" name="Code" />
                 <input type="submit" value="Add Product Code" />
-                <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                <span id="loadingC" style="display: none; color: Red; font-weight: bold;">Loading...</span>
             }
         </div>
         <div class="col-md-4">
@@ -47,14 +47,14 @@
             @using (Ajax.BeginForm("AddMarketingAuthorizNumber", new AjaxOptions
             {
                 UpdateTargetId = "marketingAuthorizNumbers",
-                LoadingElementId = "loading",
+                LoadingElementId = "loadingN",
                 LoadingElementDuration = 1000
             }))
             {
                 <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
                 <input type="text" id="Number" name="Number" />
                 <input type="submit" value="Add Mark.Author.№" />
-                <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                <span id="loadingN" style="display: none; color: Red; font-weight: bold;">Loading...</span>
             }
         </div>
     </div>
@@ -67,14 +67,14 @@
                 @using (Ajax.BeginForm("AddPackSize", new AjaxOptions
                 {
                     UpdateTargetId = "packSizes",
-                    LoadingElementId = "loading",
+                    LoadingElementId = "loadingS",
                     LoadingElementDuration = 1000
                 }))
                 {
                     <input type="hidden" id="CountryId" name="CountryId" value="@Model.Id" />
                     <input type="text" id="Size" name="Size" />
                     <input type="submit" value="Add Pack Size" />
-                    <span id="loading" style="display: none; color: Red; font-weight: bold;">Loading...</span>
+                    <span id="loadingS" style="display: none; color: Red; font-weight: bold;">Loading...</span>
                 }
             </div>
         </div>

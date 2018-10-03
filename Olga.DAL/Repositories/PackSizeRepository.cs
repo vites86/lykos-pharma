@@ -50,8 +50,16 @@ namespace Olga.DAL.Repositories
         public void Delete(int id)
         {
             PackSize packSize = db.PackSizes.Find(id);
-            if (packSize != null)
-                db.PackSizes.Remove(packSize);
+            if (packSize == null) return;
+            var products = db.Products.Where(a => a.PackSizeId == id);
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.PackSize = null;
+                }
+            }
+            db.PackSizes.Remove(packSize);
         }
         public void Commit()
         {

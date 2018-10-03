@@ -85,7 +85,8 @@ namespace Olga.Controllers
                 errorMessage = $"{country.Name} don't have Products! So there are no Procedures to work with!";
                 return false;
             }
-            List<SelectListItem> products = allProducts.Select(n => new SelectListItem { Text = n.ProductName.Name, Value = n.Id.ToString() }).ToList();
+            List<SelectListItem> products = 
+                allProducts.Select(n => new SelectListItem { Text = n.ProductName?.Name ?? "No name", Value = n.Id.ToString() }).ToList();
             @ViewBag.Products = products;
             return true;
         }
@@ -96,7 +97,10 @@ namespace Olga.Controllers
             var allProcedures = new List<ProcedureViewModel>();
             foreach (var product in allProducts)
             {
-                var procedures = Mapper.Map<IEnumerable<ProcedureDTO>, IEnumerable<ProcedureViewModel>>(_procedureService.GetItems(product.Id)).ToList();
+                var proc = _procedureService.GetItems().Where(a => a.ProductId == product.Id);
+                var procedureDtos = proc as ProcedureDTO[] ?? proc.ToArray();
+                if(!procedureDtos.Any()) continue;
+                var procedures = Mapper.Map<IEnumerable<ProcedureDTO>, IEnumerable<ProcedureViewModel>>(procedureDtos).ToList();
                 allProcedures.AddRange(procedures);
             }
             return allProcedures;

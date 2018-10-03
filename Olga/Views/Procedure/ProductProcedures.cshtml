@@ -15,13 +15,12 @@
         <div class="alert-success" style="width: 100%">
             <h1>@ViewBag.Country</h1>
         </div>
-        <h2>Procedures for:</h2>
+        <h2>Procedures for:<span style="color: blue"> @ViewBag.Product.ProductName</span></h2>
         <div class="product_span">
-            <span>@ViewBag.Product.ProductName</span><br />
-            <span>@ViewBag.Product.PharmaceuticalForm</span><br />
-            <span>@ViewBag.Product.ProductCode</span><br />
-            <span>@ViewBag.Product.Strength</span><br />
-            <span>@ViewBag.Product.MarketingAuthorizNumber</span><br />
+            <span>@ViewBag.Product.PharmaceuticalForm</span>
+            <span>@ViewBag.Product.ProductCode</span>
+            <span>@ViewBag.Product.Strength</span>
+            <span>@ViewBag.Product.MarketingAuthorizNumber</span>
         </div>
         @{
             if (Model.Count != 0)
@@ -171,7 +170,6 @@
 </div>
 <style>
     .product_span span {
-        margin-top: 15px;
         color: darkcyan;
         font-size: 20px;
     }

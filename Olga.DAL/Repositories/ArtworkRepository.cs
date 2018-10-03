@@ -50,8 +50,16 @@ namespace Olga.DAL.Repositories
         public void Delete(int id)
         {
             Artwork artwork = db.Artworks.Find(id);
-            if (artwork != null)
-                db.Artworks.Remove(artwork);
+            if (artwork == null) return;
+            var products = db.Products.Where(a => a.Artworks.Contains(artwork));
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.Artworks.Remove(artwork);
+                }
+            }
+            db.Artworks.Remove(artwork);
         }
         public void Commit()
         {

@@ -51,8 +51,16 @@ namespace Olga.DAL.Repositories
         public void Delete(int id)
         {
             ProductName productName = db.ProductNames.Find(id);
-            if (productName != null)
-                db.ProductNames.Remove(productName);
+            if (productName == null) return;
+            var products = db.Products.Where(a => a.ProductNameId == id);
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.ProductName = null;
+                }
+            }
+            db.ProductNames.Remove(productName);
         }
 
         public void Commit()

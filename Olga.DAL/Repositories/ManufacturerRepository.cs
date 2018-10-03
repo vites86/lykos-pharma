@@ -49,9 +49,19 @@ namespace Olga.DAL.Repositories
 
         public void Delete(int id)
         {
+
             Manufacturer manufacturer = db.Manufacturers.Find(id);
-            if (manufacturer != null)
-                db.Manufacturers.Remove(manufacturer);
+
+            if (manufacturer == null) return;
+            var products = db.Products.Where(a=>a.Manufacturers.Contains(manufacturer));
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.Manufacturers.Remove(manufacturer);
+                }
+            }
+            db.Manufacturers.Remove(manufacturer);
         }
         public void Commit()
         {

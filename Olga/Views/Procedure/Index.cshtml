@@ -32,12 +32,20 @@
                             <td>@Model[i].Comments</td>
                             <td>@Model[i].Product.ProductName @Model[i].Product.ProductCode</td>
                             <td>
-                                @Html.ActionLink("   ", "Index", "Procedure", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new { @class = "glyphicon glyphicon-pencil" }) |
-                                @Html.ActionLink("   ", "Delete", "Procedure", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new
-                           {
-                               @class = "glyphicon glyphicon-trash text-warning",
-                               onclick = "return confirm('Are you sure you wish to delete this procedure?');"
-                           })
+                                <span>
+                                    @Html.ActionLink("   ", "EditProcedure", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
+                                    {@class = "glyphicon glyphicon-pencil", @target = "_blank"})
+                                </span>
+                                <br/> <br/>
+                                @Html.ActionLink("   ", "EditProcedureFiles", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
+                                {@class = "glyphicon glyphicon-file", @target = "_blank"})<br /><br />
+                                <span>
+                                    @Html.ActionLink("   ", "DeleteProcedure", "Procedure", new { id = @Model[i].Id, productId = @Model[i].ProductId }, new
+                                    {
+                                        @class = "glyphicon glyphicon-trash text-warning",
+                                        onclick = "return confirm('Are you sure you wish to delete this procedure?');"
+                                    })
+                                </span>
                             </td>
                         </tr>
                                         }
@@ -53,7 +61,6 @@
     }
     <hr />
     <div>
-        @Html.ActionLink("Create procedure", "CreateProcedure", "Procedure", new { id = @ViewBag.Product.Id }, new { @class = "btn btn-primary", data_icon = "gear" })
     </div>
     <div class="empty"></div>
 </div>

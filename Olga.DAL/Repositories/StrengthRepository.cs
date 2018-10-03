@@ -50,8 +50,16 @@ namespace Olga.DAL.Repositories
         public void Delete(int id)
         {
             Strength strength = db.Strengths.Find(id);
-            if (strength != null)
-                db.Strengths.Remove(strength);
+            if (strength == null) return;
+            var products = db.Products.Where(a => a.StrengthId == id);
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.Strength = null;
+                }
+            }
+            db.Strengths.Remove(strength);
         }
         public void Commit()
         {

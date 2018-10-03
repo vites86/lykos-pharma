@@ -50,8 +50,16 @@ namespace Olga.DAL.Repositories
         public void Delete(int id)
         {
             MarketingAuthorizHolder marketingAuthorizHolder = db.MarketingAuthorizHolders.Find(id);
-            if (marketingAuthorizHolder != null)
-                db.MarketingAuthorizHolders.Remove(marketingAuthorizHolder);
+            if (marketingAuthorizHolder == null) return;
+            var products = db.Products.Where(a => a.MarketingAuthorizHolderId == id);
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.MarketingAuthorizHolderId = null;
+                }
+            }
+            db.MarketingAuthorizHolders.Remove(marketingAuthorizHolder);
         }
         public void Commit()
         {

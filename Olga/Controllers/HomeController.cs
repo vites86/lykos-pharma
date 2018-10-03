@@ -63,5 +63,11 @@ namespace Olga.Controllers
                 return new UserViewModel();
             }
         }
+
+        public ActionResult Error(string message)
+        {
+            ViewBag.Error = message;
+            return View();
+        }
     }
 }

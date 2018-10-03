@@ -50,8 +50,17 @@ namespace Olga.DAL.Repositories
         public void Delete(int id)
         {
             MarketingAuthorizNumber marketingAuthorizNumber = db.MarketingAuthorizNumbers.Find(id);
-            if (marketingAuthorizNumber != null)
-                db.MarketingAuthorizNumbers.Remove(marketingAuthorizNumber);
+            if (marketingAuthorizNumber == null) return;
+            var products = db.Products.Where(a => a.MarketingAuthorizNumberId == id);
+            if (products.Any())
+            {
+                foreach (var product in products)
+                {
+                    product.MarketingAuthorizNumber = null;
+                }
+            }
+            db.MarketingAuthorizNumbers.Remove(marketingAuthorizNumber);
+
         }
         public void Commit()
         {
