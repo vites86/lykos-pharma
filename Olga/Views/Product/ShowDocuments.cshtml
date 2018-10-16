@@ -86,7 +86,7 @@
 
                                             <label class="control-label text-info">
                                                 <span class="glyphicon glyphicon-file" />
-                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
+                                                <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">
                                                     @fileName
                                                 </a>
                                             </label>
@@ -134,7 +134,7 @@
                                                 var folder = $"Artwork/{@artworkId}";
                                              
                                                 <label class="control-label text-info"><span class="glyphicon glyphicon-file"/>
-                                                    <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
+                                                    <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">
                                                         @fileName
                                                     </a></label>
                                             }
@@ -202,6 +202,25 @@
     <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
     <script src='@Url.Content("~/Scripts/Products/products.js")'></script>
     <script src='@Url.Content("~/Scripts/Products/artworks.js")'></script>
+    <script>
+        function doesFileExist(_urlToFile) {
+            var encodedUrl = _urlToFile.replace("#","%23");
+            console.log('encodedUrl =' + encodedUrl);
+            var domain = document.location.origin;
+            var urlToFile = domain + encodedUrl;
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', urlToFile, false);
+            xhr.send();
+
+            if (xhr.status == "404") {
+                console.log("File /" + urlToFile +"/ doesn't exist");
+                toastr.error("File doesn't exist");
+            } else {
+                toastr.info("Opening/Downloading file...");
+                console.log("File exists");
+                window.open(urlToFile, '_blank');
+            }
+        }</script>
 }
 
 @functions {
@@ -233,7 +252,7 @@
         {
             docImage = "/Content/images/extentions/ai.jpg";
         }
-        if (ext.Equals(".docx") || ext.Equals(".doc"))
+        if (ext.Equals(".docx") || ext.Equals(".doc") || ext.Equals(".DOC"))
         {
             docImage = "/Content/images/extentions/docx.jpg";
         }

@@ -123,7 +123,9 @@
         }
         var alt = fileName.substr(fileName.indexOf("_") + 2, fileName.lastIndexOf("_")-3).trim();
         var innerHtml =
-            '<div name="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').trim() + '" id="showArtworkImageBlock_' + fileName.replace(".", "").replace(/\s+/g, '').trim() + '" class="show_blockOfImage">' +
+            '<div ' +
+            'name="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() +'" ' +
+            'id="showArtworkImageBlock_' + fileName.replace(".", "").replace(/\s+/g, '').replace(/#/g, '№').trim() + '" class="show_blockOfImage">' +
                 '<div>' +
                     '<img class="shadow" style="height: 50px;" src="' + imagePath + '" alt="' + alt + '" tooltip ="' + alt + '" data-toggle="tooltip" title="' + alt + '" data-placement="top" />' +
                 '</div>' +
@@ -157,16 +159,16 @@
             var artworkId = fileName.substr(0, fileName.indexOf("__"));
             console.log('artworkId = ' + artworkId);
             console.log('#delete__files click() = ' + fileName);
-            console.log('artworkId = ' + artworkId);
-            var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').trim();
-            var blockElementWithImage = $('#showArtworkImageBlock_' + trimFileName);
 
-            var stringElement = $('#DocumentImagesListStringArtworks');
-            var stringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
+            // hide Image from page
+            var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim();
+            var blockElementWithImage = $('#showArtworkImageBlock_' + trimFileName);
+            console.log('showImageBlock = ' + 'showArtworkImageBlock_' + trimFileName);
             blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
 
-            console.log('showImageBlock = ' + 'showArtworkImageBlock_' + trimFileName);
-
+            // delete file from HiddenLists
+            var stringElement = $('#DocumentImagesListStringArtworks');
+            var stringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
             deleteArtworkFileFromHiddenList(fileName, stringElement);
             deleteArtworkFileFromHiddenList(fileName, stringElement2);
 

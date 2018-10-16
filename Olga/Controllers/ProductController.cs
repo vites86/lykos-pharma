@@ -420,10 +420,11 @@ namespace Olga.Controllers
                     HttpPostedFileBase file = Request.Files[fileName];
                     if (file != null && file.ContentLength > 0)
                     {
-                        var fileTrimmName = file.FileName.Replace(",", "_");
+                        var fileTrimmName = file.FileName.Replace(",", "_").Replace("#", "№").Replace(" ", "_");
                         apprFolder = GetApprFolder(apprId);
                         var targetFolder = Server.MapPath($"~/Upload/Documents/{apprFolder}");
-                        var localFileName = String.Format("{0}_{1}{2}", apprId + "__" + Path.GetFileNameWithoutExtension(fileTrimmName), Guid.NewGuid().ToString().Substring(0,6), Path.GetExtension(fileTrimmName));
+                        var localFileName =
+                            $"{apprId + "__" + Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{Path.GetExtension(fileTrimmName)}";
                         targetPath = Path.Combine(targetFolder, localFileName);
                         fName = localFileName;
                         file.SaveAs(targetPath);
@@ -459,11 +460,12 @@ namespace Olga.Controllers
                     HttpPostedFileBase file = Request.Files[fileName];
                     if (file != null && file.ContentLength > 0)
                     {
+                        var fileTrimmName = file.FileName.Replace(",", "_").Replace("#", "№").Replace(" ", "_");
                         artworkFolder = $"Artwork/{artworkId}";
                         var targetFolder = Server.MapPath($"~/Upload/Documents/{artworkFolder}");
-                        var id = artworkId != null ? artworkId.ToString() : "";
-                        //var localFileName = String.Format("document_{0}_{1}{2}", id, Guid.NewGuid(), Path.GetExtension(file.FileName));
-                        var localFileName = String.Format("{0}_{1}{2}", artworkId + "__" + Path.GetFileNameWithoutExtension(file.FileName), Guid.NewGuid().ToString().Substring(0, 6), Path.GetExtension(file.FileName));
+                        var id = artworkId != null ? artworkId : "";
+                        var localFileName =
+                            $"{artworkId + "__" + Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{Path.GetExtension(file.FileName)}";
                         targetPath = Path.Combine(targetFolder, localFileName);
                         fName = localFileName;
                         file.SaveAs(targetPath);

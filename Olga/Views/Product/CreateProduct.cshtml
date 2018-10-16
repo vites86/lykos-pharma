@@ -119,7 +119,7 @@
                                                             <img class="shadow" style="height: 50px;" src="@docImagePath" onmouseover="showFileNameInToast('@fileName');"/>
                                                         </a><br/>
                                                         <div style="margin-top:5px; line-height: 20px;" >
-                                                            <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
+                                                            <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">Посмотреть</a>
                                                         </div>
                                                         <div style="margin-top:0px; line-height: 20px;">
                                                             <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Удалить" />
@@ -189,7 +189,7 @@
                                                     var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
                                                     var folder = String.Format("Artwork/{0}", @artworkId.ToString());
 
-                                                    var blockName = fileName.Replace(".", "").Replace(" ", "");
+                                                    var blockName = fileName.Replace(".", "").Replace(" ", "").Replace("#", "№");
 
                                                     var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
 
@@ -198,7 +198,7 @@
                                                             <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" onmouseover="showFileNameInToast('@fileName');"/>
                                                         </a>
                                                         <div style="margin-top:5px; line-height: 20px;">
-                                                            <a href="/Upload/Documents/@folder/@fileName" target="_blank">Посмотреть</a>
+                                                            <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">Посмотреть</a>
                                                         </div>
                                                         <div style="margin-top:0px; line-height: 20px;">
                                                             <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Удалить" />
@@ -341,8 +341,25 @@
         function showFileNameInToast(fileName) {
             toastr.info(fileName);
         }
+    
+    function doesFileExist(_urlToFile) {
+        var encodedUrl = _urlToFile.replace("#","%23");
+        console.log('encodedUrl =' + encodedUrl);
+        var domain = document.location.origin;
+        var urlToFile = domain + encodedUrl;
+        var xhr = new XMLHttpRequest();
+        xhr.open('HEAD', urlToFile, false);
+        xhr.send();
 
-    </script>
+        if (xhr.status == "404") {
+            console.log("File /" + urlToFile +"/ doesn't exist");
+            toastr.error("File doesn't exist");
+        } else {
+            toastr.info("Opening/Downloading file...");
+            console.log("File exists");
+            window.open(urlToFile, '_blank');
+        }
+    }</script>
 }
 
 @functions {
@@ -374,7 +391,7 @@
         {
             docImage = "/Content/images/extentions/ai.jpg";
         }
-        if (ext.Equals(".docx") || ext.Equals(".doc"))
+        if (ext.Equals(".docx") || ext.Equals(".doc") || ext.Equals(".DOC"))
         {
             docImage = "/Content/images/extentions/docx.jpg";
         }
