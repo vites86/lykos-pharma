@@ -22,7 +22,7 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class TableHead {
+    public class TableHead {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -81,7 +81,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Countries.
         /// </summary>
-        internal static string Countries {
+        public static string Countries {
             get {
                 return ResourceManager.GetString("Countries", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to ФИО.
         /// </summary>
-        internal static string FIO {
+        public static string FIO {
             get {
                 return ResourceManager.GetString("FIO", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Логин.
         /// </summary>
-        internal static string Login {
+        public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to ND/MQC access.
         /// </summary>
-        internal static string NcAccess {
+        public static string NcAccess {
             get {
                 return ResourceManager.GetString("NcAccess", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Rank.
         /// </summary>
-        internal static string Rank {
+        public static string Rank {
             get {
                 return ResourceManager.GetString("Rank", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Role.
         /// </summary>
-        internal static string Role {
+        public static string Role {
             get {
                 return ResourceManager.GetString("Role", resourceCulture);
             }

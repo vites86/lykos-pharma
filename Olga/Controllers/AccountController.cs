@@ -128,7 +128,7 @@ namespace Olga.Controllers
                 OperationDetails operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
                 {
-                    InitialiseSuccessRegisster(userDto);
+                    InitialiseSuccessRegister(userDto);
                     return RedirectToAction("Users", "Account");
                 }
                 ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
@@ -139,7 +139,7 @@ namespace Olga.Controllers
             return View(model);
         }
 
-        public void InitialiseSuccessRegisster(UserDTO userDto)
+        public void InitialiseSuccessRegister(UserDTO userDto)
         {
             var userName = User.Identity.Name;
             Logger.Log.Info($"{userName} registered {userDto.Email} ");

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Olga.BLL.Interfaces;
+using log4net;
 
 
 namespace Olga.BLL.Services
@@ -71,11 +72,12 @@ namespace Olga.BLL.Services
                     mail.To.Add(new MailAddress(DirectorMail));
                     mail.To.Add(new MailAddress(DeveloperMail));
                     await client.SendMailAsync(mail);
+                    LoggerService.Log.Info($"SendEmailAboutAddUpdateProduct(): {message.Body}");
                 }
             }
             catch (Exception ex)
             {
-                
+                LoggerService.Log.Error($"SendEmailAboutAddUpdateProduct(): {ex} ");
             }
         }
         

@@ -91,8 +91,8 @@ namespace Olga.Controllers
                 ViewBag.User = _currentUser;
                 if (productsDto.Count > 0)
                 {
-                    var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto);
-                    return View(products);
+                    var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto).OrderBy(a => a.ProductName);
+                    return View(products.ToList());
                 }
                 return View();
             }
