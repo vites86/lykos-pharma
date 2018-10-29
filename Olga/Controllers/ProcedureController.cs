@@ -317,6 +317,38 @@ namespace Olga.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult EditFiles(int id, int? productId, ProcedureDocsType procedureDocsType)
+        {
+            if (id == 0 || productId == 0)
+            {
+                @ViewBag.Error = nameof(id);
+                return View("Error");
+            }
+            try
+            {
+                var procedure = _procedureService.GetItem(id);
+                var procedureDto = Mapper.Map<ProcedureDTO, ProcedureViewModel>(procedure);
+
+                var productDto = _productService.GetProduct((int)productId);
+                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
+                var _currentUser = GetCurrentUser();
+
+                procedureDto.ProductId = (int)productId;
+                ViewBag.ProcedureDocsType = procedureDocsType;
+                ViewBag.Country = product.Country;
+                ViewBag.Product = product;
+                ViewBag.User = _currentUser;
+                ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
+                return View(procedureDto);
+            }
+            catch (Exception ex)
+            {
+                @ViewBag.Error = ex.ToString();
+                return View("Error");
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public void EditProcedureFiles(IEnumerable<HttpPostedFileBase> uploads, string procedureDocsType, string procedureId, string productId)

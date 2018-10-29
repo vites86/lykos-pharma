@@ -1,0 +1,351 @@
+﻿@{
+    ViewBag.Title = "EditProcedureFiles";
+}
+@using System.Web.Mvc.Html
+@using Olga.DAL.Entities
+@model Olga.Models.ProcedureViewModel
+
+<div>
+    <div class="row" style=" margin-left:  20px;margin-right: 10px;">
+        <div class="alert-success" style="width: 100%">
+            <h1>@ViewBag.Country</h1>
+        </div>
+        <h2>Update Procedure Files for:<span style="color: blue"> @ViewBag.Product.ProductName</span></h2>
+        <div class="product_span">
+            <span>@ViewBag.Product.PharmaceuticalForm</span>
+            <span>@ViewBag.Product.Strength</span>
+            <span>@ViewBag.Product.MarketingAuthorizNumber</span>
+            <span>@ViewBag.Product.ProductCode</span>
+            <span>@ViewBag.ProcedureDocsType</span>
+            <div id="load" class="load" align="center" style="padding-left: 40px;">
+                <img src="~/Content/images/loading.gif" width="28" height="20" /> Loading...
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <div class="form-group" id="documentsGroup" name="documentsGroup">
+            <div class="row">
+                <div class="col-md-10">
+                    @{
+                        switch (ViewBag.ProcedureDocsType)
+                        {
+                            case ProcedureDocsType.DossierObtainedFromM:
+                                <span>Dossier Obtained from MAH</span><br /><br />
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM)
+                                    {
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                            case ProcedureDocsType.DossierSubmittedToAuth:
+                                <span>Dossier Submitted to Authority</span><br /><br />
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
+                                    {
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                            case ProcedureDocsType.RemarksFromAuth:
+                                <span>Remarks obtained from Authority</span><br /><br />
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth)
+                                    {
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                            case ProcedureDocsType.RemarksToAuth:
+                                <span>Responses submitted to Authority</span><br /><br />
+                                foreach (var document in Model.ProcedureDocuments)
+                                {
+                                    if (document.ProcedureDocsType == ProcedureDocsType.RemarksToAuth)
+                                    {
+                                        <div>
+                                            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                            <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                        </div>
+                                        <br />
+                                    }
+                                }
+                                <hr />
+                                break;
+                        }
+
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <h3>Choose file to download:</h3>
+                    @using (Html.BeginForm("EditProcedureFiles", "Procedure"))
+                    {
+                        @Html.AntiForgeryToken()
+                        var procedureDocsTypeId = (int) ViewBag.ProcedureDocsType;
+                        <input type="hidden" id="procedureId" name="procedureId" value="@Model.Id" />
+                        <input type="hidden" id="productId" name="productId" value="@Model.ProductId" />
+                        <input type="hidden" id="procedureDocsType" name="procedureDocsType" value="@procedureDocsTypeId" />
+
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.Label("Document sources:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
+                            </div>
+                            <div class="col-md-8">
+                                <label id="FileLable" class="btn btn-default">Browse for file ...<input type="file" id="uploads" name="uploads" onchange="getFileData(this);" hidden /></label>
+                                <label style="margin-left: 20px;" id="choosenFile" name="choosenFile" />
+                            </div>
+                        </div><br /><br /><br />
+                        <div class="form-group">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-2 ">
+                                <input type="submit" value="Download" class="btn btn-info" />
+                            </div>
+                            <div class="col-md-6" style="padding-top: 5px; padding-bottom: 0px;">
+                                <div class="progress progress-striped">
+                                    <div class="progress-bar progress-bar-success">0%</div>
+                                </div>
+                            </div>
+                        </div><br /><br />
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                </div>
+            </div><br />
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+
+    <script>
+        (function() {
+
+            document.getElementById("choosenFile").innerHTML = "No file yet";
+
+            var bar = $('.progress-bar');
+            var barImage = $('#loading');
+            var percent = $('.progress-bar');
+            var status = $('#status');
+            $(".progress").hide();
+
+            $('form').ajaxForm({
+                beforeSend: function(e) {
+
+                    var fileInput = document.getElementById('uploads');
+
+                    if (!fileInput.files[0]) {
+                        $('#FileLable').css('background-color', 'lightcoral');
+                        console.log("no file chosen");
+                        toastr.error("Please select a file before clicking 'Load'!");
+                        e.preventDefault();
+                    }
+
+                    status.empty();
+                    var percentVal = '0%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                    console.log("beforeSend...");
+                    $("#loading").show();
+
+
+                },
+                uploadProgress: function(event, position, total, percentComplete) {
+                    $(".progress").show();
+                    var percentVal = percentComplete + '%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                    console.log("uploadProgress...");
+                },
+                success: function() {
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                    console.log("success downloading");
+                },
+                complete: function(xhr) {
+                    status.html(xhr.responseText);
+                    console.log("complete downloading");
+                    $(".progress").hide();
+                    $("#loading").hide();
+                    toastr.info("File downloaded successfuly!");
+                    timeRefresh(0);
+                }
+            });
+
+        })();
+
+        function getFileData(myFile) {
+            if (!myFile) {
+                $('#FileLable').css('background-color', 'lightcoral');
+                toastr.error("Please select a Document to download!");
+                console.log("no file chosen");
+            } else {
+                $('#FileLable').css('background-color', 'lightgrey');
+                var file = myFile.files[0];
+                var filename = file.name;
+                console.log("file chosen = " + filename);
+                document.getElementById("choosenFile").innerHTML = filename;
+            }
+        }
+        
+
+        function timeRefresh(timeoutPeriod) {
+            setTimeout("location.reload(true);", timeoutPeriod);
+        }
+
+        $(document).ready(function() {
+            //$('#load').hide();
+            //document.getElementById(id).style.display = 'block';
+            document.getElementById('load').style.visibility = "hidden";
+        });
+
+        $(function() {
+            $(".delete").click(function() {
+                var commentContainer = $(this).parent();
+                var link = '@Url.Action("DeleteProcedureFile", "Procedure")';
+                var documentId = $(this).attr("id");
+                var procedureId = $('#procedureId').val();
+                console.log("documentId = " + documentId);
+                console.log("procedureId = " + procedureId);
+
+                $.ajax({
+                    type: "POST",
+                    url: link,
+                    data: { documentId: documentId, procedureId: procedureId },
+                    cache: false,
+                    beforeSend: function() {
+                        $('#load').show();
+                        document.getElementById('load').style.visibility = "visible";
+                        toastr.info("Wait a moment! File deleting...");},
+                    success: function() {
+                        commentContainer.slideUp('slow', function() { $(this).remove(); });
+                        $('#load').fadeOut();
+                        document.getElementById('load').style.visibility = "hidden";
+                        console.log("deleted success!");
+                        toastr.info("File deleted successfuly!");
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+}
+<style>
+    [hidden] {
+        display: none !important;
+    }
+
+    .width_100 {
+        width: 100% !important;
+    }
+
+    form {
+        display: block;
+        margin: 20px auto;
+        background: #eee;
+        border-radius: 10px;
+        padding: 15px;
+        /*min-height: 400px;*/
+        height: auto;
+    }
+
+    .progress-bar {
+        position: relative;
+        width: 100%;
+        border: 1px solid #ddd;
+        padding: 1px;
+        border-radius: 3px;
+    }
+
+    .progress-bar-success {
+        background-color: #B4F5B4;
+        width: 0%;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .percent {
+        position: absolute;
+        display: inline-block;
+        top: 3px;
+        left: 48%;
+    }
+
+    /*delete files*/
+    #load {
+        position: absolute;
+        left: 225px;
+        background-image: url(~/Content/images/loading-bg.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 159px;
+        color: #999;
+        font-size: 18px;
+        font-family: Arial, Helvetica, sans-serif;
+        height: 40px;
+        font-weight: 300;
+        padding-top: 14px;
+        top: 23px;
+    }
+
+
+    .delete {
+        /*margin-top: 7px;*/
+        /*float: left;*/
+        margin-left: 30px;
+    }
+
+    a.delete {
+        padding: 3px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #C00;
+    }
+
+        a.delete:hover {
+            background-color: #900;
+            color: #FFF;
+        }
+
+    .load {
+    }
+
+    .product_span span {
+        color: darkcyan;
+        font-size: 20px;
+    }
+
+    span:empty {
+        height: 0px !important;
+    }
+</style>

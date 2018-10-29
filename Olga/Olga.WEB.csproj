@@ -236,6 +236,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\ProcedureDocsTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProcedureDocsTypes.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\TableHead.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5061,6 +5066,7 @@
     <Content Include="Views\Procedure\CreateProcedure.cshtml" />
     <Content Include="Views\Procedure\EditProcedure.cshtml" />
     <Content Include="Views\Procedure\EditProcedureFiles.cshtml" />
+    <Content Include="Views\Procedure\EditFiles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -5118,6 +5124,11 @@
     <EmbeddedResource Include="Resources\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ProcedureDocsTypes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProcedureDocsTypes.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\TableHead.resx">

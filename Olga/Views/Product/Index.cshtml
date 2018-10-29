@@ -77,29 +77,6 @@
                                     <text> @expiredDate </text>
                                 }
                             </td>
-                            @*<td>@Model[i].PackSize</td>*@
-                            @*<td>
-            <ul>
-                @foreach (var item in Model[i].Artworks)
-                {
-                    <li>@item.Artwork_name</li>
-                }
-            </ul>
-        </td>*@
-                            @*<td>
-            <ul>
-                @{
-                    var k = 0;
-                    foreach (var doc in Model[i].ProductDocuments)
-                    {
-                        k++;
-                        var alt = @doc.PathToDocument.Substring(@doc.PathToDocument.IndexOf("_") + 2, @doc.PathToDocument.LastIndexOf("_") - 3);
-                        var ext = @doc.PathToDocument.Substring(@doc.PathToDocument.LastIndexOf("."), @doc.PathToDocument.Length - @doc.PathToDocument.LastIndexOf("."));
-                        <li>@alt@ext</li>
-                    }
-                }
-            </ul>
-        </td>*@
                             <td>
                                 <div style="text-align: center;">
                                     @{
