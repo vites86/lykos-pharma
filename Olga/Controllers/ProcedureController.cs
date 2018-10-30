@@ -123,6 +123,7 @@ namespace Olga.Controllers
             var _currentUser = GetCurrentUser();
 
             ViewBag.Country = product.Country;
+            ViewBag.CountryId = productDto.CountryId;
             ViewBag.Product = product;
             ViewBag.User = _currentUser;
             ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
@@ -336,6 +337,7 @@ namespace Olga.Controllers
 
                 procedureDto.ProductId = (int)productId;
                 ViewBag.ProcedureDocsType = procedureDocsType;
+                ViewBag.CountryId = productDto.CountryId;
                 ViewBag.Country = product.Country;
                 ViewBag.Product = product;
                 ViewBag.User = _currentUser;

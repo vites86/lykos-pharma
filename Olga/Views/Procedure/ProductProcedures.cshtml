@@ -15,7 +15,9 @@
         <div class="alert-success" style="width: 100%">
             <h1>@ViewBag.Country</h1>
         </div>
-        <h2>Procedures for:<span style="color: blue"> @ViewBag.Product.ProductName</span></h2>
+        <h2>Procedures for:<span style="color: blue"> 
+            @Html.ActionLink($"{ViewBag.Product.ProductName}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+            </span></h2>
         <div class="product_span">
             <span>@ViewBag.Product.PharmaceuticalForm</span>
             <span>@ViewBag.Product.ProductCode</span>
@@ -166,6 +168,7 @@
 <style>
     .product_span span {
         color: darkcyan;
+        display: block;
         font-size: 20px;
     }
 
