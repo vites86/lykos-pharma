@@ -46,6 +46,13 @@ namespace Olga.BLL.Services
             return country.Users.Select(a=>a.ApplicationUser.Email.ToString()).ToList();
         }
 
+        public List<string> GetCountryUsersEmailsViaName(string countryName)
+        {
+            if (String.IsNullOrEmpty(countryName)) return null;
+            var country = Database.Countries.GetAll().First(a => a.Name.Equals(countryName));
+            return country.Users.Select(a => a.ApplicationUser.Email.ToString()).ToList();
+        }
+
         public void DeleteItem(int id)
         {
             Database.Countries.Delete(id);

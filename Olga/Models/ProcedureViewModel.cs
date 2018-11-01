@@ -10,22 +10,31 @@ namespace Olga.Models
 {
     public class ProcedureViewModel
     {
+
         public ProcedureViewModel()
         {
             this.ProcedureDocuments = new List<ProcedureDocument>();
         }
 
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "SubmissionDate", ResourceType = typeof(Resources.Labels))]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionDate { get; set; }
 
         [Required]
+        [Display(Name = "EstimatedApprovalDate", ResourceType = typeof(Resources.Labels))]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime ApprovalDate { get; set; }
+        public DateTime EstimatedApprovalDate { get; set; }
 
+        [Display(Name = "ApprovalDate", ResourceType = typeof(Resources.Labels))]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? ApprovalDate { get; set; }
+
+        [Required]
         public string Comments { get; set; }
 
         [Required]
@@ -37,20 +46,30 @@ namespace Olga.Models
 
         public List<ProcedureDocument> ProcedureDocuments { get; set; }
 
+
+
     }
 
     public class ProcedureEditModel
     {
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "SubmissionDate", ResourceType = typeof(Resources.Labels))]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionDate { get; set; }
 
         [Required]
+        [Display(Name = "EstimatedApprovalDate", ResourceType = typeof(Resources.Labels))]
+        [DisplayFormat(DataFormatString = "{0:yyyy'/'MM'/'dd}", ApplyFormatInEditMode = true)]
+        public DateTime EstimatedApprovalDate { get; set; }
+
+        [Display(Name = "EstimatedApprovalDate", ResourceType = typeof(Resources.Labels))]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime ApprovalDate { get; set; }
+        public DateTime? ApprovalDate { get; set; }
 
         public string Comments { get; set; }
 

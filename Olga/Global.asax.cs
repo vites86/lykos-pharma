@@ -152,8 +152,7 @@ namespace Olga
                 .ForMember(x => x.Product, o => o.Ignore())
                 //.ForMember(x => x.ProcedureDocuments, o => o.Ignore())
                 ;
-
-
+                cfg.CreateMap<Emailer, EmailerDTO>();
 
             });
 

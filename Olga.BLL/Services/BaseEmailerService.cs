@@ -4,10 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Configuration;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Olga.BLL.Interfaces;
 using log4net;
+using Olga.BLL.DTO;
 
 
 namespace Olga.BLL.Services
@@ -22,22 +24,28 @@ namespace Olga.BLL.Services
 
         public BaseEmailerService()
         {
-            Login = "pharma.no-reply@outlook.com";
-            Pass = "superv1s0r";
-            From = "pharma.no-reply@outlook.com";
-            //From = "Regulatory Affairs Database notification";
-            DirectorMail = "ok@lykospharma.com";
-            DeveloperMail = "vites@outlook.com";
+            //Login = "pharma.no-reply@outlook.com";
+            //Pass = "superv1s0r";
+            //From = "pharma.no-reply@outlook.com";
+            ////From = "Regulatory Affairs Database notification";
+            //DirectorMail = "ok@lykospharma.com";
+            //DeveloperMail = "vites@outlook.com";
         }
 
-        public async Task SendEmailNotification(string body, string subject, IEnumerable<string> emailEnumerable = null)
+        public async Task SendEmailNotification(string body, string subject, EmailerDTO emailerDto, IEnumerable<string> emailEnumerable = null, bool send = false)
         {
+            if(!send) return;
             var message = new IdentityMessage
             {
                 Subject = subject,
                 Body = body
             };
-            await Send(message, emailEnumerable);
+            Login = emailerDto.Login;
+            Pass = emailerDto.Pass;
+            From = emailerDto.From;
+            DirectorMail = emailerDto.DirectorMail;
+            DeveloperMail = emailerDto.DeveloperMail;
+           await Send(message, emailEnumerable);
         }
 
         public async Task Send(IdentityMessage message, IEnumerable<string> emailEnumerable = null)

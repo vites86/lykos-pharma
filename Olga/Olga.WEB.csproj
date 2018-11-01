@@ -204,6 +204,7 @@
     </Compile>
     <Compile Include="Models\ApprDocsTypeViewModel.cs" />
     <Compile Include="Models\ArtworkViewModel.cs" />
+    <Compile Include="Models\Emailer.cs" />
     <Compile Include="Models\InfoViewModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ManufacturerViewModel.cs" />
@@ -268,6 +269,7 @@
     <Content Include="Content\images\extentions\pdf.jpg" />
     <Content Include="Content\images\extentions\txt.jpg" />
     <Content Include="Content\images\extentions\xlsx.jpg" />
+    <Content Include="Content\images\favicon.png" />
     <Content Include="Content\images\loading-bg.png" />
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\loading2.gif" />

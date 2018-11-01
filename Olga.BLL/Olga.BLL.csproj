@@ -119,6 +119,7 @@
     <Compile Include="DTO\ApprDocsTypeDTO.cs" />
     <Compile Include="DTO\ArtworkDTO.cs" />
     <Compile Include="DTO\CountryDTO.cs" />
+    <Compile Include="DTO\EmailerDTO.cs" />
     <Compile Include="DTO\ManufacturerDTO.cs" />
     <Compile Include="DTO\MarketingAuthorizHolderDTO.cs" />
     <Compile Include="DTO\MarketingAuthorizNumberDTO.cs" />

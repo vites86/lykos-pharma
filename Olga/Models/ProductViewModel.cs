@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
@@ -15,9 +16,24 @@ namespace Olga.Models
     {
         public int Id { get; set; }
 
+        [NotMapped]
+        public bool IsFired { get; set; }
+
+        public ProductViewModel()
+        {
+            if (ExpiredDate != null)
+            {
+                DateTime yearAndHalf = DateTime.Now.AddMonths(18);
+                int result = DateTime.Compare((DateTime)ExpiredDate, yearAndHalf);
+                IsFired = result < 0;
+            }
+        }
+
+
         [Display(Name = "Issued Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? IssuedDate { get; set; }
+
         [Display(Name = "Expiry Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ExpiredDate { get; set; }

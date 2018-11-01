@@ -1,14 +1,21 @@
 ﻿@using System.Web.Mvc.Html
 @model Olga.Models.ProcedureViewModel
+@{
+    ViewBag.Title = "Create Procedure";
+}
 
 <div>
     <div class="row" style="overflow: auto; margin-left:  20px;margin-right: 10px;">
         <div class="alert-success" style="width: 100%">
             <h2>@ViewBag.Country</h2>
         </div>
-        <h1>Create Procedure for:</h1>
+        <h2>
+            Create Procedure for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
+                @Html.ActionLink($"{ViewBag.Product.ProductName}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+            </span>
+        </h2>
+
         <div class="product_span">
-            <span>@ViewBag.Product.ProductName</span><br />
             <span>@ViewBag.Product.PharmaceuticalForm</span><br />
             <span>@ViewBag.Product.ProductCode</span><br />
             <span>@ViewBag.Product.Strength</span><br />
@@ -20,61 +27,78 @@
         {
             @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <br />
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.ProductId)
-            @*<input type="hidden" name="Product" id="countryId" value="@ViewBag.CountryId" />*@
-            <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-1" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+            <div class="form-horizontal">
+                <br />
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ProductId)
+                @*<input type="hidden" name="Product" id="countryId" value="@ViewBag.CountryId" />*@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", required = "required"})
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ProcedureType, htmlAttributes: new { @class = "control-label col-md-1" })
-                <div class="col-md-10">
-                    @Html.EnumDropDownListFor(model => model.ProcedureType, new { @class = "form-control" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProcedureType, htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(model => model.ProcedureType, new { @class = "form-control" })
+                    </div>
                 </div>
-            </div>
-
-            <hr />
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApprovalDate, htmlAttributes: new { @class = "control-label col-md-1" })
-                <div class="col-md-10">
-                    @{
-                        var dateValue =
-                            DateTime.MinValue == Model.ApprovalDate
-                                ? String.Empty
-                                : Model.ApprovalDate.ToString();
-                    }
-                    <input class="form-control rounded"
-                           data-val="true"
-                           id="ApprovalDate"
-                           name="ApprovalDate"
-                           value="@dateValue" />
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @{
+                            var dateValue2 =
+                                DateTime.MinValue == Model.SubmissionDate
+                                    ? String.Empty
+                                    : Model.SubmissionDate.ToString();
+                        }
+                        <input class="form-control rounded"
+                               data-val="true"
+                               id="SubmissionDate"
+                               name="SubmissionDate"
+                               value="@dateValue2" required="required"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-1" })
-                <div class="col-md-10">
-                    @{
-                        var dateValue2 =
-                            DateTime.MinValue == Model.SubmissionDate
-                                ? String.Empty
-                                : Model.SubmissionDate.ToString();
-                    }
-                    <input class="form-control rounded"
-                           data-val="true"
-                           id="SubmissionDate"
-                           name="SubmissionDate"
-                           value="@dateValue2" />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EstimatedApprovalDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @{
+                            var dateValue1 =
+                                DateTime.MinValue == Model.EstimatedApprovalDate
+                                    ? String.Empty
+                                    : Model.EstimatedApprovalDate.ToString();
+                        }
+                        <input class="form-control rounded"
+                               data-val="true"
+                               id="EstimatedApprovalDate"
+                               name="EstimatedApprovalDate"
+                               value="@dateValue1" required="required"/>
+                    </div>
                 </div>
-            </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApprovalDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @{
+                            var dateValue =
+                                DateTime.MinValue == Model.ApprovalDate
+                                    ? String.Empty
+                                    : Model.ApprovalDate.ToString();
+                        }
+                        <input class="form-control rounded"
+                               data-val="true"
+                               id="ApprovalDate"
+                               name="ApprovalDate"
+                               value="@dateValue" />
+                    </div>
+                </div>
+
+               
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-1" })
@@ -114,9 +138,13 @@
                             $('#ApprovalDate').datetimepicker({
                                 format: format
                 });
-                            console.log('@Model.SubmissionDate');
-                            $('#SubmissionDate').datetimepicker({
+                console.log('@Model.SubmissionDate');
+                $('#SubmissionDate').datetimepicker({
                                 format: format
+                });
+                console.log('@Model.EstimatedApprovalDate');
+                $('#EstimatedApprovalDate').datetimepicker({
+                    format: format
                 });
                         });
         }())

@@ -40,6 +40,7 @@ namespace Olga.DAL.Repositories
             if (existingProcedure == null) return;
             existingProcedure.Name = item.Name;
             existingProcedure.ApprovalDate = item.ApprovalDate;
+            existingProcedure.EstimatedApprovalDate = item.EstimatedApprovalDate;
             existingProcedure.Comments = item.Comments;
             existingProcedure.ProcedureType = item.ProcedureType;
             existingProcedure.SubmissionDate = item.SubmissionDate;

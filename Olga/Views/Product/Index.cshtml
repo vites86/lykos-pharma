@@ -45,6 +45,13 @@
                     <tbody>
                         @for (var i = 0; i < Model.Count; i++)
                         {
+                            var style = "color:black";
+                            {
+                                if (Model[i].IsFired)
+                                {
+                                    style="color:red";
+                                }
+                            }
                         <tr data-rowid="@i">
                             <td>@Model[i].ProductName</td>
                             <td>@Model[i].PharmaceuticalForm</td>
@@ -61,7 +68,7 @@
                             <td>@Model[i].MarketingAuthorizHolder</td>
                             <td>@Model[i].MarketingAuthorizNumber</td>
                             <td>@{ var issuedDate = Model[i].IssuedDate != null ? DateTime.Parse(@Model[i].IssuedDate.ToString()).ToString("u").Substring(0, 10) : null; } @issuedDate</td>
-                            <td>
+                            <td style="@style">
 
                                 @{
                                     var unLimited = @Model[i].UnLimited;

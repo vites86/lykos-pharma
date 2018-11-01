@@ -61,6 +61,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please be informed that  new Procedure was created in Pharma Database.
+        /// </summary>
+        internal static string BodyProcedureCreate {
+            get {
+                return ResourceManager.GetString("BodyProcedureCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please be informed that Procedure for (name) was updated.
+        /// </summary>
+        internal static string BodyProcedureUpdate {
+            get {
+                return ResourceManager.GetString("BodyProcedureUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please be informed that  new product (name)  was created in Pharma Database!.
         /// </summary>
         internal static string BodyProductCreate {
@@ -85,6 +103,24 @@ namespace Resources {
         internal static string Signature {
             get {
                 return ResourceManager.GetString("Signature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification about new procedure was created in Pharma Database for (name).
+        /// </summary>
+        internal static string SubjectProcedureCreate {
+            get {
+                return ResourceManager.GetString("SubjectProcedureCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notification about procedure updates in Pharma Database for (name).
+        /// </summary>
+        internal static string SubjectProcedureUpdate {
+            get {
+                return ResourceManager.GetString("SubjectProcedureUpdate", resourceCulture);
             }
         }
         

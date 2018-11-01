@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "EditProcedure";
+    ViewBag.Title = "Edit Procedure";
 }
 @using System.Web.Mvc.Html
 @using Olga.DAL.Entities
@@ -10,7 +10,11 @@
         <div class="alert-success" style="width: 100%">
             <h1>@ViewBag.Country</h1>
         </div>
-        <h2>Update Procedure for:<span style="color: blue"> @ViewBag.Product.ProductName</span></h2>
+        <h2>
+            Update Procedure for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
+                @Html.ActionLink($"{ViewBag.Product.ProductName}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+            </span>
+        </h2>
         <div class="product_span">
             <span>@ViewBag.Product.PharmaceuticalForm </span>
             <span> @ViewBag.Product.ProductCode</span>
@@ -60,6 +64,23 @@
                                value="@dateValue" />
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EstimatedApprovalDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @{
+                            var dateValue1 =
+                                DateTime.MinValue == Model.EstimatedApprovalDate
+                                    ? String.Empty
+                                    : DateTime.Parse(@Model.EstimatedApprovalDate.ToString()).ToString("u").Substring(0, 10);
+                        }
+                        <input class="form-control rounded"
+                               data-val="true"
+                               id="EstimatedApprovalDate"
+                               name="EstimatedApprovalDate"
+                               value="@dateValue1" />
+                    </div>
+                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-1" })
@@ -103,6 +124,7 @@
     .product_span span {
         color: darkcyan;
         font-size: 20px;
+        display: block;
     }
 </style>
 @section Scripts {
@@ -121,6 +143,10 @@
                             console.log('@Model.SubmissionDate');
                             $('#SubmissionDate').datetimepicker({
                                 format: format
+                });
+                console.log('@Model.EstimatedApprovalDate');
+                $('#EstimatedApprovalDate').datetimepicker({
+                    format: format
                 });
                         });
         }())

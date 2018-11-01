@@ -10,7 +10,9 @@
         <div class="alert-success" style="width: 100%">
             <h1>@ViewBag.Country</h1>
         </div>
-        <h2>Update Procedure Files for:<span style="color: blue"> @ViewBag.Product.ProductName</span></h2>
+        <h2>Update Procedure Files for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
+            @Html.ActionLink($"{ViewBag.Product.ProductName}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+        </span></h2>
             <div class="product_span">
                 <span>@ViewBag.Product.PharmaceuticalForm</span>
                 <span>@ViewBag.Product.Strength</span>

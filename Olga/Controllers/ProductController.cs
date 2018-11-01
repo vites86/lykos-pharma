@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.AspNet.Identity;
@@ -44,6 +45,8 @@ namespace Olga.Controllers
         readonly IBaseEmailService _emailService;
         readonly IPackSize _packSizeService;
         UserViewModel _currentUser;
+        bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotification"]);
+        Emailer emailer;
 
 
         // GET: Settings
@@ -69,6 +72,14 @@ namespace Olga.Controllers
             _marketingAuthorizNumber = marketingAuthorizNumber;
             _packSizeService = packSizeService;
             _productCode = productCode;
+            emailer = new Emailer();
+                emailer.Login = WebConfigurationManager.AppSettings["login"];
+                emailer.Pass = WebConfigurationManager.AppSettings["password"];
+                emailer.From = WebConfigurationManager.AppSettings["from"];
+                emailer.Port = int.Parse(WebConfigurationManager.AppSettings["smtpPort"]);
+                emailer.SmtpServer = WebConfigurationManager.AppSettings["smtpSrv"];
+                emailer.DirectorMail = WebConfigurationManager.AppSettings["directorMail"];
+                emailer.DeveloperMail = WebConfigurationManager.AppSettings["developerMail"];
         }
 
         private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
@@ -92,6 +103,16 @@ namespace Olga.Controllers
                 if (productsDto.Count > 0)
                 {
                     var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto).OrderBy(a => a.ProductName);
+                    DateTime yearAndHalf = DateTime.Now.AddMonths(18);
+
+                    foreach (ProductViewModel product in products)
+                    {
+                        if (product.ExpiredDate != null)
+                        {
+                            int result = DateTime.Compare((DateTime)product.ExpiredDate, yearAndHalf);
+                            product.IsFired = result < 0;
+                        }
+                    }
                     return View(products.ToList());
                 }
                 return View();
@@ -288,7 +309,7 @@ namespace Olga.Controllers
                 var productsDto = _productService.GetProducts(int.Parse(CountryId));
                 if (productsDto != null)
                 {
-                    var products = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productsDto);
+                    var products = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productsDto).OrderBy(a => a.ProductName);
                     return View("Index", products.ToList());
                 }
                 return View("Index");
@@ -587,24 +608,25 @@ namespace Olga.Controllers
                 var body = new StringBuilder();
 
                 var productName = _productNameService.GetItem((int)model.ProductNameId).Name;
+                subject = string.Concat((Resources.Email.SubjectProductCreate.Replace("(name)", productName)), $" in {countryName}");
 
                 if (model.Id == null)
                 {
-                    subject = Resources.Email.SubjectProductCreate.Replace("name", productName);
-                    body.Append(Resources.Email.BodyProductCreate.Replace("name", productName) + Resources.Email.Signature);
-                    await _emailService.SendEmailNotification(body.ToString(), subject, emailsToNotify);
+                    body.Append(Resources.Email.BodyProductCreate.Replace("(name)", productName) + $" in {countryName}" + Resources.Email.Signature);
+                    var emailerDto = Mapper.Map<Emailer,EmailerDTO>(emailer);
+                    await _emailService.SendEmailNotification(body.ToString(), subject, emailerDto,emailsToNotify, toSend);
                 }
                 else
                 {
-                    subject = Resources.Email.SubjectProductUpdate.Replace("name", productName);
-                    body.Append(Resources.Email.BodyProductUpdate.Replace("name", productName));
+                    body.Append(Resources.Email.BodyProductUpdate.Replace("(name)", productName) + $" in {countryName}");
                     var bodyCompared = await CreateBodyText(model, selectedManufacturers, selectedArtworks, documentNamesApprs, documentNamesArtworks);
                     if (!string.IsNullOrEmpty(bodyCompared))
                     {
                         body.Append(":<br>");
                         body.Append(bodyCompared);
                         body.Append(Resources.Email.Signature);
-                        await _emailService.SendEmailNotification(body.ToString(), subject, emailsToNotify);
+                        var emailerDto = Mapper.Map<Emailer, EmailerDTO>(emailer);
+                        await _emailService.SendEmailNotification(body.ToString(), subject, emailerDto, emailsToNotify, toSend);
                     }
                 }
             }

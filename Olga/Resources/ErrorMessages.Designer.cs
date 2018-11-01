@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email not send! Can not detect the product for procedure!.
+        /// </summary>
+        internal static string EmailNotSendCantFindProdToProc {
+            get {
+                return ResourceManager.GetString("EmailNotSendCantFindProdToProc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permissions for this operation!.
         /// </summary>
         internal static string NoPermission {

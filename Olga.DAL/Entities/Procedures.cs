@@ -18,8 +18,13 @@ namespace Olga.DAL.Entities
 
         [DisplayFormat(DataFormatString = "{0:yyyy'/'MM'/'dd}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionDate { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:yyyy'/'MM'/'dd}", ApplyFormatInEditMode = true)]
-        public DateTime ApprovalDate { get; set; }
+        public DateTime EstimatedApprovalDate { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy'/'MM'/'dd}", ApplyFormatInEditMode = true)]
+        public DateTime? ApprovalDate { get; set; } = null;
+
         public string Comments { get; set; }
         public ProcedureType ProcedureType { get; set; }
 

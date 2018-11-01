@@ -59,6 +59,24 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approval Date.
+        /// </summary>
+        public static string ApprovalDate {
+            get {
+                return ResourceManager.GetString("ApprovalDate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Estimated Approval Date.
+        /// </summary>
+        public static string EstimatedApprovalDate {
+            get {
+                return ResourceManager.GetString("EstimatedApprovalDate", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to Register new user.
@@ -66,6 +84,15 @@ namespace Resources {
         public static string RegisterNewUser {
             get {
                 return ResourceManager.GetString("RegisterNewUser", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Submission Date.
+        /// </summary>
+        public static string SubmissionDate {
+            get {
+                return ResourceManager.GetString("SubmissionDate", resourceCulture);
             }
         }
     }

@@ -277,3 +277,5 @@ Olga/Content/bootstrap-grid.css
 Olga/Upload/Documents/Procedures/Document_Olga_eb31e0.xlsx
 Olga/Upload/
 Olga/Content/umega/
+Olga.DAL/Migrations/*
+!Olga.DAL/Migrations/Configuration.cs

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using Olga.BLL.DTO;
 
 namespace Olga.BLL.Interfaces
 {
@@ -14,7 +15,7 @@ namespace Olga.BLL.Interfaces
         string From { get; set; }
         string DirectorMail { get; set; }
         string DeveloperMail { get; set; }
-        Task SendEmailNotification(string body, string subject, IEnumerable<string> emailEnumerable = null);
+        Task SendEmailNotification(string body, string subject, EmailerDTO emailerDTO, IEnumerable<string> emailEnumerable = null, bool send = true);
         Task Send(IdentityMessage message, IEnumerable<string> emailEnumerable = null);
     }
 }
