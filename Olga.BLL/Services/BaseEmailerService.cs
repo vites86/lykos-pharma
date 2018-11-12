@@ -21,15 +21,11 @@ namespace Olga.BLL.Services
         public string From { get; set; }
         public string DirectorMail { get; set; }
         public string DeveloperMail { get; set; }
+        public string SmtpServ { get; set; }
+        public int SmtpPort { get; set; }
 
         public BaseEmailerService()
         {
-            //Login = "pharma.no-reply@outlook.com";
-            //Pass = "superv1s0r";
-            //From = "pharma.no-reply@outlook.com";
-            ////From = "Regulatory Affairs Database notification";
-            //DirectorMail = "ok@lykospharma.com";
-            //DeveloperMail = "vites@outlook.com";
         }
 
         public async Task SendEmailNotification(string body, string subject, EmailerDTO emailerDto, IEnumerable<string> emailEnumerable = null, bool send = false)
@@ -45,6 +41,9 @@ namespace Olga.BLL.Services
             From = emailerDto.From;
             DirectorMail = emailerDto.DirectorMail;
             DeveloperMail = emailerDto.DeveloperMail;
+            SmtpPort = emailerDto.Port;
+            SmtpServ = emailerDto.SmtpServer;
+
            await Send(message, emailEnumerable);
         }
 
@@ -52,7 +51,7 @@ namespace Olga.BLL.Services
         {
             try
             {
-                using (SmtpClient client = new SmtpClient("Smtp.office365.com", 587)
+                using (SmtpClient client = new SmtpClient(SmtpServ,SmtpPort)
                 {
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,

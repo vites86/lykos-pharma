@@ -8,10 +8,9 @@
     ViewBag.Title = title;
 }
 
-<div class="container">
+<div>
+<div class="row" style="overflow: auto; margin-left:  10px;margin-right: 10px;">
     <h2>@title</h2>
-        <div class="row" style="overflow: auto;">
-
             @using (Html.BeginForm("CreateProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
@@ -89,8 +88,8 @@
                                 @foreach (var apprDocsType in ViewBag.apprDocsTypes)
                                 {
                                     var apprId = @apprDocsType.Value;
-                                    <tr style="line-height: 50px;">
-                                        <td>
+                                    <tr style="line-height: 50px;" class="border_bottom">
+                                        <td style="width:230px !important;">
                                             <span class="glyphicon glyphicon-file" />  <label for="UploadImg@(apprId)">@apprDocsType.Text</label>
                                         </td>
                                         <td style="padding-left: 25px;">
@@ -120,15 +119,9 @@
                                                             var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
 
                                                             <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
-                                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                                    <img class="shadow" style="height: 50px;"  alt="@alt" tooltip="@alt" data-toggle="tooltip" title="@alt" data-placement="top"  src="@docImagePath" onmouseover="showFileNameInToast('@fileName');" />
-                                                                </a><br />
-                                                                <div style="margin-top:5px; line-height: 20px;">
-                                                                    <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">Посмотреть</a>
-                                                                </div>
-                                                                <div style="margin-top:0px; line-height: 20px;">
-                                                                    <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Удалить" />
-                                                                </div>
+                                                                <span class="glyphicon glyphicon-file" />
+                                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">@fileName</a>
+                                                                    <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Delete" />
                                                             </div>
                                                         }
                                                     }
@@ -166,7 +159,7 @@
                                 @foreach (var artwork in ViewBag.artworks)
                                 {
                                     var artworkId = @artwork.Value;
-                                    <tr style="line-height: 50px;">
+                                    <tr style="line-height: 50px;" class="border_bottom">
                                         <td>
                                             <input type="checkbox" onclick="showDownloads(this)" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
                                                    @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
@@ -199,15 +192,9 @@
                                                             var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
 
                                                             <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
-                                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                                    <img class="shadow" style="height: 50px;"  alt="@alt" tooltip="@alt" data-toggle="tooltip" title="@alt" data-placement="top" src="@docImagePath" onmouseover="showFileNameInToast('@fileName');" />
-                                                                </a>
-                                                                <div style="margin-top:5px; line-height: 20px;">
-                                                                    <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">Посмотреть</a>
-                                                                </div>
-                                                                <div style="margin-top:0px; line-height: 20px;">
-                                                                    <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Удалить" />
-                                                                </div>
+                                                                <span class="glyphicon glyphicon-file" />
+                                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">@fileName</a>
+                                                                    <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Delete" />
                                                             </div>
                                                         }
                                                     }
@@ -278,9 +265,12 @@
 @Html.Partial("~/Views/Shared/_UploadFiles.cshtml")
 
 <style>
+    h2 {
+        margin-left: 150px;
+    }
     .show_blockOfImage {
-        display: inline-block;
-        text-align: center;
+        display: block;
+        /*text-align: center;*/
         margin-left: 10px;
         /*margin-top: 15px;*/
     }
@@ -309,6 +299,10 @@
         background: #1f364f; /* Цвет фона */
         box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
         margin-bottom: 10px;
+    }
+    tr.border_bottom td {
+        border-bottom: 1px solid lightgrey;
+        border-top: 1px solid lightgrey;
     }
 </style>
 

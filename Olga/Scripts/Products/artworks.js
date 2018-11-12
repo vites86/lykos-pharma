@@ -110,7 +110,7 @@
         var _artworkId = fileName.substr(0, fileName.indexOf("__"));
         var containerBlock = document.getElementById('filesArtworkDiv'+_artworkId);
         var blockToInsert = document.createElement('div');
-        blockToInsert.style.display = 'inline-block';
+        blockToInsert.style.display = 'block';
 
         var imageName = getFileImageViaExt(fileName);
         console.log('imageName ' + imageName);
@@ -123,16 +123,11 @@
         }
         var alt = fileName.substr(fileName.indexOf("_") + 2, fileName.lastIndexOf("_")-3).trim();
         var innerHtml =
-            '<div ' +
-            'name="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() +'" ' +
-            'id="showArtworkImageBlock_' + fileName.replace(".", "").replace(/\s+/g, '').replace(/#/g, '№').trim() + '" class="show_blockOfImage">' +
-                '<div>' +
-            '<img class="shadow" style="height: 50px;" src="' + imagePath + '" alt="' + alt + '" tooltip ="' + alt + '" data-toggle="tooltip" title="' + alt + '" data-placement="top" onmouseover="showFileNameInToast(\'' + fileName +'\');"/>' +
-                '</div>' +
-                '<div style="margin-top:5px; line-height: 20px;">' +
-                '   <a href="/Upload/Documents/' + apprFolder + '/' + fileName + '" target="_blank">Посмотреть</a>' +
-                '</div>' +
-             '</div>';
+            '<div name="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() +'" ' +
+                  'id="showArtworkImageBlock_' + fileName.replace(".", "").replace(/\s+/g, '').replace(/#/g, '№').trim() + '" class="show_blockOfImage">' +
+               '<span class="glyphicon glyphicon-file" />    ' +
+                '<a href="/Upload/Documents/' + apprFolder + '/' + fileName + '" target="_blank">' + fileName + '</a>' +
+            '</div>';
         blockToInsert.innerHTML = innerHtml;
         containerBlock.appendChild(blockToInsert);
     }
