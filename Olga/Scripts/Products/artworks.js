@@ -127,7 +127,7 @@
             'name="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() +'" ' +
             'id="showArtworkImageBlock_' + fileName.replace(".", "").replace(/\s+/g, '').replace(/#/g, '№').trim() + '" class="show_blockOfImage">' +
                 '<div>' +
-                    '<img class="shadow" style="height: 50px;" src="' + imagePath + '" alt="' + alt + '" tooltip ="' + alt + '" data-toggle="tooltip" title="' + alt + '" data-placement="top" />' +
+            '<img class="shadow" style="height: 50px;" src="' + imagePath + '" alt="' + alt + '" tooltip ="' + alt + '" data-toggle="tooltip" title="' + alt + '" data-placement="top" onmouseover="showFileNameInToast(\'' + fileName +'\');"/>' +
                 '</div>' +
                 '<div style="margin-top:5px; line-height: 20px;">' +
                 '   <a href="/Upload/Documents/' + apprFolder + '/' + fileName + '" target="_blank">Посмотреть</a>' +

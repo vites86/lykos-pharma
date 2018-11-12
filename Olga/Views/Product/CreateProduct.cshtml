@@ -121,7 +121,7 @@
 
                                                             <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
                                                                 <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                                    <img class="shadow" style="height: 50px;" src="@docImagePath" onmouseover="showFileNameInToast('@fileName');" />
+                                                                    <img class="shadow" style="height: 50px;"  alt="@alt" tooltip="@alt" data-toggle="tooltip" title="@alt" data-placement="top"  src="@docImagePath" onmouseover="showFileNameInToast('@fileName');" />
                                                                 </a><br />
                                                                 <div style="margin-top:5px; line-height: 20px;">
                                                                     <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">Посмотреть</a>
@@ -200,7 +200,7 @@
 
                                                             <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
                                                                 <a href="~/Upload/Documents/@folder/@fileName" target="_blank">
-                                                                    <img class="shadow" style="height: 50px;" src="@docImagePath" alt="@alt" onmouseover="showFileNameInToast('@fileName');" />
+                                                                    <img class="shadow" style="height: 50px;"  alt="@alt" tooltip="@alt" data-toggle="tooltip" title="@alt" data-placement="top" src="@docImagePath" onmouseover="showFileNameInToast('@fileName');" />
                                                                 </a>
                                                                 <div style="margin-top:5px; line-height: 20px;">
                                                                     <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">Посмотреть</a>
@@ -331,7 +331,7 @@
                 $('#ExpiredDate').datetimepicker({
                     format: format
                 });
-                $('[data-toggle="tooltip"]').tooltip();
+                //$('[data-toggle="tooltip"]').tooltip();
             });
 
         }());

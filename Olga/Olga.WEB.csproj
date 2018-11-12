@@ -5051,7 +5051,6 @@
     <Content Include="Views\Settings\MarketingAuthorizHolder.cshtml" />
     <Content Include="Views\Settings\PharmaceuticalForm.cshtml" />
     <Content Include="Views\Settings\Strength.cshtml" />
-    <Content Include="Views\Product\EditProduct.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_UploadFiles.cshtml" />
