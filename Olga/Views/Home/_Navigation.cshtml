@@ -23,21 +23,21 @@
                     hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
                 }
                 if (User.IsInRole("Admin") || hasAccess)
-                 {
-                     <li>
-                         <a href="#">@Model[i].Name</a>
-                         <ul>
-                             <li>@Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null)</li>
-                             @if (@ViewBag.User.Role.Equals("Admin") || @ViewBag.User.Role.Equals("Manager"))
-                             {
-                                 <li>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) </li>
-                                 <li>@Html.ActionLink("EditInfo", "Index", "Settings", new { id = @Model[i].Id }, null) </li>
-                             }
-                         </ul>
-                     </li>
-                 }
-                    
+                {
+                    <li>
+                        <a href="#">@Model[i].Name</a>
+                        <ul>
+                            <li>@Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null)</li>
+                            @if (@ViewBag.User.Role.Equals("Admin") || @ViewBag.User.Role.Equals("Manager"))
+                            {
+                                <li>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) </li>
+                                <li>@Html.ActionLink("EditInfo", "Index", "Settings", new { id = @Model[i].Id }, null) </li>
+                            }
+                        </ul>
+                    </li>
                 }
+
+            }
         </ul>
     </li>
     

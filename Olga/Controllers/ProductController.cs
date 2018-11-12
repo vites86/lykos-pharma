@@ -45,7 +45,7 @@ namespace Olga.Controllers
         readonly IBaseEmailService _emailService;
         readonly IPackSize _packSizeService;
         UserViewModel _currentUser;
-        bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotification"]);
+        bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotificationProd"]);
         Emailer emailer;
 
 

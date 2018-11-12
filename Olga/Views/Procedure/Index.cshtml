@@ -1,7 +1,9 @@
 ﻿@using System.Globalization
+@using Olga.Models
 @model List<Olga.Models.ProcedureViewModel>
 @{
     ViewBag.Title = "Procedures";
+    var hasAccess = false;
 }
 <div class="container">
     <h2>Procedures</h2>
@@ -25,38 +27,43 @@
                 <tbody>
                     @for (var i = 0; i < Model.Count; i++)
                     {
-                    <tr data-rowid="@i">
-                        <td>@Model[i].ProcedureType</td>
-                        <td>@Model[i].Name</td>
-                        <td>@{ var submissionDate = DateTime.Parse(@Model[i].SubmissionDate.ToString()).ToString("u").Substring(0, 10); } @submissionDate</td>
-                        <td>@{ var estimatedApprovalDate = DateTime.Parse(@Model[i].EstimatedApprovalDate.ToString()).ToString("u").Substring(0, 10); } @estimatedApprovalDate</td>
-                        <td>@{ var approvalDate = Model[i].ApprovalDate != null ? DateTime.Parse(@Model[i].ApprovalDate.ToString()).ToString("u").Substring(0, 10) : null; }  @approvalDate</td>
-                        <td>@Model[i].Comments</td>
-                        <td>@Html.ActionLink($"{Model[i].Product.ProductName} {Model[i].Product.ProductCode}", "ShowDocuments", "Product", new { id = @Model[i].ProductId, countryId = @ViewBag.CountryId }, new { target = "_blank" })</td>
-                        <td>
-                            <span>
-                                @Html.ActionLink("   ", "EditProcedure", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
-                                {@class = "glyphicon glyphicon-pencil", @target = "_blank"})
-                            </span>
-                            <br /> <br />
-                            @Html.ActionLink("   ", "EditProcedureFiles", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
-                            {@class = "glyphicon glyphicon-file", @target = "_blank"})<br /><br />
-                            <span>
-                                @Html.ActionLink("   ", "DeleteProcedure", "Procedure", new { id = @Model[i].Id, productId = @Model[i].ProductId }, new
+                        <tr data-rowid="@i">
+                            <td>@Model[i].ProcedureType</td>
+                            <td>@Model[i].Name</td>
+                            <td>@{ var submissionDate = DateTime.Parse(@Model[i].SubmissionDate.ToString()).ToString("u").Substring(0, 10); } @submissionDate</td>
+                            <td>@{ var estimatedApprovalDate = DateTime.Parse(@Model[i].EstimatedApprovalDate.ToString()).ToString("u").Substring(0, 10); } @estimatedApprovalDate</td>
+                            <td>@{ var approvalDate = Model[i].ApprovalDate != null ? DateTime.Parse(@Model[i].ApprovalDate.ToString()).ToString("u").Substring(0, 10) : null; }  @approvalDate</td>
+                            <td>@Model[i].Comments</td>
+                            <td>@Html.ActionLink($"{Model[i].Product.ProductName} {Model[i].Product.ProductCode}", "ShowDocuments", "Product", new { id = @Model[i].ProductId, countryId = @ViewBag.CountryId }, new { target = "_blank" })</td>
+
+                            <td>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                                 {
-                                    @class = "glyphicon glyphicon-trash text-warning",
-                                    onclick = "return confirm('Are you sure you wish to delete this procedure?');"
-                                })
-                            </span><br /> <br />
-                            <span>
-                                @Html.ActionLink("   ", "ProductProcedures", new { id = @Model[i].ProductId }, new { @class = "glyphicon glyphicon-eye-open", @target = "_blank" })
-                            </span>
-                        </td>
-                    </tr>
+                                    <span>
+                                        @Html.ActionLink("   ", "EditProcedure", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
+                                        {@class = "glyphicon glyphicon-pencil", @target = "_blank"})
+                                    </span>
+                                    <br />
+                                    <br />
+                                    @Html.ActionLink("   ", "EditProcedureFiles", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
+                                    {@class = "glyphicon glyphicon-file", @target = "_blank"})<br />
+                                    <br />
+                                    <span>
+                                        @Html.ActionLink("   ", "DeleteProcedure", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
+                                        {
+                                            @class = "glyphicon glyphicon-trash text-warning",
+                                            onclick = "return confirm('Are you sure you wish to delete this procedure?');"
+                                        })
+                                    </span>
+                                }<br/><br />
+                                <span>
+                                    @Html.ActionLink("   ", "ProductProcedures", new { id = @Model[i].ProductId }, new { @class = "glyphicon glyphicon-eye-open", @target = "_blank" })
+                                </span>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
-
         }
         else
         {

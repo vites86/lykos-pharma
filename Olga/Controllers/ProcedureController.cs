@@ -40,7 +40,7 @@ namespace Olga.Controllers
         IProductService _productService;
         readonly IBaseEmailService _emailService;
         IProcedure _procedureService;
-        bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotification"]);
+        bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotificationProc"]);
         Emailer emailer;
 
 
@@ -88,6 +88,15 @@ namespace Olga.Controllers
                 @ViewBag.Error = errorMessage;
                 return View("Error");
             }
+
+            var _currentUser = GetCurrentUser();
+            if (_currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin"))
+            {
+                @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                return View("Error");
+            }
+            ViewBag.User = _currentUser;
+
             var allProcedures = GetProcedures(countryId);
             return View(allProcedures);
         }
@@ -138,12 +147,19 @@ namespace Olga.Controllers
                 @ViewBag.Error = "Error happened: No productId in request!";
                 return View("Error");
             }
+            var _currentUser = GetCurrentUser();
             var productDto = _productService.GetProduct(id);
             var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-            var _currentUser = GetCurrentUser();
 
             ViewBag.Country = product.Country;
             ViewBag.CountryId = productDto.CountryId;
+
+            if (_currentUser.Countries.All(a => a.Id != productDto.CountryId) && !User.IsInRole("Admin"))
+            {
+                @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                return View("Error");
+            }
+
             ViewBag.Product = product;
             ViewBag.User = _currentUser;
             ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
@@ -494,7 +510,10 @@ namespace Olga.Controllers
                            $"<b>Comments:</b> {model.Comments}<br><br>" +
                            $"{Resources.Email.Signature}";
                 var emailerDto = Mapper.Map<Emailer,EmailerDTO>(emailer);
-                await _emailService.SendEmailNotification(body, subject, emailerDto, userEmailsToNotify, toSend);
+                if (model.SubmissionDate >= DateTime.Parse("2018-11-11 00:00:00"))
+                {
+                    await _emailService.SendEmailNotification(body, subject, emailerDto, userEmailsToNotify, toSend);
+                }
             }
             catch (Exception ex)
             {
@@ -531,7 +550,10 @@ namespace Olga.Controllers
                     body.Append(bodyCompared);
                     body.Append(Resources.Email.Signature);
                     var emailerDto = Mapper.Map<Emailer, EmailerDTO>(emailer);
-                    await _emailService.SendEmailNotification(body.ToString(), subject, emailerDto, userEmailsToNotify, toSend);
+                    if (model.SubmissionDate >= DateTime.Parse("2018-11-11 00:00:00"))
+                    {
+                        await _emailService.SendEmailNotification(body.ToString(), subject, emailerDto, userEmailsToNotify, toSend);
+                    }
                 }
             }
             catch (Exception ex)
@@ -607,7 +629,12 @@ namespace Olga.Controllers
                     body.Append(bodyCompared);
                     body.Append(Resources.Email.Signature);
                     var emailerDto = Mapper.Map<Emailer, EmailerDTO>(emailer);
-                    await _emailService.SendEmailNotification(body.ToString(), subject, emailerDto, userEmailsToNotify, toSend);
+                    var proc = _procedureService.GetItem(int.Parse(procedureId));
+                    if (proc.SubmissionDate >= DateTime.Parse("2018-11-11 00:00:00"))
+                    {
+                        await _emailService.SendEmailNotification(body.ToString(), subject, emailerDto,
+                            userEmailsToNotify, toSend);
+                    }
                 }
             }
             catch (Exception ex)
@@ -616,8 +643,6 @@ namespace Olga.Controllers
                 Logger.Log.Error($"{userName}: SenEmailAboutAddUpdateProduct() {ex.Message} ");
             }
         }
-
-
 
     }
 }
