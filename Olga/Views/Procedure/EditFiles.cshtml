@@ -121,7 +121,8 @@
                                 @Html.Label("Document sources:", htmlAttributes: new {@class = "control-label col-md-4 width_100"})
                             </div>
                             <div class="col-md-8">
-                                <label id="FileLable" class="btn btn-default">Browse for file ...<input type="file" id="uploads" name="uploads" onchange="getFileData(this);" hidden/></label>
+                                <label id="FileLable" class="btn btn-default">Browse for file ...
+                                    <input type="file" id="uploads" name="uploads" onchange="getFileData(this);" multiple = "multiple" hidden/></label>
                                 <label style="margin-left: 20px;" id="choosenFile" name="choosenFile"/>
                             </div>
                         </div><br/><br/><br/>
@@ -142,7 +143,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-
+                    <h2>Multiple file downloading</h2>
                 </div>
             </div><br/>
         </div>
@@ -219,10 +220,19 @@
                 console.log("no file chosen");
             } else {
                 $('#FileLable').css('background-color', 'lightgrey');
-                var file = myFile.files[0];
-                var filename = file.name;
-                console.log("file chosen = " + filename);
-                document.getElementById("choosenFile").innerHTML = filename;
+                //var file = myFile.files[0];
+                //var filename = file.name;
+                //console.log("file chosen = " + filename);
+                var key;
+                var filelist = "";
+                for(key in myFile.files) {
+                    if (myFile.files.hasOwnProperty(key)) {
+                        filelist += myFile.files[key].name + '<br>';
+                        console.log(myFile.files[key].name);
+                    }
+                }
+                document.getElementById("choosenFile").innerHTML = filelist === "" ? "no file chosen" : filelist;
+
             }
         }
         

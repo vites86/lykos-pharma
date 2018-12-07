@@ -426,7 +426,7 @@ namespace Olga.Controllers
                         ProcedureId = procId,
                         ProcedureDocsType = (ProcedureDocsType)procDocType
                     };
-                    await SendEmailAboutAddFileProcedure(procedureId, productId, (ProcedureDocsType)procDocType, localFileName);
+                    //await SendEmailAboutAddFileProcedure(procedureId, productId, (ProcedureDocsType)procDocType, localFileName);
                     var procedure = _procedureService.GetItem(procId);
                     procedure.ProcedureDocuments.Add(doc);
                     _procedureService.Update(procedure);
