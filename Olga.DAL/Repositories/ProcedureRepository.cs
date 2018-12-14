@@ -10,7 +10,7 @@ using Olga.DAL.Interfaces;
 
 namespace Olga.DAL.Repositories
 {
-    public class ProcedureRepository : IRepository<Procedure>
+    public class ProcedureRepository : IProcedureRepository<Procedure>
     {
         private readonly ProductContext db;
 
@@ -52,17 +52,17 @@ namespace Olga.DAL.Repositories
                 existingProcedure.ProcedureDocuments.Add(document);
             }
 
-            var listOfDocs = existingProcedure.ProcedureDocuments.ToList();
-            foreach (var doc in listOfDocs)
-            {
-                var res = item.ProcedureDocuments.FirstOrDefault(a => a.PathToDocument.Equals(doc.PathToDocument));
-                if (res != null) continue;
-                existingProcedure.ProcedureDocuments.Remove(doc);
-                DeleteDocument(doc.Id);
-            }
+            //var listOfDocs = existingProcedure.ProcedureDocuments.ToList();
+            //foreach (var doc in listOfDocs)
+            //{
+            //    var res = item.ProcedureDocuments.FirstOrDefault(a => a.PathToDocument.Equals(doc.PathToDocument));
+            //    if (res != null) continue;
+            //    existingProcedure.ProcedureDocuments.Remove(doc);
+            //    DeleteDocument(doc.Id);
+            //}
             Commit();
         }
-
+        
         public void UpdateDocument(Procedure item)
         {
             var existingProcedure = db.Procedures.FirstOrDefault(a => a.Id == item.Id);
@@ -84,6 +84,16 @@ namespace Olga.DAL.Repositories
                 db.ProcedureDocuments.Remove(doc);
             }
             Commit();
+        }
+
+        public void DeleteDocument(string fileName)
+        {
+            var doc = db.ProcedureDocuments.FirstOrDefault(p => p.PathToDocument.Equals(fileName));
+            if (doc != null)
+            {
+                db.ProcedureDocuments.Remove(doc);
+                Commit();
+            }
         }
 
         public void Delete(int id)

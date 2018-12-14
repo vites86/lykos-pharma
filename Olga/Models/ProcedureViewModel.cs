@@ -67,7 +67,7 @@ namespace Olga.Models
         [DisplayFormat(DataFormatString = "{0:yyyy'/'MM'/'dd}", ApplyFormatInEditMode = true)]
         public DateTime EstimatedApprovalDate { get; set; }
 
-        [Display(Name = "EstimatedApprovalDate", ResourceType = typeof(Resources.Labels))]
+        [Display(Name = "ApprovalDate", ResourceType = typeof(Resources.Labels))]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ApprovalDate { get; set; }
 

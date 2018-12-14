@@ -10,7 +10,7 @@ namespace Olga.DAL.Interfaces
     public interface IUnitOfWorkGeneral : IDisposable
     {
         IProductRepository<Product> Products { get; }
-        IRepository<Procedure> Procedures { get; }
+        IProcedureRepository<Procedure> Procedures { get; }
         IRepository<Country> Countries { get; }
         IRepository<ApprDocsType> ApprDocsTypes { get; }
         IRepository<Strength> Strengths { get; }

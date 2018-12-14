@@ -25,8 +25,9 @@ namespace Olga.DAL.Repositories
         {
             _db = new ProductContext(connectionString);
         }
+
         public IProductRepository<Product> Products => _productRepository ?? (_productRepository = new ProductRepository(_db));
-        public IRepository<Procedure> Procedures => _procedurerRepository ?? (_procedurerRepository = new ProcedureRepository(_db));
+        public IProcedureRepository<Procedure> Procedures => _procedurerRepository ?? (_procedurerRepository = new ProcedureRepository(_db));
         public IRepository<Country> Countries => _countryRepository ?? (_countryRepository = new CountryRepository(_db));
         public IRepository<ApprDocsType> ApprDocsTypes => _apprDocsTypeRepository ?? (_apprDocsTypeRepository = new ApprDocsTypeRepository(_db));
         public IRepository<Strength> Strengths => _strengthRepository ?? (_strengthRepository = new StrengthRepository(_db));

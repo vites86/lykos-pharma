@@ -27,4 +27,9 @@ namespace Olga.DAL.Interfaces
         Manufacturer GetManufacturer(int id);
         void DeleteDocuments(string fileName);
     }
+
+    public interface IProcedureRepository<T> : IRepository<T> where T : class
+    {
+        void DeleteDocument(string fileName);
+    }
 }

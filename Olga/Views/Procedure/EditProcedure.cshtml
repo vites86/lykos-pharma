@@ -49,19 +49,19 @@
                 <hr />
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ApprovalDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                    @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-1" })
                     <div class="col-md-10">
                         @{
-                            var dateValue =
-                                DateTime.MinValue == Model.ApprovalDate
+                            var dateValue2 =
+                                DateTime.MinValue == Model.SubmissionDate
                                     ? String.Empty
-                                    : DateTime.Parse(@Model.ApprovalDate.ToString()).ToString("u").Substring(0, 10);
+                                    : DateTime.Parse(@Model.SubmissionDate.ToString()).ToString("u").Substring(0, 10);
                         }
                         <input class="form-control rounded"
                                data-val="true"
-                               id="ApprovalDate"
-                               name="ApprovalDate"
-                               value="@dateValue" />
+                               id="SubmissionDate"
+                               name="SubmissionDate"
+                               value="@dateValue2" />
                     </div>
                 </div>
                 
@@ -81,21 +81,21 @@
                                value="@dateValue1" />
                     </div>
                 </div>
-
+                
                 <div class="form-group">
-                    @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                    @Html.LabelFor(model => model.ApprovalDate, htmlAttributes: new { @class = "control-label col-md-1" })
                     <div class="col-md-10">
                         @{
-                            var dateValue2 =
-                                DateTime.MinValue == Model.SubmissionDate
+                            var dateValue =
+                                Model.ApprovalDate == null || DateTime.MinValue == Model.ApprovalDate
                                     ? String.Empty
-                                    : DateTime.Parse(@Model.SubmissionDate.ToString()).ToString("u").Substring(0, 10);
+                                    : DateTime.Parse(@Model.ApprovalDate.ToString()).ToString("u").Substring(0, 10);
                         }
                         <input class="form-control rounded"
                                data-val="true"
-                               id="SubmissionDate"
-                               name="SubmissionDate"
-                               value="@dateValue2" />
+                               id="ApprovalDate"
+                               name="ApprovalDate"
+                               value="@dateValue" />
                     </div>
                 </div>
 

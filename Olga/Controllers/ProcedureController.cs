@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using AutoMapper;
-using Microsoft.Ajax.Utilities;
+using Ionic.Zip;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using NUnrar.Archive;
 using Olga.AutoMapper;
 using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
@@ -42,6 +42,7 @@ namespace Olga.Controllers
         IProcedure _procedureService;
         bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotificationProc"]);
         Emailer emailer;
+        private UserViewModel _currentUser;
 
 
 
@@ -73,6 +74,7 @@ namespace Olga.Controllers
                 DirectorMail = WebConfigurationManager.AppSettings["directorMail"],
                 DeveloperMail = WebConfigurationManager.AppSettings["developerMail"],
             };
+            _currentUser = GetCurrentUser();
         }
         // GET: Procedure
         public ActionResult Index(int countryId)
@@ -89,7 +91,7 @@ namespace Olga.Controllers
                 return View("Error");
             }
 
-            var _currentUser = GetCurrentUser();
+            _currentUser = GetCurrentUser();
             if (_currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin"))
             {
                 @ViewBag.Error = Resources.ErrorMessages.NoPermission;
@@ -147,7 +149,7 @@ namespace Olga.Controllers
                 @ViewBag.Error = "Error happened: No productId in request!";
                 return View("Error");
             }
-            var _currentUser = GetCurrentUser();
+            _currentUser = GetCurrentUser();
             var productDto = _productService.GetProduct(id);
             var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
 
@@ -214,8 +216,11 @@ namespace Olga.Controllers
                 var procedureDto = Mapper.Map<ProcedureViewModel, ProcedureDTO>(model);
                 _procedureService.AddItem(procedureDto);
                 _procedureService.Commit();
+
                 TempData["Success"] = Resources.Messages.ProcedureCreatedSuccess;
                 await SenEmailAboutAddProcedure(model);
+                _currentUser = GetCurrentUser();
+                Logger.Log.Info($"{_currentUser.Email} Added Procedure for Product #{procedureDto.ProductId} {procedureDto.ProcedureType}");
                 return RedirectToAction("ProductProcedures", new { id = model.ProductId });
             }
             catch (Exception ex)
@@ -224,22 +229,6 @@ namespace Olga.Controllers
                 return View("Error");
             }
         }
-
-        public UserViewModel GetCurrentUser()
-        {
-            try
-            {
-                var userId = HttpContext.User.Identity.GetUserId();
-                var user = UserService.GetUser(userId);
-                var userMapper = MapperForUser.GetUserMapperForView(UserService);
-                return userMapper.Map<UserDTO, UserViewModel>(user);
-            }
-            catch (Exception ex)
-            {
-                return new UserViewModel();
-            }
-        }
-
 
         // GET: Procedure/Delete/5
         public ActionResult DeleteProcedure(int id, int productId)
@@ -260,8 +249,10 @@ namespace Olga.Controllers
                 }
                 _procedureService.DeleteItem(id);
                 _procedureService.Commit();
-
+                _currentUser = GetCurrentUser();
                 TempData["Success"] = Resources.Messages.ProcedureDeletedSuccess;
+                Logger.Log.Info($"{_currentUser.Email} Deleted Procedure #{id} for Product #{productId} ");
+
                 return RedirectToAction("ProductProcedures", new { id = productId });
             }
             catch (Exception ex)
@@ -286,7 +277,7 @@ namespace Olga.Controllers
 
                 var productDto = _productService.GetProduct((int)productId);
                 var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-                var _currentUser = GetCurrentUser();
+                _currentUser = GetCurrentUser();
                 //procedureDto.Product = product;
                 procedureDto.ProductId = id;
 
@@ -319,7 +310,9 @@ namespace Olga.Controllers
                 await SenEmailAboutUpdateProcedure(model);
                 _procedureService.Update(procedureDto);
                 _procedureService.Commit();
+                _currentUser = GetCurrentUser();
                 TempData["Success"] = Resources.Messages.ProcedureUpdatedSuccess;
+                Logger.Log.Info($"{_currentUser.Email} Edited Procedure #{model.Id} for Product #{model.ProductId} ");
 
                 return RedirectToAction("ProductProcedures", new { id = model.ProductId });
             }
@@ -345,7 +338,7 @@ namespace Olga.Controllers
 
                 var productDto = _productService.GetProduct((int)productId);
                 var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-                var _currentUser = GetCurrentUser();
+                //var _currentUser = GetCurrentUser();
 
                 procedureDto.ProductId = (int)productId;
                 ViewBag.Country = product.Country;
@@ -378,7 +371,7 @@ namespace Olga.Controllers
 
                 var productDto = _productService.GetProduct((int)productId);
                 var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-                var _currentUser = GetCurrentUser();
+                _currentUser = GetCurrentUser();
 
                 procedureDto.ProductId = (int)productId;
                 ViewBag.ProcedureDocsType = procedureDocsType;
@@ -407,34 +400,78 @@ namespace Olga.Controllers
             try
             {
                 if (uploads == null) return;
-                var targetFolder = Server.MapPath($"~/Upload/Documents/Procedures/");
 
                 foreach (var file in uploads)
                 {
                     if (file == null || file.ContentLength <= 0) continue;
-                    var fileTrimmName = file.FileName.Replace(",", "_");
-                    var localFileName =
-                        $"{Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{Path.GetExtension(fileTrimmName)}";
-                    var targetPath = Path.Combine(targetFolder, localFileName);
-                    file.SaveAs(targetPath);
-                    
+                    var targetFolder = Server.MapPath($"~/Upload/Documents/Procedures/");
+
+                    if (!SaveHttpPostedFile(file, ref targetFolder, out string targetPath, out string localFileName)) continue;
+
+                    var fileExt = Path.GetExtension(localFileName);
+
                     var procId = int.Parse(procedureId);
                     var procDocType = int.Parse(procedureDocsType);
-                    var doc = new ProcedureDocument()
+
+                    if (fileExt.Equals(".zip"))
                     {
-                        PathToDocument = localFileName,
-                        ProcedureId = procId,
-                        ProcedureDocsType = (ProcedureDocsType)procDocType
-                    };
-                    //await SendEmailAboutAddFileProcedure(procedureId, productId, (ProcedureDocsType)procDocType, localFileName);
-                    var procedure = _procedureService.GetItem(procId);
-                    procedure.ProcedureDocuments.Add(doc);
-                    _procedureService.Update(procedure);
+                        var filesFromArchive = ProcessArchive(targetPath, targetFolder);
+                        foreach (var fileFromArchive in filesFromArchive)
+                        {
+                            AddFileToProc(fileFromArchive, procId, procDocType);
+                        }
+                        continue;
+                    }
+                    AddFileToProc(localFileName, procId, procDocType);
                 }
             }
             catch (Exception ex)
             {
                 Logger.Log.Error($"{ex}");
+            }
+        }
+
+        public bool SaveHttpPostedFile(HttpPostedFileBase file, ref string targetFolder, out string targetPath, out string localFileName)
+        {
+            var fileTrimmName = file.FileName.Replace(",", "_");
+            try
+            {
+                var fileExt = Path.GetExtension(fileTrimmName);
+                targetFolder = fileExt.Equals(".zip") ? Server.MapPath($"~/Upload/Documents/Procedures/Archives/") : targetFolder;
+
+                localFileName = $"{Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{fileExt}";
+                targetPath = Path.Combine(targetFolder, localFileName);
+                file.SaveAs(targetPath);
+                _currentUser = GetCurrentUser();
+                Logger.Log.Info($"{_currentUser.Email} Downloaded file {localFileName}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.Error($"Cannot save file {fileTrimmName} in {targetFolder}: {ex}");
+                targetPath = localFileName = String.Empty;
+                return false;
+            }
+        }
+
+        public void AddFileToProc(string localFileName, int procedureId, int procDocType)
+        {
+            try
+            {
+                var doc = new ProcedureDocument()
+                {
+                    PathToDocument = localFileName,
+                    ProcedureId = procedureId,
+                    ProcedureDocsType = (ProcedureDocsType) procDocType
+                };
+                //await SendEmailAboutAddFileProcedure(procedureId, productId, (ProcedureDocsType)procDocType, localFileName);
+                var procedure = _procedureService.GetItem(procedureId);
+                procedure.ProcedureDocuments.Add(doc);
+                _procedureService.Update(procedure);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.Error($"Cannot add file {localFileName} to Procedure: {ex}");
             }
         }
 
@@ -449,8 +486,9 @@ namespace Olga.Controllers
             var deleteRes = DeleteFile(document.PathToDocument, targetFolder);
             if (deleteRes)
             {
-                procedure.ProcedureDocuments.Remove(document);
-                _procedureService.Update(procedure);
+                //procedure.ProcedureDocuments.Remove(document);
+                //_procedureService.Update(procedure);
+                _procedureService.DeleteDocument(document.PathToDocument);
             }
         }
         
@@ -478,6 +516,13 @@ namespace Olga.Controllers
                 {
                     System.IO.File.Delete($"{targetPath}");
                 }
+                else
+                {
+                    targetPath = Path.Combine(targetFolder, "Archives", fileName);
+                    if (System.IO.File.Exists(targetPath)) System.IO.File.Delete($"{targetPath}");
+                }
+                _currentUser = GetCurrentUser();
+                Logger.Log.Info($"{_currentUser.Email} Deleted file {fileName}");
                 return true;
             }
             catch (Exception e)
@@ -503,10 +548,13 @@ namespace Olga.Controllers
                 var userEmailsToNotify = _countryService.GetCountryUsersEmailsViaName(product.Country);
 
                 var subject = Resources.Email.SubjectProcedureCreate.Replace("(name)", productName) + $" {model.ProcedureType}" + $" in {product.Country}";
-                var body = $"{Resources.Email.BodyProcedureCreate} {model.ProcedureType} for {productName} in {product.Country}<br><br>" +
+                var body = $"{Resources.Email.BodyProcedureCreate} {model.ProcedureType} for <b>{productName}</b> in {product.Country}<br><br>" +
+                           $"<b>Pharmaceutical Form:</b> {product.PharmaceuticalForm}<br><br>" +
+                           $"<b>Strength:</b> {product.Strength}<br><br><hr>" +
                            $"<b>Name:</b> {model.Name}<br><br>" +
-                           $"<b>ApprovalDate:</b> {model.ApprovalDate}<br><br>" +
                            $"<b>SubmissionDate:</b> {model.SubmissionDate}<br><br>" +
+                           $"<b>EstimatedApprovalDate:</b> {model.EstimatedApprovalDate}<br><br>" +
+                           $"<b>ApprovalDate:</b> {model.ApprovalDate}<br><br>" +
                            $"<b>Comments:</b> {model.Comments}<br><br>" +
                            $"{Resources.Email.Signature}";
                 var emailerDto = Mapper.Map<Emailer,EmailerDTO>(emailer);
@@ -641,6 +689,83 @@ namespace Olga.Controllers
             {
                 var userName = User.Identity.Name;
                 Logger.Log.Error($"{userName}: SenEmailAboutAddUpdateProduct() {ex.Message} ");
+            }
+        }
+
+        public List<string> ProcessArchive(string archivePath, string PathToExtract)
+        {
+            List<string> exrtactedFiles = new List<string>();
+
+            if (!RarArchive.IsRarFile(archivePath) && !ZipFile.IsZipFile(archivePath))
+            {
+                Logger.Log.Error($"{archivePath} is not an archive!");
+                return null;
+            }
+           
+            if (ZipFile.IsZipFile(archivePath))
+            {
+                exrtactedFiles = ProcessZipArchive(archivePath, PathToExtract);
+            }
+            if (RarArchive.IsRarFile(archivePath))
+            {
+                ProcessRarArchive(archivePath, PathToExtract);
+            }
+            return exrtactedFiles;
+        }
+
+        public List<string> ProcessZipArchive(string archivePath, string PathToExtract)
+        {
+            try
+            {
+                List<string> exrtactedFiles = new List<string>();
+                using (ZipFile zip = ZipFile.Read(archivePath))
+                {
+                    foreach (ZipEntry zip_entry in zip)
+                    {
+
+                        if (!zip_entry.IsDirectory)
+                        {
+                            var fileNameWithFolders = zip_entry.FileName;
+                            //var fileTrimmName = fileNameWithFolders.Replace(",", "_").Replace("#", "№").Replace(" ", "_");
+                            //fileNameWithFolders = $"{Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{Path.GetExtension(fileTrimmName)}";
+                            //var foldersPath = fileNameWithFolders.Substring(0,
+                            //    fileNameWithFolders.Length - fileNameWithFolders.IndexOf("\\", StringComparison.Ordinal));
+
+                            //zip_entry.Extract(Path.Combine(PathToExtract,foldersPath));
+                            zip_entry.Extract(Path.Combine(PathToExtract));
+                            exrtactedFiles.Add(fileNameWithFolders);
+                            continue;
+                        }
+                        //PathToExtract = Path.Combine(PathToExtract, Path.GetDirectoryName(zip_entry.FileName));
+                        zip_entry.Extract(PathToExtract);
+                    }
+                }
+                return exrtactedFiles;
+            }
+            catch (Exception ex)
+            {
+                Logger.Log.Error($"{archivePath} - cannot Process these archive!");
+                return new List<string>();
+            }
+        }
+
+        public void ProcessRarArchive(string archivePath, string PathToExtract)
+        {
+           
+        }
+
+        public UserViewModel GetCurrentUser()
+        {
+            try
+            {
+                var userId = HttpContext.User.Identity.GetUserId();
+                var user = UserService.GetUser(userId);
+                var userMapper = MapperForUser.GetUserMapperForView(UserService);
+                return userMapper.Map<UserDTO, UserViewModel>(user);
+            }
+            catch (Exception ex)
+            {
+                return new UserViewModel();
             }
         }
 

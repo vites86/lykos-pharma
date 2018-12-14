@@ -25,6 +25,7 @@ namespace Olga.BLL.Interfaces
         //IEnumerable<ProcedureDTO> GetItems();
         IEnumerable<ProcedureDTO> GetItems(int productId);
         void Update(ProcedureDTO procedure);
+        void DeleteDocument(string fileName);
         //void UpdateDocument(ProcedureDTO procedure);
     }
 
