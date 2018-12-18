@@ -120,6 +120,9 @@
   <data name="ApprovalDate" xml:space="preserve">
     <value>Approval Date</value>
   </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
   <data name="EstimatedApprovalDate" xml:space="preserve">
     <value>Estimated Approval Date</value>
   </data>

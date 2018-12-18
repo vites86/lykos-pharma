@@ -1,0 +1,132 @@
+﻿@using Olga.DAL.Entities
+@using Olga.Models
+@using System.Globalization
+
+@helper MakeEditFiles(ProcedureViewModel procedureViewModel, ProcedureDocsType procedureDocsType)
+{
+    @GetFileTypeSpan(procedureDocsType)
+    <br /><br />
+    foreach (var document in procedureViewModel?.ProcedureDocuments)
+    {
+        if (document.ProcedureDocsType == @procedureDocsType)
+        {
+            @MakeDivForFiles(document)
+        }
+    }
+    <hr />
+}
+
+@helper MakeDivForFiles(ProcedureDocument document)
+{
+    <div>
+        <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
+        <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+        <img id="load_@document.Id" style="visibility: hidden; height: 30px; margin-left: 25px;" src="~/Content/images/loader.gif">
+        <br />
+    </div>
+}
+
+
+@helper  GetFileTypeSpan(ProcedureDocsType procedureDocsType)
+{
+    switch (procedureDocsType)
+    {
+        case ProcedureDocsType.DossierObtainedFromM:
+            <span class="doc_type_name">@Resources.ProcedureDocsTypes.DossierObtainedFromM</span>
+            break;
+        case ProcedureDocsType.DossierSubmittedToAuth:
+            <span class="doc_type_name">@Resources.ProcedureDocsTypes.DossierSubmittedToAuth</span>
+            break;
+        case ProcedureDocsType.RemarksFromAuth:
+            <span class="doc_type_name">@Resources.ProcedureDocsTypes.RemarksFromAuth</span>
+            break;
+        case ProcedureDocsType.RemarksToAuth:
+            <span class="doc_type_name">@Resources.ProcedureDocsTypes.RemarksToAuth</span>
+            break;
+    }
+}
+
+@helper MakeViewFiles(IList<ProcedureViewModel> procedureViewModels, List<ProcedureDocsType> procedureDocsTypes)
+{
+    for (var i = 0; i < procedureViewModels.Count; i++)
+    {
+        <tr data-rowid="@i">
+            <td>@procedureViewModels[i].ProcedureType</td>
+            <td>
+                @foreach (var procedureDocsType in procedureDocsTypes)
+                {
+                    
+                            if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                               <a id="@procedureViewModels[i].Id" procedureDocsType="@procedureDocsType" productId="@procedureViewModels[i].ProductId" controller="Procedure" action="EditFiles">@procedureDocsType</a>
+                            }
+                            else
+                            {
+                               <span>@procedureDocsType</span>
+                            }
+                            <br />
+                            <br />
+                            foreach (var document in procedureViewModels[i].ProcedureDocuments)
+                            {
+                                if (document.ProcedureDocsType == procedureDocsType)
+                                {
+                                    <i class="glyphicon glyphicon-file"></i>
+                                    <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
+                                    <br />
+                                }
+                            }
+                            <hr />
+                }
+            </td>
+            <td>@procedureViewModels[i].Name</td>
+            <td>
+                @{ var submissionDate = DateTime.Parse(procedureViewModels[i].SubmissionDate.ToString()).ToString("u").Substring(0, 10); }
+                @submissionDate
+            </td>
+            <td>
+                @{ var estimatedApprovalDate = DateTime.Parse(procedureViewModels[i].EstimatedApprovalDate.ToString()).ToString("u").Substring(0, 10); }
+                @estimatedApprovalDate
+            </td>
+            <td>
+                @{ var approvalDate = procedureViewModels[i].ApprovalDate != null ? DateTime.Parse(procedureViewModels[i].ApprovalDate.ToString()).ToString("u").Substring(0, 10) : null; }
+                @approvalDate
+            </td>
+            <td>@procedureViewModels[i].Comments</td>
+            <td>
+                <div style="text-align: center;">
+                    @{
+                        if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <br />
+                            <br />
+                            <span>
+                                <a target="_blank" id="@procedureViewModels[i].Id" productId="@procedureViewModels[i].ProductId" controller="Procedure" action="EditProcedure" class="glyphicon glyphicon-pencil">  </a>
+                            </span>
+                            <br />
+                            <br />
+                            @*<span>
+                     @Html.ActionLink("   ", "EditProcedureFiles", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
+                     {@class = "glyphicon glyphicon-file", @target = "_blank"})
+                 </span>
+                 <br />
+                 <br />
+                 <span>
+                     @Html.ActionLink("   ", "DeleteProcedure", "Procedure", new {id = @Model[i].Id, productId = @Model[i].ProductId}, new
+                {
+                    @class = "glyphicon glyphicon-trash text-warning",
+                    onclick = "return confirm('Are you sure you wish to delete this procedure?');"
+                }
+                 </span>)*@
+
+                        }
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+
+}
+
+
+
+

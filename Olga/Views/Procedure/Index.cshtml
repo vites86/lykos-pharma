@@ -4,10 +4,13 @@
 @{
     ViewBag.Title = "Procedures";
     var hasAccess = false;
+    var flagSrc = $"{@ViewBag.CountryId}.gif";
 }
 <div class="container">
     <h2>Procedures</h2>
-    <h3 class="alert-success">@ViewBag.ContryName</h3>
+    <h3 class="alert-success">@ViewBag.CountryName
+        <img style="margin-left: 15px; height: 20px;" src="~/Content/images/countries/@flagSrc" />
+    </h3>
     @{
         if (Model.Count != 0)
         {

@@ -70,11 +70,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Id in request!.
+        /// </summary>
+        internal static string NoIdInRequest {
+            get {
+                return ResourceManager.GetString("NoIdInRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You don&apos;t have permissions for this operation!.
         /// </summary>
         internal static string NoPermission {
             get {
                 return ResourceManager.GetString("NoPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to don&apos;t have Products! So there are no Procedures to work with!.
+        /// </summary>
+        internal static string NoProcCauseNoProd {
+            get {
+                return ResourceManager.GetString("NoProcCauseNoProd", resourceCulture);
             }
         }
         

@@ -7,6 +7,7 @@
     {
         hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Name.Equals(@ViewBag.Country));
     }
+    var flagSrc = $"{@ViewBag.CountryId}.gif";
 }
 
 @*<div class="container">*@
@@ -14,7 +15,10 @@
     <div class="row" style="overflow: auto; margin-left:  10px;margin-right: 10px;">
         <h2>Products</h2>
         <div class="alert-success" style="width: 100%">
-            <h1>@ViewBag.Country</h1>
+            <h1>
+                @ViewBag.Country
+                        <img style="margin-left: 15px; height: 20px;" src="~/Content/images/countries/@flagSrc" />
+                    </h1>
         </div>
         @{
             if (Model != null)

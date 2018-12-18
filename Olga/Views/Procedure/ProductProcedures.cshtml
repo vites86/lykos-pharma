@@ -3,18 +3,21 @@
 @using Olga.Models
 @model IList<ProcedureViewModel>
 @{
-    ViewBag.Title = "Procedures";
+    ViewBag.Title = $"Procedures | {ViewBag?.Product?.ProductName}";
     var hasAccess = false;
     if (@ViewBag.User.Countries != null)
     {
         hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Name.Equals(@ViewBag.Country));
     }
+    var flagSrc = $"{@ViewBag.CountryId}.gif";
 }
 
 <div>
     <div class="row" style="overflow: auto; margin-left: 20px;margin-right: 10px;">
         <div class="alert-success" style="width: 100%">
-            <h1>@ViewBag.Country</h1>
+            <h1>@ViewBag.Country
+                    <img style="margin-left: 15px; height: 20px;" src="~/Content/images/countries/@flagSrc" />
+                    </h1>
         </div>
         <h2>Procedures for:<span style="color: blue"> 
             @Html.ActionLink($"{ViewBag.Product.ProductName}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
@@ -38,12 +41,8 @@
                                 <th>@Resources.Labels.SubmissionDate</th>
                                 <td>@Resources.Labels.EstimatedApprovalDate</td>
                                 <th>@Resources.Labels.ApprovalDate</th>
-                                <th>Comments</th>
-                                <th>
-                                    <span class="action_span">
-                                        Action
-                                    </span>
-                                </th>
+                                <th>@Resources.Labels.Comments</th>
+                                <th><span class="action_span">Action</span></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -73,7 +72,7 @@
                                                         if (document.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM)
                                                         {
                                                             <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
                                                             <br />
                                                         }
                                                     }
@@ -95,7 +94,7 @@
                                                         if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
                                                         {
                                                             <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
                                                             <br />
                                                         }
                                                     }
@@ -117,7 +116,7 @@
                                                         if (document.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth)
                                                         {
                                                             <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
                                                             <br />
                                                         }
                                                     }
@@ -139,7 +138,7 @@
                                                         if (document.ProcedureDocsType == ProcedureDocsType.RemarksToAuth)
                                                         {
                                                             <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
                                                             <br />
                                                         }
                                                     }

@@ -266,7 +266,22 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\DownloadProcFiles.css" />
     <Content Include="Content\dropzone.css" />
+    <Content Include="Content\images\countries\1.gif" />
+    <Content Include="Content\images\countries\10.gif" />
+    <Content Include="Content\images\countries\11.gif" />
+    <Content Include="Content\images\countries\12.gif" />
+    <Content Include="Content\images\countries\13.gif" />
+    <Content Include="Content\images\countries\14.gif" />
+    <Content Include="Content\images\countries\2.gif" />
+    <Content Include="Content\images\countries\3.gif" />
+    <Content Include="Content\images\countries\4.gif" />
+    <Content Include="Content\images\countries\5.gif" />
+    <Content Include="Content\images\countries\6.gif" />
+    <Content Include="Content\images\countries\7.gif" />
+    <Content Include="Content\images\countries\8.gif" />
+    <Content Include="Content\images\countries\9.gif" />
     <Content Include="Content\images\error.png" />
     <Content Include="Content\images\extentions\ai.jpg" />
     <Content Include="Content\images\extentions\crd.jpg" />
@@ -4959,6 +4974,7 @@
     <Content Include="log4net.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Code\MyHelpers.cshtml" />
     <None Include="Properties\PublishProfiles\185.112.41.146.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -5002,6 +5018,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\Procedures\EditProcFiles.js" />
     <Content Include="Scripts\Procedures\procedures.js" />
     <Content Include="Scripts\Products\artworks.js" />
     <Content Include="Scripts\Products\products-handler.js" />

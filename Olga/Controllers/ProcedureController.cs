@@ -81,7 +81,7 @@ namespace Olga.Controllers
         {
             if (countryId == 0)
             { 
-                @ViewBag.Error = "No countryId in request!";
+                @ViewBag.Error = Resources.ErrorMessages.NoIdInRequest;
                 return View("Error");
             }
             var errorMessage = String.Empty;
@@ -113,7 +113,7 @@ namespace Olga.Controllers
             var allProducts = _productService.GetProducts(countryId);
             if (allProducts == null)
             {
-                errorMessage = $"{country.Name} don't have Products! So there are no Procedures to work with!";
+                errorMessage = $"{country.Name} {Resources.ErrorMessages.NoProcCauseNoProd}";
                 return false;
             }
             List<SelectListItem> products = 
@@ -511,15 +511,10 @@ namespace Olga.Controllers
         {
             try
             {
-                var targetPath = Path.Combine(targetFolder, fileName);
+                var targetPath = String.Concat(targetFolder, fileName.Replace(@"/", @"\"));
                 if (System.IO.File.Exists(targetPath))
                 {
                     System.IO.File.Delete($"{targetPath}");
-                }
-                else
-                {
-                    targetPath = Path.Combine(targetFolder, "Archives", fileName);
-                    if (System.IO.File.Exists(targetPath)) System.IO.File.Delete($"{targetPath}");
                 }
                 _currentUser = GetCurrentUser();
                 Logger.Log.Info($"{_currentUser.Email} Deleted file {fileName}");
@@ -692,7 +687,7 @@ namespace Olga.Controllers
             }
         }
 
-        public List<string> ProcessArchive(string archivePath, string PathToExtract)
+        public List<string> ProcessArchive(string archivePath, string pathToExtract)
         {
             List<string> exrtactedFiles = new List<string>();
 
@@ -704,40 +699,44 @@ namespace Olga.Controllers
            
             if (ZipFile.IsZipFile(archivePath))
             {
-                exrtactedFiles = ProcessZipArchive(archivePath, PathToExtract);
+                exrtactedFiles = ProcessZipArchive(archivePath, pathToExtract);
             }
             if (RarArchive.IsRarFile(archivePath))
             {
-                ProcessRarArchive(archivePath, PathToExtract);
+                ProcessRarArchive(archivePath, pathToExtract);
             }
             return exrtactedFiles;
         }
 
-        public List<string> ProcessZipArchive(string archivePath, string PathToExtract)
+        public List<string> ProcessZipArchive(string archivePath, string pathToExtract)
         {
             try
             {
                 List<string> exrtactedFiles = new List<string>();
                 using (ZipFile zip = ZipFile.Read(archivePath))
                 {
-                    foreach (ZipEntry zip_entry in zip)
+                    var renamedFolder = string.Empty;
+                    foreach (ZipEntry zipEntry in zip)
                     {
-
-                        if (!zip_entry.IsDirectory)
+                        if (zipEntry.IsDirectory)
                         {
-                            var fileNameWithFolders = zip_entry.FileName;
-                            //var fileTrimmName = fileNameWithFolders.Replace(",", "_").Replace("#", "№").Replace(" ", "_");
-                            //fileNameWithFolders = $"{Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{Path.GetExtension(fileTrimmName)}";
-                            //var foldersPath = fileNameWithFolders.Substring(0,
-                            //    fileNameWithFolders.Length - fileNameWithFolders.IndexOf("\\", StringComparison.Ordinal));
-
-                            //zip_entry.Extract(Path.Combine(PathToExtract,foldersPath));
-                            zip_entry.Extract(Path.Combine(PathToExtract));
-                            exrtactedFiles.Add(fileNameWithFolders);
+                            var extractFolder = Path.Combine(pathToExtract, zipEntry.FileName);
+                            if (Directory.Exists(extractFolder))
+                            {
+                                renamedFolder = string.Concat(zipEntry.FileName.Replace(@"/",""),"_", Guid.NewGuid().ToString().Substring(0, 6));
+                                pathToExtract = Path.Combine(pathToExtract,renamedFolder);
+                                Directory.CreateDirectory(pathToExtract);
+                                zipEntry.Extract(pathToExtract);
+                            }
+                            else
+                            {
+                                zipEntry.Extract(pathToExtract);
+                            }
                             continue;
                         }
-                        //PathToExtract = Path.Combine(PathToExtract, Path.GetDirectoryName(zip_entry.FileName));
-                        zip_entry.Extract(PathToExtract);
+                        var fileNameWithFolders = string.Concat(@"/Archives/",renamedFolder, @"/", zipEntry.FileName);
+                        zipEntry.Extract(pathToExtract);
+                        exrtactedFiles.Add(fileNameWithFolders);
                     }
                 }
                 return exrtactedFiles;
