@@ -132,4 +132,13 @@
   <data name="ProcedureUpdatedSuccess" xml:space="preserve">
     <value>Procedure was updated  successfuly!</value>
   </data>
+  <data name="ProductCreatedSuccess" xml:space="preserve">
+    <value>Product was Created/Updated  successfuly!</value>
+  </data>
+  <data name="ProductDeletedSuccess" xml:space="preserve">
+    <value>Product was deleted  successfuly!</value>
+  </data>
+  <data name="ProductUpdatedSuccess" xml:space="preserve">
+    <value>Product was Created/Updated  successfuly!</value>
+  </data>
 </root>

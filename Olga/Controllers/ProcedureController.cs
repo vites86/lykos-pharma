@@ -165,7 +165,6 @@ namespace Olga.Controllers
             ViewBag.Product = product;
             ViewBag.User = _currentUser;
             ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
-
             var proceduresListDto = _procedureService.GetItems().Where(a => a.ProductId == id);
             var procedureDto = Mapper.Map<IEnumerable<ProcedureDTO>, IList<ProcedureViewModel>>(proceduresListDto);
             return View(procedureDto);

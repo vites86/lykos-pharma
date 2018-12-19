@@ -175,8 +175,7 @@ namespace Olga.Controllers
                 var userName = User.Identity.Name;
                 Logger.Log.Info($"{userName}: Created/Updated Product {model.Id} ");
 
-                
-
+                TempData["Success"] = Resources.Messages.ProductCreatedSuccess;
                 return RedirectToAction("Index", new {id = model.CountryId});
             }
             catch (Exception ex)
@@ -296,7 +295,7 @@ namespace Olga.Controllers
             {
                 _productService.DeleteProduct(int.Parse(Id));
                 _productService.Commit();
-                TempData["Success"] = Resources.ErrorMessages.ProductDeleteSuccess;
+                TempData["Success"] = Resources.Messages.ProductDeletedSuccess;
 
                 var userName = User.Identity.Name;
                 Logger.Log.Info($"{userName}: Deleted Product {Id} ");

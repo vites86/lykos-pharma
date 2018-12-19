@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = $"Files {@GetFileTypeSpan(ViewBag?.ProcedureDocsType)}";
+    ViewBag.Title = $"Files {@MyHelpers.GetFileTypeText(ViewBag?.ProcedureDocsType)}";
 }
 @using System.Web.Mvc.Html
 @using Olga.DAL.Entities
@@ -63,7 +63,7 @@
                                     Browse for file ...
                                     <input type="file" id="uploads" name="uploads" onchange="getFileData(this);" multiple="multiple" hidden />
                                 </label>
-                                <label style="margin-left: 20px;" id="choosenFile" name="choosenFile" />
+                                <label style="margin-left: 20px;" id="choosenFile" name="choosenFile"></label>
                             </div>
                         </div><br /><br /><br />
                         <div class="form-group">
@@ -108,21 +108,3 @@
    
 @Styles.Render("~/Content/DownloadProcFiles.css")
     
-@helper  GetFileTypeSpan(ProcedureDocsType procedureDocsType)
-{
-    switch (procedureDocsType)
-    {
-        case ProcedureDocsType.DossierObtainedFromM:
-            @Resources.ProcedureDocsTypes.DossierObtainedFromM
-            break;
-        case ProcedureDocsType.DossierSubmittedToAuth:
-            @Resources.ProcedureDocsTypes.DossierSubmittedToAuth
-            break;
-        case ProcedureDocsType.RemarksFromAuth:
-            @Resources.ProcedureDocsTypes.RemarksFromAuth
-            break;
-        case ProcedureDocsType.RemarksToAuth:
-            @Resources.ProcedureDocsTypes.RemarksToAuth
-            break;
-    }
-}

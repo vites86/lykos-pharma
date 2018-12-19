@@ -1,0 +1,24 @@
+﻿@if (TempData["Success"] != null)
+{
+    <input id="RenderFlashMessages" name="RenderFlashMessages" type="hidden" value='@TempData["Success"]' />
+}
+else if (TempData["Error"] != null)
+{
+    <input id="RenderFlashErrorMessages" name="RenderFlashErrorMessages" type="hidden" value='@TempData["Error"]' />
+}
+<script>
+
+    function showRenderFlashMessages() {
+        var value = $('#RenderFlashMessages').val();
+        var valueError = $('#RenderFlashErrorMessages').val();
+        if (value) {
+            toastr.info(value);
+            $('#RenderFlashMessages').val('');
+        }
+        if (valueError) {
+            toastr.alert(valueError);
+            $('#RenderFlashMessages').val('');
+        }
+    }
+    window.onload = showRenderFlashMessages;
+</script>

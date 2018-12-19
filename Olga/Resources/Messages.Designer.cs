@@ -104,5 +104,32 @@ namespace Resources {
                 return ResourceManager.GetString("ProcedureUpdatedSuccess", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product was Created/Updated  successfuly!.
+        /// </summary>
+        internal static string ProductCreatedSuccess {
+            get {
+                return ResourceManager.GetString("ProductCreatedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product was deleted  successfuly!.
+        /// </summary>
+        internal static string ProductDeletedSuccess {
+            get {
+                return ResourceManager.GetString("ProductDeletedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product was Created/Updated  successfuly!.
+        /// </summary>
+        internal static string ProductUpdatedSuccess {
+            get {
+                return ResourceManager.GetString("ProductUpdatedSuccess", resourceCulture);
+            }
+        }
     }
 }

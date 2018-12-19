@@ -51,100 +51,7 @@
                                 <tr data-rowid="@i">
                                     <td>@Model[i].ProcedureType</td>
                                     <td>
-                                        @foreach (var period in ViewBag.DocsType)
-                                        {
-
-                                            switch (period)
-                                            {
-                                                case ProcedureDocsType.DossierObtainedFromM:
-                                                    if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                                                    {
-                                                        @Html.ActionLink($"{Resources.ProcedureDocsTypes.DossierObtainedFromM}", "EditFiles", "Procedure", new { id = @Model[i].Id, productId = @Model[i].ProductId, procedureDocsType = ProcedureDocsType.DossierObtainedFromM }, new { target = "_blank" })
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>@Resources.ProcedureDocsTypes.DossierObtainedFromM</span>
-                                                    }
-                                                    <br />
-                                                    <br />
-                                                    foreach (var document in Model[i].ProcedureDocuments)
-                                                    {
-                                                        if (document.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM)
-                                                        {
-                                                            <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
-                                                            <br />
-                                                        }
-                                                    }
-                                                    <hr />
-                                                    break;
-                                                case ProcedureDocsType.DossierSubmittedToAuth:
-                                                    if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                                                    {
-                                                        @Html.ActionLink($"{Resources.ProcedureDocsTypes.DossierSubmittedToAuth}", "EditFiles", "Procedure", new { id = @Model[i].Id, productId = @Model[i].ProductId, procedureDocsType = ProcedureDocsType.DossierSubmittedToAuth }, new { target = "_blank" })
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>{@Resources.ProcedureDocsTypes.DossierSubmittedToAuth</span>
-                                                    }
-                                                    <br />
-                                                    <br />
-                                                    foreach (var document in Model[i].ProcedureDocuments)
-                                                    {
-                                                        if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
-                                                        {
-                                                            <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
-                                                            <br />
-                                                        }
-                                                    }
-                                                    <hr />
-                                                    break;
-                                                case ProcedureDocsType.RemarksFromAuth:
-                                                    if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                                                    {
-                                                        @Html.ActionLink($"{Resources.ProcedureDocsTypes.RemarksFromAuth}", "EditFiles", "Procedure", new { id = @Model[i].Id, productId = @Model[i].ProductId, procedureDocsType = ProcedureDocsType.RemarksFromAuth }, new { target = "_blank" })
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>{@Resources.ProcedureDocsTypes.RemarksFromAuth</span>
-                                                    }
-                                                    <br />
-                                                    <br />
-                                                    foreach (var document in Model[i].ProcedureDocuments)
-                                                    {
-                                                        if (document.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth)
-                                                        {
-                                                            <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
-                                                            <br />
-                                                        }
-                                                    }
-                                                    <hr />
-                                                    break;
-                                                case ProcedureDocsType.RemarksToAuth:
-                                                    if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                                                    {
-                                                        @Html.ActionLink($"{Resources.ProcedureDocsTypes.RemarksToAuth}", "EditFiles", "Procedure", new { id = @Model[i].Id, productId = @Model[i].ProductId, procedureDocsType = ProcedureDocsType.RemarksToAuth }, new { target = "_blank" })
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>{@Resources.ProcedureDocsTypes.RemarksToAuth</span>
-                                                    }
-                                                    <br />
-                                                    <br />
-                                                    foreach (var document in Model[i].ProcedureDocuments)
-                                                    {
-                                                        if (document.ProcedureDocsType == ProcedureDocsType.RemarksToAuth)
-                                                        {
-                                                            <i class="glyphicon glyphicon-file"></i>
-                                                            <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
-                                                            <br />
-                                                        }
-                                                    }
-                                                    break;
-                                            }
-                                        }
+                                        @MyHelpers.MakeViewFiles(Model[i])
                                     </td>
                                     <td>@Model[i].Name</td>
                                     <td>
@@ -212,6 +119,33 @@
     </div>
     <div class="empty"></div>
 </div>
+
+@if (TempData["Success"] != null)
+{
+    <input id="RenderFlashMessages" name="RenderFlashMessages" type="hidden" value='@TempData["Success"]' />
+}
+else if (TempData["Error"] != null)
+{
+    <input id="RenderFlashErrorMessages" name="RenderFlashErrorMessages" type="hidden" value='@TempData["Error"]' />
+}
+    <script>
+
+        function showRenderFlashMessages() {
+            var value = $('#RenderFlashMessages').val();
+            var valueError = $('#RenderFlashErrorMessages').val();
+            if (value) {
+                toastr.info(value);
+                $('#RenderFlashMessages').val('');
+            }
+            if (valueError) {
+                toastr.alert(valueError);
+                $('#RenderFlashMessages').val('');
+            }
+        }
+        window.onload = showRenderFlashMessages;
+
+    </script>
+
 <style>
     .product_span span {
         color: darkcyan;
@@ -236,39 +170,14 @@
     }
 
     .docs_link {
-    color: darkblue;
+        color: darkblue;
     }
 
-        .docs_link:hover {
-            color: darkgreen;
-        }
+    .docs_link:hover {
+        color: darkgreen;
+    }
 
-        .docs_link:visited {
-            color: darkmagenta;
-        }
+    .docs_link:visited {
+        color: darkmagenta;
+    }
 </style>
-@if (TempData["Success"] != null)
-{
-    <input id="RenderFlashMessages" name="RenderFlashMessages" type="hidden" value='@TempData["Success"]' />
-}
-else if (TempData["Error"] != null)
-{
-    <input id="RenderFlashErrorMessages" name="RenderFlashErrorMessages" type="hidden" value='@TempData["Error"]' />
-}
-<script>
-
-    function showRenderFlashMessages() {
-        var value = $('#RenderFlashMessages').val();
-        var valueError = $('#RenderFlashErrorMessages').val();
-        if (value) {
-            toastr.info(value);
-            $('#RenderFlashMessages').val('');
-        }
-        if (valueError) {
-            toastr.alert(valueError);
-            $('#RenderFlashMessages').val('');
-        }
-    }
-    window.onload = showRenderFlashMessages;
-
-        </script>
