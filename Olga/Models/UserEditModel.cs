@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -19,6 +20,10 @@ namespace Olga.Models
         public Roles Role { get; set; }
         public List<CountryViewModel> Countries { get; set; }
         public bool NcAccess { get; set; }
+
+        [DisplayName("M.A.Holder")]
+        public MarketingAuthorizHolderViewModel MarketingAuthorizHolder { get; set; }
+        public int? MarketingAuthorizHolderId { get; set; }
 
     }
 }

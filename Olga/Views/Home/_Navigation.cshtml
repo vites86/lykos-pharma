@@ -2,7 +2,7 @@
 @model List<Olga.Models.CountryViewModel>
 
 <ul class="list-unstyled navigation mb-0">
-    <li class="sidebar-category">Main</li>
+    <li class="sidebar-category"><a target="_blank" href="~/Home/Index">Main</a></li>
     <li class="panel">
         <a role="button"
            data-toggle="collapse"
@@ -22,7 +22,7 @@
                 {
                     hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
                 }
-                if (User.IsInRole("Admin") || hasAccess)
+                if (User.IsInRole("Admin") || hasAccess || User.IsInRole("Holder"))
                 {
                     <li>
                         <a href="#">@Model[i].Name</a>
@@ -58,7 +58,7 @@
                 if (@ViewBag.User.Countries != null)
                 {
                     hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
-                }
+                }/* Todo добавить в проверку ниже для доступа холдера к процедурам || User.IsInRole("Holder") */
                 if (User.IsInRole("Admin") || (hasAccess && User.IsInRole("Manager")))
                 {
                     <li>

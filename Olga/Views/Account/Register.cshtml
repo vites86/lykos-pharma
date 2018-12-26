@@ -82,6 +82,13 @@
                     </div>
 
                     <div class="form-group">
+                        @Html.LabelFor(model => model.MarketingAuthorizHolderId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.MarketingAuthorizHolderId, new SelectList(ViewBag.marketingAuthorizHolder, "Id", "Name"), "-- No MarketingAuthorizHolder --", new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <input type="submit" class="btn btn-default" value="Register" />
                         </div>

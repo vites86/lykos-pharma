@@ -36,6 +36,21 @@
         }
     }
 
+    //function deleteFileFromHiddenList(fileName, stringElement) {
+
+    //    var stringElementValue = stringElement.val();
+    //    var re = /\s*,\s*/;
+    //    var tagList = stringElementValue.split(re);
+    //    for (var k = 0; k < tagList.length; k++) {
+    //        if (tagList[k].includes(fileName)) {
+    //            console.log('tagList[k] contains ' + fileName);
+    //            var result = stringElementValue.replace(tagList[k], '');
+    //            console.log('result = ' + result);
+    //            stringElement.val(result);
+    //        }
+    //    }
+    //}
+
     function fileNameInHiddenList(fileName, stringElement) {
         console.log('fileNameInHiddenList()');
         console.log('fileName:' + fileName);
@@ -102,6 +117,11 @@
             $(file.previewElement).find(".dz-image img").attr("src", "/Content/images/extentions/docx.jpg");
         }
         $(file.previewElement).find(".dz-image img").attr("class", "preview_image");
+        $(file.previewElement).find(".dz-image img").attr("alt", file.name);
+        $(file.previewElement).find(".dz-image img").attr("title", file.name);
+
+        $(file.previewElement).find(".dz-image").append('<span style="display: inline-block;width:150px; overflow: hidden !important;">' + file.name + '</span>');
+
     }
 
     function showDocsImageOnPage(response) {
@@ -124,7 +144,7 @@
         var alt = fileName.substr(fileName.indexOf("_") + 2, fileName.lastIndexOf("_")-3).trim();
         var innerHtml =
             '<div name="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() +'" ' +
-                  'id="showArtworkImageBlock_' + fileName.replace(".", "").replace(/\s+/g, '').replace(/#/g, '№').trim() + '" class="show_blockOfImage">' +
+            'id="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() + '" class="show_blockOfImage">' +
                '<span class="glyphicon glyphicon-file" />    ' +
                 '<a href="/Upload/Documents/' + apprFolder + '/' + fileName + '" target="_blank">' + fileName + '</a>' +
             '</div>';
@@ -216,58 +236,59 @@
                     fancybox.removeAllFiles();
                 });
                 $('#cancelArtworkAddPhoto' + artworkId).off('click').click(function (clickEvent) {
-                    console.log('#cancelAddPhoto click() ');
-                    if (images.length) {
-                        for (i = 0; i < images.length; i++) {
-                            var fileName = images[i].savedName;
-                            console.log('cancelAddPhoto name = ' + fileName);
-                            var artworkId = fileName.substr(0, fileName.indexOf("__"));
+                    console.log('#cancel click()');
+                    //if (images.length) {
+                    //    for (i = 0; i < images.length; i++) {
+                    //        var fileName = images[i].savedName;
+                    //        console.log('cancelAddPhoto name = ' + fileName);
+                    //        var artworkId = fileName.substr(0, fileName.indexOf("__"));
 
-                            var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').trim();
-                            console.log('Hidding #showArtworkImageBlock_' + trimFileName);
+                    //        var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').trim();
+                    //        console.log('Hidding #showArtworkImageBlock_' + trimFileName);
 
-                            var blockElementWithImage = $('#showArtworkImageBlock_' + trimFileName);
-                            blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
+                    //        var blockElementWithImage = $('#showArtworkImageBlock_' + trimFileName);
+                    //        blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
 
-                            var stringElement = $('#DocumentImagesListStringArtworks');
-                            var stringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
+                    //        var stringElement = $('#DocumentImagesListStringArtworks');
+                    //        var stringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
 
-                            deleteArtworkFileFromHiddenList(fileName, stringElement);
-                            deleteArtworkFileFromHiddenList(fileName, stringElement2);
+                    //        deleteArtworkFileFromHiddenList(fileName, stringElement);
+                    //        deleteArtworkFileFromHiddenList(fileName, stringElement2);
 
-                            deleteImage(fileName);
-                            //images.splice(i, 1);
-                        }
-                    }
-                    images = [];
+                    //        deleteImage(fileName);
+                    //        //images.splice(i, 1);
+                    //    }
+                    //}
+                    //images = [];
                     fancybox.removeAllFiles();
                 });
 
                 this.on("removedfile",
                     function (file) {
-                        console.log('removed file event for ' + file.name);
+                        console.log('#removed file event for ' + file.name);
                         var index = -1;
                         for (var i = 0; i < images.length; i++) {
                             if (images[i].name === file.name) {
 
                                 console.log('file.name to delete = ' + file.name);
-                                console.log('artworkId = ' + artworkId);
-
 
                                 var fileName = images[i].savedName;
-                                var fileNameInListWithoutex = artworkId + '__' + file.name.substr(0, file.name.lastIndexOf("."));
+                                console.log('images[i].savedName = ' + fileName);
 
-                                var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').trim();
-                                var blockElementWithImage = $('#showArtworkImageBlock_' + trimFileName);
-                                blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
+                                artworkId = fileName.substr(0, fileName.indexOf("__"));
+                                console.log('artworkId = ' + artworkId);
+
+                                var fileNameInListWithoutex = artworkId + '__' + file.name.substr(0, file.name.lastIndexOf("."));
+                                var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim();
+
+                                var blockElementWithImage = document.getElementById('showArtworkImageBlock_' + trimFileName);
+                                blockElementWithImage.classList.remove("show_blockOfImage");
+                                blockElementWithImage.classList.add("hidden");
+                                
                                 var stringElement = $('#DocumentImagesListStringArtworks');
                                 var stringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
 
-                                var fileNameInList = fileNameInHiddenList(fileNameInListWithoutex, stringElement);
-                                console.log('fileNameInList = ' + fileNameInList);
-                                if (fileNameInList !== null) {
-                                    deleteImage(fileNameInList);
-                                }
+                                deleteImage(fileName);
 
                                 deleteArtworkFileFromHiddenList(fileNameInListWithoutex, stringElement);
                                 deleteArtworkFileFromHiddenList(fileNameInListWithoutex, stringElement2);

@@ -47,7 +47,7 @@
 }
 
 @helper MakeViewFiles(ProcedureViewModel procedureViewModel)
- {
+{
     var procedureDocsTypes = Enum.GetValues(typeof(ProcedureDocsType));
 
     foreach (var procedureDocsType in procedureDocsTypes)
@@ -55,8 +55,7 @@
 
         if (User.IsInRole("Admin") || User.IsInRole("Manager"))
         {
-            <a href="/Procedure/EditFiles/@procedureViewModel.Id?productId=@procedureViewModel.ProductId&procedureDocsType=@procedureDocsType"
-                >@GetFileTypeText((ProcedureDocsType)procedureDocsType)</a>
+            <a href="/Procedure/EditFiles/@procedureViewModel.Id?productId=@procedureViewModel.ProductId&procedureDocsType=@procedureDocsType">@GetFileTypeText((ProcedureDocsType)procedureDocsType)</a>
         }
         else
         {
@@ -75,9 +74,4 @@
         }
         <hr />
     }
-
 }
-
-
-
-

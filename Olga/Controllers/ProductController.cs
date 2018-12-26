@@ -87,35 +87,45 @@ namespace Olga.Controllers
         // GET: Product
         public ActionResult Index(int? id)
         {
+            if (id==null)
+            {
+                @ViewBag.Error = Resources.ErrorMessages.NoIdInRequest;
+                return View("Error");
+            }
             try
             {
                 var countryDto = _countryService.GetItem((int)id);
-                @ViewBag.Country = countryDto.Name;
-                @ViewBag.CountryId = id;
                 var productsDto  = _productService.GetProducts(id).ToList();
                 _currentUser = GetCurrentUser();
-                if (_currentUser.Countries.All(a => a.Id != id) && !User.IsInRole("Admin"))
+                if (_currentUser.Countries.All(a => a.Id != id) && !User.IsInRole("Admin") && !User.IsInRole("Holder"))
                 {
-                    @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                    ViewBag.Error = Resources.ErrorMessages.NoPermission;
                     return View("Error");
                 }
+                ViewBag.Country = countryDto.Name;
+                ViewBag.CountryId = id;
                 ViewBag.User = _currentUser;
-                if (productsDto.Count > 0)
+                if (productsDto.Count == 0)
                 {
-                    var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto).OrderBy(a => a.ProductName);
-                    DateTime yearAndHalf = DateTime.Now.AddMonths(18);
-
-                    foreach (ProductViewModel product in products)
-                    {
-                        if (product.ExpiredDate != null)
-                        {
-                            int result = DateTime.Compare((DateTime)product.ExpiredDate, yearAndHalf);
-                            product.IsFired = result < 0;
-                        }
-                    }
-                    return View(products.ToList());
+                    return View();
                 }
-                return View();
+                if (User.IsInRole("Holder"))
+                {
+                    productsDto = productsDto.Where(a => a.MarketingAuthorizHolderId == _currentUser.MarketingAuthorizHolder.Id).ToList();
+                }
+
+                var products = Mapper.Map<List<ProductDTO>, List<ProductViewModel>>(productsDto).OrderBy(a => a.ProductName);
+                DateTime yearAndHalf = DateTime.Now.AddMonths(18);
+
+                foreach (ProductViewModel product in products)
+                {
+                    if (product.ExpiredDate != null)
+                    {
+                        int result = DateTime.Compare((DateTime)product.ExpiredDate, yearAndHalf);
+                        product.IsFired = result < 0;
+                    }
+                }
+                return View(products.ToList());
             }
             catch (Exception e)
             {
@@ -238,8 +248,8 @@ namespace Olga.Controllers
                 @ViewBag.Error = nameof(id);
                 return View("Error");
             }
-            var currentUser = GetCurrentUser();
-            if (currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin"))
+            _currentUser = GetCurrentUser();
+            if (_currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin") && !User.IsInRole("Holder"))
             {
                 @ViewBag.Error = Resources.ErrorMessages.NoPermission;
                 return View("Error");
@@ -250,17 +260,23 @@ namespace Olga.Controllers
                 var prod = _productService.GetProduct(int.Parse(id));
                 var product = Mapper.Map<ProductDTO, ShowProductModel>(prod);
                 var userDocumentsApprs = new List<string>();
-               
-                if (!User.IsInRole("Admin") && !currentUser.NcAccess)
+
+                if (User.IsInRole("Holder") && !product.MarketingAuthorizHolder.Equals(_currentUser.MarketingAuthorizHolder.Name))
+                {
+                    @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                    return View("Error");
+                }
+                if (!User.IsInRole("Admin") && !_currentUser.NcAccess)
                 {
                     userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null && a.ApprDocsTypeId != 3).Select(m => m.PathToDocument).ToList();
                     ViewBag.NcAccess = false;
                 }
-                else if(User.IsInRole("Admin") || currentUser.NcAccess)
+                else if(User.IsInRole("Admin") || _currentUser.NcAccess)
                 {
                     ViewBag.NcAccess = true;
                     userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
                 }
+                
 
                 //var userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
                 var userDocumentsArtworks = prod?.ProductDocuments.Where(a => a.ArtworkId != null).Select(m => m.PathToDocument).ToList();
@@ -542,6 +558,8 @@ namespace Olga.Controllers
                     return "ApprDocType/NDMQC";
                 case "4":
                     return "ApprDocType/PackMaterialsLabelling";
+                case "5":
+                    return "ApprDocType/Trademarks";
             }
             return "/";
         }
@@ -576,7 +594,6 @@ namespace Olga.Controllers
             catch (Exception ex)
             {
                 Logger.Log.Error($"{userName}: DeleteFile() {ex.Message} ");
-
                 return Json(new { Message = ex.Message });
             }
         }

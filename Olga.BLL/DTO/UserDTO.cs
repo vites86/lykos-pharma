@@ -24,5 +24,8 @@ namespace Olga.BLL.DTO
         public bool NcAccess { get; set; }
         public List<CountryDTO> Countries { get; set; }
 
+        public int? MarketingAuthorizHolderId { get; set; }
+        public MarketingAuthorizHolderDTO MarketingAuthorizHolder { get; set; }
+
     }
 }

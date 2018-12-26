@@ -29,6 +29,8 @@ namespace Olga.BLL.AutoMapper
 
             buildMap.ForMember(dest => dest.Password, opt => opt.Ignore());
 
+            buildMap.ForMember(dest => dest.MarketingAuthorizHolderId, opt => opt.MapFrom(m => m.MarketingAuthorizHolderId));
+
             var configuration = new MapperConfiguration(confExpressMap);
             return configuration.CreateMapper();
         }
@@ -41,6 +43,8 @@ namespace Olga.BLL.AutoMapper
             buildMap.ForMember(dest => dest.Id, opt => opt.Ignore());
             buildMap.ForMember(dest => dest.Rank, opt => opt.MapFrom(m => m.Rank));
             buildMap.ForMember(dest => dest.Name, opt => opt.MapFrom(m => m.Name));
+            buildMap.ForMember(dest => dest.MarketingAuthorizHolderId, opt => opt.MapFrom(m => m.MarketingAuthorizHolderId));
+
             //buildMap.ForMember(dest => dest.ApplicationUser, opt => opt.Ignore());
 
             var configuration = new MapperConfiguration(confExpressMap);

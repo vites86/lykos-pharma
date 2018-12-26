@@ -22,12 +22,14 @@
                         <td>@Resources.TableHead.Rank</td>
                         <td>@Resources.TableHead.NcAccess</td>
                         <td>@Resources.TableHead.Countries</td>
+                        <td>@Resources.TableHead.MarketingAuthorizHolder</td>
                         <td>Action</td>
                     </tr>
                 </thead>
                 <tbody>
                     @for (var i = 0; i < Model.Count; i++)
                     {
+                        var marketingAuthorizHolderName = @Model[i].MarketingAuthorizHolder?.Name;
                         <tr data-rowid="@i">
                             <td>@Model[i].Name</td>
                             <td>@Model[i].Email</td>
@@ -48,6 +50,8 @@
                                     }
                                 }
                             </td>
+                            <td>@marketingAuthorizHolderName</td>
+
                             <td>
                                 @{
 

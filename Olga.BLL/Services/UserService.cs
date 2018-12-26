@@ -41,7 +41,8 @@ namespace Olga.BLL.Services
                     Id = user.Id,
                     Rank = userDto.Rank,
                     Name = userDto.Name,
-                    NcAccess = userDto.NcAccess
+                    NcAccess = userDto.NcAccess,
+                    MarketingAuthorizHolderId = userDto.MarketingAuthorizHolderId
                 };
 
                 foreach (var country in userDto.Countries)
@@ -95,6 +96,7 @@ namespace Olga.BLL.Services
                 user.ClientProfile.Name = userDto.Name;
                 user.ClientProfile.Rank = userDto.Rank;
                 user.ClientProfile.NcAccess = userDto.NcAccess;
+                user.ClientProfile.MarketingAuthorizHolderId = userDto.MarketingAuthorizHolderId;
 
                 user.ClientProfile.Countries.Clear();
                 foreach (var country in userDto.Countries)

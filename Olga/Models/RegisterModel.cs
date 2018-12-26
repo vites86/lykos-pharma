@@ -31,5 +31,8 @@ namespace Olga.Models
         public bool NcAccess { get; set; }
 
         public List<CountryViewModel> Countries { get; set; }
+
+        public int? MarketingAuthorizHolderId { get; set; }
+
     }
 }

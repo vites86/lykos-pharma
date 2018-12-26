@@ -57,6 +57,13 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.MarketingAuthorizHolderId, new SelectList(ViewBag.marketingAuthorizHolder, "Id", "Name"), "-- No MarketingAuthorizHolder --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(m => m.Countries, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
                 <ul style="list-style-type: none; padding-left: 0px">

@@ -138,14 +138,32 @@
   <data name="Event" xml:space="preserve">
     <value>Event</value>
   </data>
+  <data name="ExpiredDate" xml:space="preserve">
+    <value>Expired Date</value>
+  </data>
   <data name="FIO" xml:space="preserve">
     <value>ФИО</value>
   </data>
   <data name="From" xml:space="preserve">
     <value>От</value>
   </data>
+  <data name="IssuedDate" xml:space="preserve">
+    <value>Issued Date</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Логин</value>
+  </data>
+  <data name="MAHolder" xml:space="preserve">
+    <value>Marketing Authoriz Holder</value>
+  </data>
+  <data name="Manufacturer" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
+  <data name="MANumber" xml:space="preserve">
+    <value>Marketing Authoriz Number</value>
+  </data>
+  <data name="MarketingAuthorizHolder" xml:space="preserve">
+    <value>Marketing Authoriz Holder</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Имя</value>
@@ -155,6 +173,15 @@
   </data>
   <data name="Number" xml:space="preserve">
     <value>№</value>
+  </data>
+  <data name="PharmaceuticalForm" xml:space="preserve">
+    <value>Pharmaceutical Form</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product Name</value>
   </data>
   <data name="Rank" xml:space="preserve">
     <value>Rank</value>
@@ -167,6 +194,9 @@
   </data>
   <data name="Status" xml:space="preserve">
     <value>Статус</value>
+  </data>
+  <data name="Strength" xml:space="preserve">
+    <value>Strength</value>
   </data>
   <data name="Telephone" xml:space="preserve">
     <value>Телефон</value>

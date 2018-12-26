@@ -77,29 +77,30 @@ namespace Olga.Controllers
             _currentUser = GetCurrentUser();
         }
         // GET: Procedure
-        public ActionResult Index(int countryId)
+        public ActionResult Index(int? countryId)
         {
-            if (countryId == 0)
+            if (countryId == 0 || countryId == null)
             { 
-                @ViewBag.Error = Resources.ErrorMessages.NoIdInRequest;
+                ViewBag.Error = Resources.ErrorMessages.NoIdInRequest;
                 return View("Error");
             }
-            var errorMessage = String.Empty;
-            if (!InitialiseModel(countryId, out errorMessage))
+
+            if (!InitialiseModel(countryId, out var errorMessage))
             {
-                @ViewBag.Error = errorMessage;
+                ViewBag.Error = errorMessage;
                 return View("Error");
             }
 
             _currentUser = GetCurrentUser();
-            if (_currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin"))
+            /*Todo add to check && !User.IsInRole("Holder")*/
+            if (_currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin") )
             {
-                @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                ViewBag.Error = Resources.ErrorMessages.NoPermission;
                 return View("Error");
             }
             ViewBag.User = _currentUser;
 
-            var allProcedures = GetProcedures(countryId);
+            var allProcedures = GetProcedures((int)countryId);
             return View(allProcedures);
         }
        
@@ -121,11 +122,19 @@ namespace Olga.Controllers
             @ViewBag.Products = products;
             return true;
         }
+
         public List<ProcedureViewModel> GetProcedures(int countryId)
         {
             var productsDto = _productService.GetProducts(countryId);
+            if (User.IsInRole("Holder"))
+            {
+                return null;
+                //Todo add productsDto = productsDto.Where(a => a.MarketingAuthorizHolderId == _currentUser.MarketingAuthorizHolder.Id).ToList();
+            }
+
             var allProducts = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productsDto).ToArray();
             var allProcedures = new List<ProcedureViewModel>();
+
             foreach (var product in allProducts)
             {
                 var proc = _procedureService.GetItems().Where(a => a.ProductId == product.Id);
@@ -144,19 +153,31 @@ namespace Olga.Controllers
         [HttpGet]
         public ActionResult ProductProcedures(int id)
         {
+            //Todo delete this check
+            if (User.IsInRole("Holder"))
+            {
+                return null;
+            }
+
             if (id == 0)
             {
-                @ViewBag.Error = "Error happened: No productId in request!";
+                @ViewBag.Error = Resources.ErrorMessages.NoIdInRequest;
                 return View("Error");
             }
             _currentUser = GetCurrentUser();
             var productDto = _productService.GetProduct(id);
+           
             var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
 
             ViewBag.Country = product.Country;
             ViewBag.CountryId = productDto.CountryId;
 
-            if (_currentUser.Countries.All(a => a.Id != productDto.CountryId) && !User.IsInRole("Admin"))
+            if (_currentUser.Countries.All(a => a.Id != productDto.CountryId) && !User.IsInRole("Admin") && !User.IsInRole("Holder"))
+            {
+                @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                return View("Error");
+            }
+            if (User.IsInRole("Holder") && !product.MarketingAuthorizHolder.Equals(_currentUser.MarketingAuthorizHolder.Name))
             {
                 @ViewBag.Error = Resources.ErrorMessages.NoPermission;
                 return View("Error");

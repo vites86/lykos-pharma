@@ -27,11 +27,14 @@ namespace Olga.Controllers
     //[AllowAnonymous]
     public class AccountController : Controller
     {
+        readonly IMarketingAuthorizHolder _marketingAuthorizHolderService;
         ICountry _countryService;
 
-        public AccountController(ICountry serv)
+        public AccountController(ICountry serv, IMarketingAuthorizHolder marketingAuthorizHolder)
         {
             _countryService = serv;
+            _marketingAuthorizHolderService = marketingAuthorizHolder;
+
         }
 
         private IUserService UserService
@@ -104,6 +107,11 @@ namespace Olga.Controllers
                 Text = o.Name,
                 Value = o.Id.ToString()
             });
+
+            var marketingAuthorizHolderDto = _marketingAuthorizHolderService.GetItems().OrderBy(a => a.Name);
+            var marketingAuthorizHolder = Mapper.Map<IEnumerable<MarketingAuthorizHolderDTO>, IEnumerable<MarketingAuthorizHolderViewModel>>(marketingAuthorizHolderDto).ToList();
+            @ViewBag.marketingAuthorizHolder = marketingAuthorizHolder;
+
             return View();
         }
 
@@ -111,7 +119,6 @@ namespace Olga.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model, string[] selectedCountries)
         {
-            await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 
@@ -122,7 +129,8 @@ namespace Olga.Controllers
                     Rank = model.Rank,
                     Name = model.Name,
                     Role = model.Role.ToString(),
-                    NcAccess = model.NcAccess
+                    NcAccess = model.NcAccess,
+                    MarketingAuthorizHolderId = model.MarketingAuthorizHolderId
                 };
                 userDto = AddCountriesToUser(userDto, selectedCountries);
                 OperationDetails operationDetails = await UserService.Create(userDto);
@@ -132,9 +140,8 @@ namespace Olga.Controllers
                     return RedirectToAction("Users", "Account");
                 }
                 ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
-                Logger.Log.Error($"in AccountController/Register {operationDetails.Message}");
-            await SetInitialDataAsync();
-
+                Logger.Log.Error($"in AccountController/Register() {operationDetails.Message}");
+                return RedirectToAction("Register", "Account");
             }
             return View(model);
         }
@@ -179,6 +186,10 @@ namespace Olga.Controllers
                 Text = o.Name,
                 Value = o.Id.ToString()
             });
+
+            var marketingAuthorizHolderDto = _marketingAuthorizHolderService.GetItems().OrderBy(a => a.Name);
+            var marketingAuthorizHolder = Mapper.Map<IEnumerable<MarketingAuthorizHolderDTO>, IEnumerable<MarketingAuthorizHolderViewModel>>(marketingAuthorizHolderDto).ToList();
+            @ViewBag.marketingAuthorizHolder = marketingAuthorizHolder;
 
             return View(map);
         }

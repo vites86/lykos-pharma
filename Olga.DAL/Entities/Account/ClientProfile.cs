@@ -25,6 +25,9 @@ namespace Olga.DAL.Entities.Account
             Countries = new List<Country>();
         }
         public bool NcAccess { get; set; }
+
+        public int? MarketingAuthorizHolderId { get; set; }
+        public virtual MarketingAuthorizHolder MarketingAuthorizHolder { get; set; }
     }
 
     public enum Roles
@@ -32,6 +35,7 @@ namespace Olga.DAL.Entities.Account
         Admin,
         Manager,
         User,
-        Quality
+        Quality,
+        Holder
     }
 }
