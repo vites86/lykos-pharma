@@ -67,17 +67,17 @@ namespace Olga.BLL.Services
                         IsBodyHtml = true
                     };
 
+                    mail.To.Add(new MailAddress(DirectorMail));
+                    mail.Bcc.Add(new MailAddress(DeveloperMail));
+
                     if (emailEnumerable != null)
                     {
                         foreach (var email in emailEnumerable)
                         {
-                            mail.To.Add(email);
+                            //mail.To.Add(email);
+                            mail.Bcc.Add(email);
                         }
-                        //mail.Bcc.Add("activeseach@gmail.com");
                     }
-
-                    mail.To.Add(new MailAddress(DirectorMail));
-                    mail.To.Add(new MailAddress(DeveloperMail));
                     await client.SendMailAsync(mail);
                     LoggerService.Log.Info($"SendEmailAboutAddUpdateProduct(): {message.Body}");
                 }

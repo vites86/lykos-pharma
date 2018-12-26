@@ -624,16 +624,17 @@ namespace Olga.Controllers
                 var body = new StringBuilder();
 
                 var productName = _productNameService.GetItem((int)model.ProductNameId).Name;
-                subject = string.Concat((Resources.Email.SubjectProductCreate.Replace("(name)", productName)), $" in {countryName}");
 
                 if (model.Id == null)
                 {
+                    subject = string.Concat((Resources.Email.SubjectProductCreate.Replace("(name)", productName)), $" in {countryName}");
                     body.Append(Resources.Email.BodyProductCreate.Replace("(name)", productName) + $" in {countryName}" + Resources.Email.Signature);
                     var emailerDto = Mapper.Map<Emailer,EmailerDTO>(emailer);
                     await _emailService.SendEmailNotification(body.ToString(), subject, emailerDto,emailsToNotify, toSend);
                 }
                 else
                 {
+                    subject = string.Concat((Resources.Email.SubjectProductUpdate.Replace("(name)", productName)), $" in {countryName}");
                     body.Append(Resources.Email.BodyProductUpdate.Replace("(name)", productName) + $" in {countryName}");
                     var bodyCompared = await CreateBodyText(model, selectedManufacturers, selectedArtworks, documentNamesApprs, documentNamesArtworks);
                     if (!string.IsNullOrEmpty(bodyCompared))
