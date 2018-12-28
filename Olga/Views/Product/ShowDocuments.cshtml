@@ -92,10 +92,14 @@
                                                     <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">
                                                         @fileName
                                                     </a>
-                                                </label><br />
+                                                </label><br/>
                                             }
                                         }
-                                        @if (apprId.Equals("3") && !ViewBag.NcAccess && !User.IsInRole("Admin"))
+                                        @if (apprId.Equals("3") && !ViewBag.NcAccess && User.IsInRole("User"))
+                                        {
+                                            <img src="~/Content/images/locked.jpg" width="50" />
+                                        }
+                                        @if (apprId.Equals("5") && User.IsInRole("User"))
                                         {
                                             <img src="~/Content/images/locked.jpg" width="50" />
                                         }

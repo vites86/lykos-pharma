@@ -266,17 +266,22 @@ namespace Olga.Controllers
                     @ViewBag.Error = Resources.ErrorMessages.NoPermission;
                     return View("Error");
                 }
-                if (!User.IsInRole("Admin") && !_currentUser.NcAccess)
+                if (User.IsInRole("User") && !_currentUser.NcAccess)
                 {
-                    userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null && a.ApprDocsTypeId != 3).Select(m => m.PathToDocument).ToList();
+                    userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null && a.ApprDocsTypeId != 3 && a.ApprDocsTypeId != 5).Select(m => m.PathToDocument).ToList();
                     ViewBag.NcAccess = false;
                 }
-                else if(User.IsInRole("Admin") || _currentUser.NcAccess)
+                else if(User.IsInRole("User") && _currentUser.NcAccess)
+                {
+                    ViewBag.NcAccess = true;
+                    userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null && a.ApprDocsTypeId != 5).Select(m => m.PathToDocument).ToList();
+                }
+                else if (!User.IsInRole("User"))
                 {
                     ViewBag.NcAccess = true;
                     userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
                 }
-                
+
 
                 //var userDocumentsApprs = prod?.ProductDocuments.Where(a => a.ApprDocsTypeId != null).Select(m => m.PathToDocument).ToList();
                 var userDocumentsArtworks = prod?.ProductDocuments.Where(a => a.ArtworkId != null).Select(m => m.PathToDocument).ToList();
