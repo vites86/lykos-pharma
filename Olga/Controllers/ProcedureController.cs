@@ -43,12 +43,13 @@ namespace Olga.Controllers
         bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotificationProc"]);
         Emailer emailer;
         private UserViewModel _currentUser;
+        IArchProccessor _archProccessor;
 
 
 
         public ProcedureController(ICountry serv, IProductName prodName, IProductCode prodCode, IMarketingAuthorizNumber marketingAuthorizNumber, IPackSize packSize,
             IApprDocsType apprDocsType, IStrength strength, IManufacturer manufacturer, IArtwork artwork, IMarketingAuthorizHolder marketingAuthorizHolder,
-            IPharmaceuticalForm pharmaceuticalForm, IProductService product, IProcedure procedure,IBaseEmailService emailService)
+            IPharmaceuticalForm pharmaceuticalForm, IProductService product, IProcedure procedure,IBaseEmailService emailService, IArchProccessor archProccessor)
         {
             _countryService = serv;
             _productNameService = prodName;
@@ -64,6 +65,7 @@ namespace Olga.Controllers
             _productService = product;
             _emailService = emailService;
             _procedureService = procedure;
+            _archProccessor = archProccessor;
             emailer = new Emailer()
             {
                 Login = WebConfigurationManager.AppSettings["login"],
@@ -435,10 +437,14 @@ namespace Olga.Controllers
 
                     if (fileExt.Equals(".zip"))
                     {
-                        var filesFromArchive = ProcessArchive(targetPath, targetFolder);
+                        var filesFromArchive = _archProccessor.ProcessArchive(targetPath, targetFolder);
                         foreach (var fileFromArchive in filesFromArchive)
                         {
                             AddFileToProc(fileFromArchive, procId, procDocType);
+                        }
+                        if (filesFromArchive.Count == 0)
+                        {
+                            Logger.Log.Error($"Archive {localFileName} wasn't processed! Count of extracted files == 0 ");
                         }
                         continue;
                     }
@@ -488,6 +494,8 @@ namespace Olga.Controllers
                 var procedure = _procedureService.GetItem(procedureId);
                 procedure.ProcedureDocuments.Add(doc);
                 _procedureService.Update(procedure);
+                _currentUser = GetCurrentUser();
+                Logger.Log.Info($"{_currentUser.Email} Added file {localFileName}");
             }
             catch (Exception ex)
             {
@@ -705,72 +713,6 @@ namespace Olga.Controllers
                 var userName = User.Identity.Name;
                 Logger.Log.Error($"{userName}: SenEmailAboutAddUpdateProduct() {ex.Message} ");
             }
-        }
-
-        public List<string> ProcessArchive(string archivePath, string pathToExtract)
-        {
-            List<string> exrtactedFiles = new List<string>();
-
-            if (!RarArchive.IsRarFile(archivePath) && !ZipFile.IsZipFile(archivePath))
-            {
-                Logger.Log.Error($"{archivePath} is not an archive!");
-                return null;
-            }
-           
-            if (ZipFile.IsZipFile(archivePath))
-            {
-                exrtactedFiles = ProcessZipArchive(archivePath, pathToExtract);
-            }
-            if (RarArchive.IsRarFile(archivePath))
-            {
-                ProcessRarArchive(archivePath, pathToExtract);
-            }
-            return exrtactedFiles;
-        }
-
-        public List<string> ProcessZipArchive(string archivePath, string pathToExtract)
-        {
-            try
-            {
-                List<string> exrtactedFiles = new List<string>();
-                using (ZipFile zip = ZipFile.Read(archivePath))
-                {
-                    var renamedFolder = string.Empty;
-                    foreach (ZipEntry zipEntry in zip)
-                    {
-                        if (zipEntry.IsDirectory)
-                        {
-                            var extractFolder = Path.Combine(pathToExtract, zipEntry.FileName);
-                            if (Directory.Exists(extractFolder))
-                            {
-                                renamedFolder = string.Concat(zipEntry.FileName.Replace(@"/",""),"_", Guid.NewGuid().ToString().Substring(0, 6));
-                                pathToExtract = Path.Combine(pathToExtract,renamedFolder);
-                                Directory.CreateDirectory(pathToExtract);
-                                zipEntry.Extract(pathToExtract);
-                            }
-                            else
-                            {
-                                zipEntry.Extract(pathToExtract);
-                            }
-                            continue;
-                        }
-                        var fileNameWithFolders = string.Concat(@"/Archives/",renamedFolder, @"/", zipEntry.FileName);
-                        zipEntry.Extract(pathToExtract);
-                        exrtactedFiles.Add(fileNameWithFolders);
-                    }
-                }
-                return exrtactedFiles;
-            }
-            catch (Exception ex)
-            {
-                Logger.Log.Error($"{archivePath} - cannot Process these archive!");
-                return new List<string>();
-            }
-        }
-
-        public void ProcessRarArchive(string archivePath, string PathToExtract)
-        {
-           
         }
 
         public UserViewModel GetCurrentUser()
