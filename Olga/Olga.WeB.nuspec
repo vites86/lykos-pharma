@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Olga.WEBG</id>
+    <title>Lykos Pharma PMS</title>
+    <version>1.0.0</version>
+    <authors>vdubrovin</authors>
+    <owners>Lykos Pharma Ltd.</owners>
+    <licenseUrl>https://lykospharma.com/</licenseUrl>
+    <projectUrl>http://185.112.41.146</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Web property management system</description>
+    <releaseNotes></releaseNotes>
+  </metadata>
+</package>
