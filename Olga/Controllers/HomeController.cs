@@ -58,7 +58,7 @@ namespace Olga.Controllers
                 var userMapper = MapperForUser.GetUserMapperForView(UserService);
                 return userMapper.Map<UserDTO, UserViewModel>(user);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new UserViewModel();
             }

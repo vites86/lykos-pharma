@@ -75,7 +75,7 @@ namespace Olga.BLL.BusinessModels
                 }
                 return exrtactedFiles;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<string>();
             }

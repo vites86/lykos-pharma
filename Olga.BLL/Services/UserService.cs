@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Olga.BLL.DTO;
 using Olga.BLL.Infrastructure;
 using Olga.BLL.Interfaces;
