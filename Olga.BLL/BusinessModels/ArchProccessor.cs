@@ -63,7 +63,14 @@ namespace Olga.BLL.BusinessModels
                         }
                         else
                         {
-                            zipEntry.Extract(pathToExtract);
+                            try
+                            {
+                                zipEntry.Extract(pathToExtract);
+                            }
+                            catch (Exception ex)
+                            {
+                                return new List<string>() { String.Concat($"Error in {pathToExtract}", ex.Message.ToString()) };
+                            }
                         }
 
                         if (zipEntry.IsDirectory) continue;
@@ -75,9 +82,9 @@ namespace Olga.BLL.BusinessModels
                 }
                 return exrtactedFiles;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new List<string>();
+                return new List<string>() { String.Concat("Error", ex.Message.ToString()) };
             }
         }
 

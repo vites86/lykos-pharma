@@ -413,7 +413,7 @@ namespace Olga.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task EditProcedureFiles(IEnumerable<HttpPostedFileBase> uploads, string procedureDocsType, string procedureId, string productId)
+        public async Task<ActionResult> EditProcedureFiles(IEnumerable<HttpPostedFileBase> uploads, string procedureDocsType, string procedureId, string productId)
         {
             if (!ModelState.IsValid)
             {
@@ -421,7 +421,7 @@ namespace Olga.Controllers
             }
             try
             {
-                if (uploads == null) return;
+                if (uploads == null) return Json(new { success = false, responseText = "uploads == null!" }, JsonRequestBehavior.AllowGet);
 
                 foreach (var file in uploads)
                 {
@@ -438,22 +438,25 @@ namespace Olga.Controllers
                     if (fileExt.Equals(".zip"))
                     {
                         var filesFromArchive = _archProccessor.ProcessArchive(targetPath, targetFolder);
+                        if ((filesFromArchive.Count == 1 && filesFromArchive[0].Contains("Error")) || filesFromArchive.Count == 0)
+                        {
+                            Logger.Log.Error($"Error: Archive {localFileName} wasn't processed! {filesFromArchive[0] ?? string.Empty} ");
+                            return Json(new { success = false, responseText = filesFromArchive[0] ?? $"Error in abstraction archive {localFileName}" }, JsonRequestBehavior.AllowGet);
+                        }
                         foreach (var fileFromArchive in filesFromArchive)
                         {
                             AddFileToProc(fileFromArchive, procId, procDocType);
-                        }
-                        if (filesFromArchive.Count == 0)
-                        {
-                            Logger.Log.Error($"Archive {localFileName} wasn't processed! Count of extracted files == 0 ");
                         }
                         continue;
                     }
                     AddFileToProc(localFileName, procId, procDocType);
                 }
+                return Json(new { success = true, responseText = $"File processed successfully!" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 Logger.Log.Error($"{ex}");
+                return Json(new { success = false, responseText = $"{ex}" }, JsonRequestBehavior.AllowGet);
             }
         }
 

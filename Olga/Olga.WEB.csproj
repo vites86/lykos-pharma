@@ -408,7 +408,6 @@
     <Content Include="Content\umega\assets\images\demo\04.png" />
     <Content Include="Content\umega\assets\images\demo\bootstrap-4.png" />
     <Content Include="Content\umega\assets\images\demo\material-design.png" />
-    <Content Include="Content\umega\assets\images\icons\01.png" />
     <Content Include="Content\umega\assets\images\logo\logo-light.png" />
     <Content Include="Content\umega\assets\images\logo\logo-sm-dark.png" />
     <Content Include="Content\umega\assets\images\logo\logo-sm-light.png" />
@@ -5101,6 +5100,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="AutoMapper\Profiles\" />
+    <Folder Include="Content\umega\assets\images\icons\" />
     <Folder Include="Content\umega\assets\jade\core-css\icons\" />
     <Folder Include="Content\umega\assets\jade\first-layout\icons\" />
     <Folder Include="Content\umega\assets\jade\fourth-layout\icons\" />

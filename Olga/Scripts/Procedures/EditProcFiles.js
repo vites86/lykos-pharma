@@ -28,7 +28,6 @@
                     console.log("beforeSend...");
                     $("#loading").show();
 
-
                 },
                 uploadProgress: function(event, position, total, percentComplete) {
                     $(".progress").show();
@@ -37,18 +36,32 @@
                     percent.html(percentVal);
                     console.log("uploadProgress...");
                 },
-                success: function() {
+                success: function (request) {
                     var percentVal = '100%';
                     bar.width(percentVal);
                     percent.html(percentVal);
-                    console.log("success downloading");
+                    if (request.success === true) {
+                        console.log("success downloading");
+                        toastr.info(request.responseText);
+                        toastr.info("File downloaded successfuly! Wait a few seconds...");
+                    }
+                    if (request.success === false) {
+                        console.log(request.responseText);
+                        toastr.error(request.responseText);
+                    }
+                },
+                error: function (request) {
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                    console.log(request.responseText);
+                    toastr.error(request.responseText);
                 },
                 complete: function(xhr) {
                     status.html(xhr.responseText);
-                    console.log("complete downloading");
+                    console.log("complete proccessing");
                     $(".progress").hide();
                     $("#loading").hide();
-                    toastr.info("File downloaded successfuly!");
                     timeRefresh(0);
                 }
             });
