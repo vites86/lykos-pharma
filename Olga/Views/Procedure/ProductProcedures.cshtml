@@ -15,7 +15,7 @@
             </h1>
         </div>
         <h2>Procedures for:<span style="color: blue"> 
-            @Html.ActionLink($"{ViewBag.Product.ProductName}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+            @Html.ActionLink($"{ViewBag.Product.ProductName??"No Name"}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
             </span></h2>
         <div class="product_span">
             <span>@ViewBag.Product.PharmaceuticalForm</span>
