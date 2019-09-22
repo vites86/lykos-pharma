@@ -22,6 +22,7 @@
     function deleteArtworkFileFromHiddenList(fileName, stringElement) {
 
         console.log('deleteFileFromHiddenList(): '+ fileName);
+        console.log('stringElement = ' + stringElement.attr('name') );
 
         var stringElementValue = stringElement.val();
         var re = /\s*,\s*/;
@@ -30,10 +31,11 @@
             if (tagList[k].includes(fileName)) {
                 console.log('tagList[k] == ' + fileName);
                 var result = stringElementValue.replace(tagList[k], '');
-                console.log('resultHiddenString = ' + result);
+                console.log('result to delete = ' + result);
                 stringElement.val(result);
             }
         }
+        console.log('result stringElement.val(): ' + stringElement.val());
     }
 
     //function deleteFileFromHiddenList(fileName, stringElement) {
@@ -68,7 +70,7 @@
     }
 
     function getFileImageViaExt(fileName) {
-        var fileExt = fileName.split('.').pop();
+        var fileExt = getExt(fileName);       
         console.log('fileExt = ' + fileExt);
         switch (fileExt)
         {
@@ -80,7 +82,7 @@
             case 'cdr': return "cdr.jpg";
             case 'doc': return "docx.jpg";
             case 'xls': return "xlsx.jpg";
-            default: return fileName;
+            default: return "document.png";
         }
     }
 
@@ -115,6 +117,8 @@
             $(file.previewElement).find(".dz-image img").attr("src", "/Content/images/extentions/xlsx.jpg");
         } else if (ext.indexOf("doc") !== -1) {
             $(file.previewElement).find(".dz-image img").attr("src", "/Content/images/extentions/docx.jpg");
+        } else {
+            $(file.previewElement).find(".dz-image img").attr("src", "/Content/images/extentions/document.png");
         }
         $(file.previewElement).find(".dz-image img").attr("class", "preview_image");
         $(file.previewElement).find(".dz-image img").attr("alt", file.name);
@@ -135,16 +139,17 @@
         var imageName = getFileImageViaExt(fileName);
         console.log('imageName ' + imageName);
 
-        var imagePath = "";
         if (imageName !== fileName) {
             imagePath = "/Content/images/extentions/" + imageName;
         } else {
             imagePath = '/Upload/Documents/' + apprFolder + '/' + fileName;
         }
-        var alt = fileName.substr(fileName.indexOf("_") + 2, fileName.lastIndexOf("_")-3).trim();
+        //var alt = fileName.substr(fileName.indexOf("_") + 2, fileName.lastIndexOf("_") - 3).trim();
+        var fileNameTrimmed = getFileNameTrimmed(fileName);
+        console.log('fileNameTrimmed=' + fileNameTrimmed);
         var innerHtml =
-            '<div name="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() +'" ' +
-            'id="showArtworkImageBlock_' + fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim() + '" class="show_blockOfImage">' +
+            '<div name="showArtworkImageBlock_' + fileNameTrimmed +'" ' +
+            'id="showArtworkImageBlock_' + fileNameTrimmed + '" class="show_blockOfImage">' +
                '<span class="glyphicon glyphicon-file" />    ' +
                 '<a href="/Upload/Documents/' + apprFolder + '/' + fileName + '" target="_blank">' + fileName + '</a>' +
             '</div>';
@@ -153,37 +158,42 @@
     }
 
     function saveFileNameInHiddenList(fileName, imageStringElement) {
-        console.log('#saveFileNameInHiddenList(' + fileName+')');
-        var imageString = imageStringElement.val();
+        var elementName = imageStringElement.name;
+        console.log('#saveFileNameInHiddenList() for ' + elementName);
+        var imageString = imageStringElement.value;
+        console.log(elementName + '.val() = ' + imageString);
         if (imageString.includes(fileName)) {
-            console.log('imageString already contains(' + fileName + ')');
+            console.log('imageString already contains ' + fileName + '');
             return;
         }
         if (imageString.length > 1) {
             imageString += ',';
         }
         imageString += fileName;
-        imageStringElement.val(imageString);
+        imageStringElement.value = imageString;
+        console.log('after adding ' + elementName + '.val() = ' + imageStringElement.value);
     }
 
     $('.delete__artwork_files').on('click',
         function (e) {
-            
+            console.log('#delete__files click()');
             e.preventDefault();
             var fileName = $(this).attr("data-id");
-            var artworkId = fileName.substr(0, fileName.indexOf("__"));
-            console.log('artworkId = ' + artworkId);
-            console.log('#delete__files click() = ' + fileName);
+            console.log('data-id = ' + fileName);
+            var _artworkId = fileName.substr(0, fileName.indexOf("__"));
+            console.log('artworkId = ' + _artworkId);
+            var trimFileName = getFileNameTrimmed(fileName);
+            console.log('fileNameTrimmed=' + trimFileName);
 
-            // hide Image from page
-            var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim();
             var blockElementWithImage = $('#showArtworkImageBlock_' + trimFileName);
             console.log('showImageBlock = ' + 'showArtworkImageBlock_' + trimFileName);
+            console.log(blockElementWithImage.attr('name') + ' before class = ' + blockElementWithImage.attr('class'));
             blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
+            console.log(blockElementWithImage.attr('name') + ' after class = ' + blockElementWithImage.attr('class'));
 
             // delete file from HiddenLists
             var stringElement = $('#DocumentImagesListStringArtworks');
-            var stringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
+            var stringElement2 = $('#DocumentImagesListStringArtworks' + _artworkId);
             deleteArtworkFileFromHiddenList(fileName, stringElement);
             deleteArtworkFileFromHiddenList(fileName, stringElement2);
 
@@ -209,22 +219,15 @@
 
                     for (var i = 0; i < images.length; i++) {
                         if (images.length) {
-
                             var fileName = images[i].savedName;
-                            console.log('fileName = ' + fileName);
-                            artworkId = fileName.substr(0, fileName.indexOf("__"));
-                            console.log('artworkId = ' + artworkId);
-
-                            console.log('Saving file in Hidden lists ' + fileName);
-                            var imageStringElement1 = $('#DocumentImagesListStringArtworks');
-                            var imageStringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
-
-                            if (imageStringElement1.val().includes(fileName)) {
-                                console.log('imageString already contains(' + fileName + ')');
-                                continue;
-                            }
+                            var _apprId = fileName.substr(0, fileName.indexOf("__"));
+                            console.log('_apprId = ' + _apprId);
+                            var imageStringElement1 = document.getElementById('DocumentImagesListStringArtworks');
+                            var stringElement2Name = 'DocumentImagesListStringArtworks' + _apprId;
+                            var imageStringElement2 = document.getElementById(stringElement2Name);
                             saveFileNameInHiddenList(fileName, imageStringElement1);
-                            saveFileNameInHiddenList(fileName, imageStringElement2);
+                            console.log('StringElement2Name = ' + stringElement2Name);
+                            saveFileNameInHiddenList(fileName, imageStringElement2);                            
                         }
                     }
                     //var i = 0;
@@ -236,30 +239,7 @@
                     fancybox.removeAllFiles();
                 });
                 $('#cancelArtworkAddPhoto' + artworkId).off('click').click(function (clickEvent) {
-                    console.log('#cancel click()');
-                    //if (images.length) {
-                    //    for (i = 0; i < images.length; i++) {
-                    //        var fileName = images[i].savedName;
-                    //        console.log('cancelAddPhoto name = ' + fileName);
-                    //        var artworkId = fileName.substr(0, fileName.indexOf("__"));
-
-                    //        var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').trim();
-                    //        console.log('Hidding #showArtworkImageBlock_' + trimFileName);
-
-                    //        var blockElementWithImage = $('#showArtworkImageBlock_' + trimFileName);
-                    //        blockElementWithImage.removeClass("show_blockOfImage").addClass("hidden");
-
-                    //        var stringElement = $('#DocumentImagesListStringArtworks');
-                    //        var stringElement2 = $('#DocumentImagesListStringArtworks' + artworkId);
-
-                    //        deleteArtworkFileFromHiddenList(fileName, stringElement);
-                    //        deleteArtworkFileFromHiddenList(fileName, stringElement2);
-
-                    //        deleteImage(fileName);
-                    //        //images.splice(i, 1);
-                    //    }
-                    //}
-                    //images = [];
+                    console.log('#cancel click()');                   
                     fancybox.removeAllFiles();
                 });
 
@@ -268,18 +248,19 @@
                         console.log('#removed file event for ' + file.name);
                         var index = -1;
                         for (var i = 0; i < images.length; i++) {
-                            if (images[i].name === file.name) {
+                            if (images[i].name.localeCompare(file.name) === 0) {
 
                                 console.log('file.name to delete = ' + file.name);
 
                                 var fileName = images[i].savedName;
                                 console.log('images[i].savedName = ' + fileName);
 
-                                artworkId = fileName.substr(0, fileName.indexOf("__"));
+                                var artworkId = fileName.substr(0, fileName.indexOf("__"));
                                 console.log('artworkId = ' + artworkId);
 
-                                var fileNameInListWithoutex = artworkId + '__' + file.name.substr(0, file.name.lastIndexOf("."));
-                                var trimFileName = fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').trim();
+                                //var fileNameInListWithoutex = artworkId + '__' + file.name.substr(0, file.name.lastIndexOf("."));
+                                var trimFileName = getFileNameTrimmed(fileName);
+                                console.log('fileNameTrimmed=' + trimFileName);
 
                                 var blockElementWithImage = document.getElementById('showArtworkImageBlock_' + trimFileName);
                                 blockElementWithImage.classList.remove("show_blockOfImage");
@@ -290,8 +271,8 @@
 
                                 deleteImage(fileName);
 
-                                deleteArtworkFileFromHiddenList(fileNameInListWithoutex, stringElement);
-                                deleteArtworkFileFromHiddenList(fileNameInListWithoutex, stringElement2);
+                                deleteArtworkFileFromHiddenList(fileName, stringElement);
+                                deleteArtworkFileFromHiddenList(fileName, stringElement2);
 
                                 index = i;
                                 break;
@@ -335,5 +316,23 @@
                 this.removeFile(file);
             }
         });
+    }
+
+    function getFileNameTrimmed(fileName)
+    {
+        return fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').replace('&', '_').trim();
+    }
+
+    function getExt(fileName) {
+        var lastIndexOfPoint = fileName.lastIndexOf('.')+1;
+        if (lastIndexOfPoint >>> 0) {
+            var ext = fileName.substring(lastIndexOfPoint);
+            console.log('ext=' + ext);
+            return ext;
+        }
+        else {
+            console.log('ext= no extention for ' + fileName);
+            return "no extention";
+        }
     }
 });

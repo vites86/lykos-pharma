@@ -111,12 +111,12 @@
                                                     {
                                                         if (fileName.Contains(@apprId + "__"))
                                                         {
-                                                            var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
+                                                            //var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
                                                             var folder = GetApprFolder(apprDocsType.Text);
 
-                                                            var blockName = fileName.Replace(".", "").Replace(" ", "");
+                                                            var blockName = GetBlockNameTrimmed(fileName);
 
-                                                            var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+                                                            //var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
 
                                                             <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
                                                                 <span class="glyphicon glyphicon-file" />
@@ -184,12 +184,12 @@
                                                     {
                                                         if (fileName.Contains(@artworkId + "__"))
                                                         {
-                                                            var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
+                                                            //var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
                                                             var folder = String.Format("Artwork/{0}", @artworkId.ToString());
 
-                                                            var blockName = fileName.Replace(".", "").Replace(" ", "").Replace("#", "№");
+                                                            var blockName = GetBlockNameTrimmed(fileName);
 
-                                                            var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+                                                            //var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
 
                                                             <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
                                                                 <span class="glyphicon glyphicon-file" />
@@ -421,6 +421,11 @@
                 return "ApprDocType/Trademarks";
         }
         return appr;
+    }
+
+    public string GetBlockNameTrimmed(string fileName)
+    {
+        return fileName.Replace(".", "").Replace(" ", "").Replace("#", "№").Replace("&", "_");
     }
 }
 
