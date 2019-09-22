@@ -30,7 +30,7 @@ namespace Olga.Controllers
 
         public ActionResult Index()
         {
-            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(_countryService.GetItems());
+            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(_countryService.GetItems().OrderBy(a=>a.Name));
             var user = GetCurrentUser();
             var userCountries = User.IsInRole("Admin") || User.IsInRole("Holder") ? countries : user.Countries;
             ViewBag.User = user;
