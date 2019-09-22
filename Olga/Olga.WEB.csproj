@@ -20,7 +20,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44381</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -269,6 +270,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DownloadProcFiles.css" />
     <Content Include="Content\dropzone.css" />
+    <Content Include="Content\images\arrow_down_green.jpg" />
+    <Content Include="Content\images\arrow_down_red.png" />
     <Content Include="Content\images\countries\1.gif" />
     <Content Include="Content\images\countries\10.gif" />
     <Content Include="Content\images\countries\11.gif" />

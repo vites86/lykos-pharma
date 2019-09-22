@@ -31,3 +31,12 @@ textarea {
     color: white;
     font-weight: bold;
 }
+.text-top tr td{
+    vertical-align: text-top !important;
+        }
+.hide_td i {
+    color: green;
+}
+.hide_td a:hover {
+    color: crimson;
+}

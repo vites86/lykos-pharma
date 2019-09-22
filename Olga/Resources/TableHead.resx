@@ -213,4 +213,13 @@
   <data name="WhoCreated" xml:space="preserve">
     <value>Who created</value>
   </data>
+  <data name="LifecycleDocuments" xml:space="preserve">
+    <value>Lifecycle / Documents</value>
+  </data>
+  <data name="NameEng" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ProcedureType" xml:space="preserve">
+    <value>Procedure type</value>
+  </data>
 </root>
