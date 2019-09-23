@@ -34,6 +34,19 @@ namespace Olga.BLL.BusinessModels
             }
             return exrtactedFiles;
         }
+        public static string EncodeFilename(string filename)
+        {
+            UTF8Encoding utf8 = new UTF8Encoding();
+            byte[] bytes = utf8.GetBytes(filename);
+            char[] chars = new char[bytes.Length];
+            for (int index = 0; index < bytes.Length; index++)
+            {
+                chars[index] = Convert.ToChar(bytes[index]);
+            }
+
+            string s = new string(chars);
+            return s;
+        }
 
         public List<string> ProcessZipArchive(string archivePath, string pathToExtract)
         {
