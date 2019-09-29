@@ -5111,6 +5111,7 @@
     <Content Include="Views\Procedure\EditProcedureFiles.cshtml" />
     <Content Include="Views\Procedure\EditFiles.cshtml" />
     <Content Include="Views\Shared\FlashMessage.cshtml" />
+    <Content Include="Views\Procedure\AllProcedures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

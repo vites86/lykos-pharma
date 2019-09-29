@@ -107,7 +107,36 @@ namespace Olga.Controllers
             var allProcedures = GetProcedures((int)countryId);
             return View(allProcedures);
         }
-       
+
+        public ActionResult AllProcedures(int? country, string dateFrom, string dateTo)
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                return View("Index");
+            }
+            var allProcedures = new List<ProcedureViewModel>();
+            var _allProcedures = _procedureService.GetItems();
+            
+            if (country != null && country != 0)
+            {
+                _allProcedures = _allProcedures.Where(p => p.Product.Country.Id == country);
+            }
+            if (!string.IsNullOrEmpty(dateFrom) || !string.IsNullOrEmpty(dateTo))
+            {
+                var _dateFrom = string.IsNullOrEmpty(dateFrom) ? DateTime.MinValue : DateTime.Parse(dateFrom);
+                var _dateTo = string.IsNullOrEmpty(dateTo) ? DateTime.MaxValue : DateTime.Parse(dateTo);
+                _allProcedures = _allProcedures.Where(p => p.SubmissionDate >= _dateFrom && p.SubmissionDate <= _dateTo);
+            }
+
+            var procedures = Mapper.Map<IEnumerable<ProcedureDTO>, IEnumerable<ProcedureViewModel>>(_allProcedures).ToList();
+            allProcedures.AddRange(procedures);
+
+            var countries = _countryService.GetItems().OrderBy(a => a.Name).ToList();
+            countries.Insert(0, new CountryDTO() { Name = "All", Id = 0 });
+            ViewBag.Countries = new SelectList(countries, "Id", "Name");
+            return View(allProcedures);
+        }
+
 
         public bool InitialiseModel(int? countryId, out string errorMessage)
         {
