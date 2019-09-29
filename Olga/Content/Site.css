@@ -40,3 +40,15 @@ textarea {
 .hide_td a:hover {
     color: crimson;
 }
+.button-download {
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.button-download:hover {
+    background-color: RoyalBlue;
+}

@@ -20,6 +20,8 @@ using Olga.BLL.Services;
 using Olga.DAL.Entities;
 using Olga.Models;
 using Olga.Util;
+using System.IO.Compression;
+using ZipFile = System.IO.Compression.ZipFile;
 
 namespace Olga.Controllers
 {
@@ -44,7 +46,7 @@ namespace Olga.Controllers
         Emailer emailer;
         private UserViewModel _currentUser;
         IArchProccessor _archProccessor;
-
+        static object locker = new object();
 
 
         public ProcedureController(ICountry serv, IProductName prodName, IProductCode prodCode, IMarketingAuthorizNumber marketingAuthorizNumber, IPackSize packSize,
@@ -733,5 +735,14 @@ namespace Olga.Controllers
             }
         }
 
+        [HttpPost]
+        public string DownloadZip(string filesToDownload, string archName, string productId)
+        {
+            lock (locker)
+            {
+                var urlToDonload = _archProccessor.DownloadZip(filesToDownload, archName, productId, "\\Upload\\Documents\\Procedures\\");
+                return @Url.Content(urlToDonload);
+            }
+        }
     }
 }
