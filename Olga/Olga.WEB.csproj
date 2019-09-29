@@ -270,6 +270,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\basic.css" />
+    <Content Include="Content\bootstrap-checkbox.min.js" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.js" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />

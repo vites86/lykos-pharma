@@ -31,7 +31,7 @@ textarea {
     color: white;
     font-weight: bold;
 }
-.text-top tr td{
+.text-top{
     vertical-align: text-top !important;
         }
 .hide_td i {
@@ -51,4 +51,8 @@ textarea {
 /* Darker background on mouse-over */
 .button-download:hover {
     background-color: RoyalBlue;
+}
+
+.text-center tr th {
+    text-align: center !important;
 }

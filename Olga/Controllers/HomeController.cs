@@ -44,7 +44,7 @@ namespace Olga.Controllers
 
         public ActionResult Menu()
         {
-            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(_countryService.GetItems());
+            var countries = Mapper.Map<IEnumerable<CountryDTO>, List<CountryViewModel>>(_countryService.GetItems()).OrderBy(a=>a.Name).ToList();
             ViewBag.User = GetCurrentUser();
             return PartialView("_Navigation", countries);
         }
