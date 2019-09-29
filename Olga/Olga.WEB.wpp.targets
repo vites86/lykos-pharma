@@ -4,6 +4,12 @@
     <ExcludeFromPackageFolders Include="Content">
       <FromTarget>Olga.WEB.wpp.targets</FromTarget>
     </ExcludeFromPackageFolders>
+    <ExcludeFromPackageFolders Include="temp">
+      <FromTarget>Olga.WEB.wpp.targets</FromTarget>
+    </ExcludeFromPackageFolders>
+    <ExcludeFromPackageFolders Include="tempout">
+      <FromTarget>Olga.WEB.wpp.targets</FromTarget>
+    </ExcludeFromPackageFolders>
     <ExcludeFromPackageFiles Include="App_Start\connections.config">
       <FromTarget>Olga.WEB.wpp.targets</FromTarget>
     </ExcludeFromPackageFiles>
