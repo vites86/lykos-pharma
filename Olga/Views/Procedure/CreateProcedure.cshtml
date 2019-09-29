@@ -11,7 +11,7 @@
         </div>
         <h2>
             Create Procedure for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
-                @Html.ActionLink($"{ViewBag.Product.ProductName}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+                @Html.ActionLink($"{ViewBag.Product.ProductName??"Unnamed"}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
             </span>
         </h2>
 
