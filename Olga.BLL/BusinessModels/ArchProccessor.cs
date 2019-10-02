@@ -113,7 +113,7 @@ namespace Olga.BLL.BusinessModels
         public string DownloadZip(string filesToDownload, string archName, string productId, string pathToFilesFolder)
         {
                 List<string> files = filesToDownload.Split(';').ToList();
-                var curDate = DateTime.Now.ToShortDateString().Replace("-", "").Replace(":", "").Replace(".", "");
+                var curDate = DateTime.Now.ToShortDateString().Replace("-", "").Replace(":", "").Replace(".", "").Replace("\\", "").Replace("/", "");
                 var archiveOutFolder = AppDomain.CurrentDomain.BaseDirectory+($"\\tempout\\{curDate}\\{productId}\\");
                 var tempFolder = AppDomain.CurrentDomain.BaseDirectory +"\\temp\\";
                 if (!Directory.Exists(archiveOutFolder)) Directory.CreateDirectory(archiveOutFolder);

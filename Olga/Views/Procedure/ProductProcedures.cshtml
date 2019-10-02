@@ -74,7 +74,7 @@
                                         @{
                                             var files = String.Join(";", @Model[i].ProcedureDocuments.Select(a => a.PathToDocument).ToList());
                                             @Html.Hidden($"{i}FilesToDownload", files, new {@id= $"{i}FilesToDownload" });
-                                            @Html.Hidden($"{i}ArchName", string.Format($"{@Model[i].Product.ProductName??"Procedure"}_{@Model[i].ProcedureType}_{DateTime.Today.ToShortDateString()}.zip"), new { @id = $"{i}ArchName" });
+                                            @Html.Hidden($"{i}ArchName", string.Format($"{@Model[i].Product.ProductName??"Procedure"}_{@Model[i].ProcedureType}_{DateTime.Today.ToShortDateString().Replace(":", "").Replace(".", "").Replace("\\", "").Replace("/", "")}.zip"), new { @id = $"{i}ArchName" });
                                         }
                                         <button style="margin-top: 15px !important" onclick="downloadZip(this)" type="submit" id="@i" class="btn btn-upload">
                                             <i class="fa fa-download"></i> Download All

@@ -767,10 +767,20 @@ namespace Olga.Controllers
         [HttpPost]
         public string DownloadZip(string filesToDownload, string archName, string productId)
         {
-            lock (locker)
+            try
             {
-                var urlToDonload = _archProccessor.DownloadZip(filesToDownload, archName, productId, "\\Upload\\Documents\\Procedures\\");
-                return @Url.Content(urlToDonload);
+                lock (locker)
+                {
+                    var urlToDonload = _archProccessor.DownloadZip(filesToDownload, archName, productId,
+                        "\\Upload\\Documents\\Procedures\\");
+                    return @Url.Content(urlToDonload);
+                }
+            }
+            catch (Exception ex)
+            {
+                var curDate = DateTime.Now.ToShortDateString().Replace("-", "").Replace(":", "").Replace(".", "").Replace("\\", "");
+                Logger.Log.Error($"DownloadZip: curDate={curDate} - {ex.Message}");
+                return $"../Procedure/ProductProcedures/{productId}";
             }
         }
     }
