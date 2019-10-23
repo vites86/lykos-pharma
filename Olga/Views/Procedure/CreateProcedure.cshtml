@@ -54,6 +54,24 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.Label("", "Estimated", htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        <input style="margin-top: 7px !important; margin-right: 20px;" class="checkbox-success" id="EstimatedSubmissionDateCheckbox" name="EstimatedSubmissionDateCheckbox" onclick="submissionDateEstimatedClick()" type="checkbox">   Submission Date Estimated
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EstimatedSubmissionDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                    <div class="col-md-10">
+                        @{
+                            var dateValue3 =
+                                DateTime.MinValue == Model.EstimatedSubmissionDate
+                                    ? String.Empty
+                                    : Model.EstimatedSubmissionDate.ToString();
+                        }
+                        <input class="form-control rounded" data-val="true" id="EstimatedSubmissionDate" style= "visibility:hidden" name="EstimatedSubmissionDate" value="@dateValue3" required="required" />
+                    </div>
+                </div>
+                <div class="form-group">
                     @Html.LabelFor(model => model.SubmissionDate, htmlAttributes: new { @class = "control-label col-md-1" })
                     <div class="col-md-10">
                         @{
@@ -62,11 +80,7 @@
                                     ? String.Empty
                                     : Model.SubmissionDate.ToString();
                         }
-                        <input class="form-control rounded"
-                               data-val="true"
-                               id="SubmissionDate"
-                               name="SubmissionDate"
-                               value="@dateValue2" required="required" />
+                        <input class="form-control rounded" data-val="true" id="SubmissionDate" name="SubmissionDate" value="@dateValue2" required="required" />
                     </div>
                 </div>
 
@@ -79,11 +93,7 @@
                                     ? String.Empty
                                     : Model.EstimatedApprovalDate.ToString();
                         }
-                        <input class="form-control rounded"
-                               data-val="true"
-                               id="EstimatedApprovalDate"
-                               name="EstimatedApprovalDate"
-                               value="@dateValue1" required="required" />
+                        <input class="form-control rounded" data-val="true" id="EstimatedApprovalDate" name="EstimatedApprovalDate" value="@dateValue1" required="required" />
                     </div>
                 </div>
 
@@ -96,15 +106,9 @@
                                     ? String.Empty
                                     : Model.ApprovalDate.ToString();
                         }
-                        <input class="form-control rounded"
-                               data-val="true"
-                               id="ApprovalDate"
-                               name="ApprovalDate"
-                               value="@dateValue" />
+                        <input class="form-control rounded" data-val="true" id="ApprovalDate" name="ApprovalDate" value="@dateValue" />
                     </div>
                 </div>
-
-
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-1" })
@@ -133,7 +137,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/dropzonescripts")
-    <script src="~/Content/bootstrap-checkbox.min.js" ></script>
+    <script src="~/Content/bootstrap-checkbox.min.js"></script>
     <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
     <script src='@Url.Content("~/Scripts/Products/products.js")'></script>
 
@@ -153,23 +157,69 @@
                 $('#EstimatedApprovalDate').datetimepicker({
                     format: format
                 });
+                $('#EstimatedSubmissionDate').datetimepicker({
+                    format: format
+                });
             });
         }());
 
         function submissionDateUnknownClick() {
 
-            var checkBox = document.getElementById("SubmissionDateCheckbox");
+            var checkBoxArch = document.getElementById("SubmissionDateCheckbox");
+            var checkBoxEst = document.getElementById("EstimatedSubmissionDateCheckbox");
             var submissionDateInput = document.getElementById("SubmissionDate");
-            if (checkBox.checked == true) {
+            var submissionEstDateInput = document.getElementById("EstimatedSubmissionDate");
+
+            if (checkBoxArch.checked == true) {
+
+                checkBoxEst.disabled = true;
+
                 submissionDateInput.style.disabled = true;
                 submissionDateInput.style.visibility = "hidden";
                 submissionDateInput.value = "1900-01-01";
             } else {
+
+                checkBoxEst.disabled = false;
+                
                 submissionDateInput.style.disabled = false;
                 submissionDateInput.style.visibility = "visible";
-                console
+                submissionDateInput.value = new Date().toISOString().slice(0, 10);
+            }
+            submissionEstDateInput.style.visibility = "hidden";
+            submissionEstDateInput.value = new Date().toISOString().slice(0, 10);
+        }
+
+        function submissionDateEstimatedClick() {
+
+            var checkBoxArch = document.getElementById("SubmissionDateCheckbox");
+            var checkBoxEst = document.getElementById("EstimatedSubmissionDateCheckbox");
+            var submissionDateInput = document.getElementById("SubmissionDate");
+            var submissionEstDateInput = document.getElementById("EstimatedSubmissionDate");
+
+            if (checkBoxEst.checked == true) {
+
+                checkBoxArch.disabled = true;
+
+                submissionDateInput.style.disabled = true;
+                submissionDateInput.style.visibility = "hidden";
+                submissionDateInput.value = "1900-01-01";
+
+                submissionEstDateInput.style.visibility = "visible";
+                submissionEstDateInput.value = new Date().toISOString().slice(0, 10);
+                submissionEstDateInput.style.disabled = false;
+
+            }
+            else {
+
+                checkBoxArch.disabled = false;
+
+                submissionDateInput.style.disabled = false;
+                submissionDateInput.style.visibility = "visible";
                 submissionDateInput.value = new Date().toISOString().slice(0, 10);
 
+                submissionEstDateInput.style.disabled = false;
+                submissionEstDateInput.style.visibility = "hidden";
+                submissionEstDateInput.value = new Date().toISOString().slice(0, 10);
             }
         }
     </script>

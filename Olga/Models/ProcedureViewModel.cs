@@ -26,6 +26,10 @@ namespace Olga.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionDate { get; set; }
 
+        [Display(Name = "EstimatedSubmissionDate", ResourceType = typeof(Resources.Labels))]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime EstimatedSubmissionDate { get; set; }
+
         [Required]
         [Display(Name = "EstimatedApprovalDate", ResourceType = typeof(Resources.Labels))]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

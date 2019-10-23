@@ -126,6 +126,9 @@
   <data name="EstimatedApprovalDate" xml:space="preserve">
     <value>Estimated Approval Date</value>
   </data>
+  <data name="EstimatedSubmissionDate" xml:space="preserve">
+    <value>Estimated Submission Date </value>
+  </data>
   <data name="RegisterNewUser" xml:space="preserve">
     <value>Register new user</value>
   </data>
