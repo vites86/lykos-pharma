@@ -147,6 +147,14 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUnitOfWorkGeneral.cs" />
+    <Compile Include="Migrations\201910271956152_Add EstimatedSubmissionDate.cs" />
+    <Compile Include="Migrations\201910271956152_Add EstimatedSubmissionDate.Designer.cs">
+      <DependentUpon>201910271956152_Add EstimatedSubmissionDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910272003161_Add EstimatedSubmissionDate2.cs" />
+    <Compile Include="Migrations\201910272003161_Add EstimatedSubmissionDate2.Designer.cs">
+      <DependentUpon>201910272003161_Add EstimatedSubmissionDate2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
@@ -169,6 +177,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201910271956152_Add EstimatedSubmissionDate.resx">
+      <DependentUpon>201910271956152_Add EstimatedSubmissionDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910272003161_Add EstimatedSubmissionDate2.resx">
+      <DependentUpon>201910272003161_Add EstimatedSubmissionDate2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

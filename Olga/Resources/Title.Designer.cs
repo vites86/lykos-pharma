@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ErrorMessages {
+    public class Title {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public ErrorMessages() {
+        public Title() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Olga.Resources.ErrorMessages", typeof(ErrorMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Olga.Resources.Title", typeof(Title).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email not send! Can not detect the product for procedure!.
+        ///   Looks up a localized string similar to Create Procedure.
         /// </summary>
-        public static string EmailNotSendCantFindProdToProc {
+        public static string CreateProcedure {
             get {
-                return ResourceManager.GetString("EmailNotSendCantFindProdToProc", resourceCulture);
+                return ResourceManager.GetString("CreateProcedure", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Id in request!.
+        ///   Looks up a localized string similar to Create Procedure for.
         /// </summary>
-        public static string NoIdInRequest {
+        public static string CreateProcedureFor {
             get {
-                return ResourceManager.GetString("NoIdInRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You don&apos;t have permissions for this operation!.
-        /// </summary>
-        public static string NoPermission {
-            get {
-                return ResourceManager.GetString("NoPermission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You don&apos;t have permission to requested recource!.
-        /// </summary>
-        public static string NoPermissionToRecource {
-            get {
-                return ResourceManager.GetString("NoPermissionToRecource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to don&apos;t have Products! So there are no Procedures to work with!.
-        /// </summary>
-        public static string NoProcCauseNoProd {
-            get {
-                return ResourceManager.GetString("NoProcCauseNoProd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not correct login/password.
-        /// </summary>
-        public static string NotCorrectLogin {
-            get {
-                return ResourceManager.GetString("NotCorrectLogin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The product deleted successfully!.
-        /// </summary>
-        public static string ProductDeleteSuccess {
-            get {
-                return ResourceManager.GetString("ProductDeleteSuccess", resourceCulture);
+                return ResourceManager.GetString("CreateProcedureFor", resourceCulture);
             }
         }
     }

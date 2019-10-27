@@ -18,6 +18,11 @@ namespace Olga.Models
         }
 
         public int Id { get; set; }
+
+        [Display(Name = "EstimatedSubmissionDate", ResourceType = typeof(Resources.Labels))]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? EstimatedSubmissionDate { get; set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -25,10 +30,6 @@ namespace Olga.Models
         [Display(Name = "SubmissionDate", ResourceType = typeof(Resources.Labels))]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime SubmissionDate { get; set; }
-
-        [Display(Name = "EstimatedSubmissionDate", ResourceType = typeof(Resources.Labels))]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime EstimatedSubmissionDate { get; set; }
 
         [Required]
         [Display(Name = "EstimatedApprovalDate", ResourceType = typeof(Resources.Labels))]
@@ -50,9 +51,6 @@ namespace Olga.Models
         public virtual ProductViewModel Product { get; set; }
 
         public List<ProcedureDocument> ProcedureDocuments { get; set; }
-
-
-
     }
 
     public class ProcedureEditModel
@@ -61,6 +59,10 @@ namespace Olga.Models
 
         [Required]
         public string Name { get; set; }
+
+        [Display(Name = "EstimatedSubmissionDate", ResourceType = typeof(Resources.Labels))]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? EstimatedSubmissionDate { get; set; }
 
         [Required]
         [Display(Name = "SubmissionDate", ResourceType = typeof(Resources.Labels))]

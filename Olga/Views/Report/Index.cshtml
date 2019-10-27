@@ -1,0 +1,127 @@
+﻿@model List<Olga.Models.ProcedureViewModel>
+@{
+    ViewBag.Title = @Resources.Labels.ProcedureReport;
+}
+@if (User.IsInRole("Admin"))
+{
+    <h2 style='margin-left: 10px;'>@Resources.Labels.ProcedureReport</h2>
+
+    <form method="get" style='margin-left: 10px;'>
+        <div class="form-inline form-group">
+
+            <label class="control-label">@Resources.TableHead.Countries</label>
+            @Html.DropDownList("country", ViewBag.CountriesForDrpdwn as SelectList, htmlAttributes: new { @class = "form-control" })
+
+            <label class="control-label" style='margin-left: 10px;'> Submission Date From: </label>
+            @Html.TextBox("dateFrom", "", htmlAttributes: new { @class = "form-control" })
+
+            <label class="control-label" style='margin-left: 10px;'> Submission Date To: </label>
+            @Html.TextBox("dateTo", "", htmlAttributes: new { @class = "form-control" })
+
+            <input type="submit" value="Search" class="btn btn-default" />
+        </div>
+    </form>
+    <table class="table" style='margin-left: 10px; overflow: auto'>
+
+        <thead class="thead_table">
+            <tr class="thead_table">
+                <th>@Resources.TableHead.Countries</th>
+                <th>NewRegistration</th>
+                <th>Renewal</th>
+                <th>Variations</th>
+                <th>GMPconfirmation</th>
+                <th>GMPinspection</th>
+            </tr>
+        </thead>
+        @{
+            var countNewRegistrationGeneral = 0;
+            var countRenewalGeneral = 0;
+            var countVariationsGeneral = 0;
+            var countGMPconfirmationGeneral = 0;
+            var countGMPinspectionGeneral = 0;
+        }
+
+        @foreach (var item in @ViewBag.Countries)
+        {
+            if (@item.Name.Equals("All"))
+            {
+                continue;
+            }
+            var countNewRegistration = 0;
+            var countRenewal = 0;
+            var countVariations = 0;
+            var countGMPconfirmation = 0;
+            var countGMPinspection = 0;
+
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+
+                @for (var i = 0; i < @Model.ToList().Count; i++)
+                {
+                    if (@Model[i].Product.Country.Equals(@item.Name))
+                    {
+                        countNewRegistration += @Model[i].ProcedureType.ToString().Equals("NewRegistration") ? 1 : 0;
+                        countNewRegistrationGeneral += @Model[i].ProcedureType.ToString().Equals("NewRegistration") ? 1 : 0;
+                    }
+                    if (@Model[i].Product.Country.Equals(@item.Name))
+                    {
+                        countRenewal += @Model[i].ProcedureType.ToString().Equals("Renewal") ? 1 : 0;
+                        countRenewalGeneral += @Model[i].ProcedureType.ToString().Equals("Renewal") ? 1 : 0;
+                    }
+                    if (@Model[i].Product.Country.Equals(@item.Name))
+                    {
+                        countVariations += @Model[i].ProcedureType.ToString().Equals("Variations") ? 1 : 0;
+                        countVariationsGeneral += @Model[i].ProcedureType.ToString().Equals("Variations") ? 1 : 0;
+                    }
+                    if (@Model[i].Product.Country.Equals(@item.Name))
+                    {
+                        countGMPconfirmation += @Model[i].ProcedureType.ToString().Equals("GMPconfirmation") ? 1 : 0;
+                        countGMPconfirmationGeneral += @Model[i].ProcedureType.ToString().Equals("GMPconfirmation") ? 1 : 0;
+                    }
+                    if (@Model[i].Product.Country.Equals(@item.Name))
+                    {
+                        countGMPinspection += @Model[i].ProcedureType.ToString().Equals("GMPinspection") ? 1 : 0;
+                        countGMPinspectionGeneral += @Model[i].ProcedureType.ToString().Equals("GMPinspection") ? 1 : 0;
+                    }
+                }
+                    <td>
+                        @countNewRegistration
+                    </td>
+                    <td>
+                        @countRenewal
+                    </td>
+                    <td>
+                        @countVariations
+                    </td>
+                    <td>
+                        @countGMPconfirmation
+                    </td>
+                    <td>
+                        @countGMPinspection
+                    </td>
+            </tr>
+        }
+            <tr style="font-weight: bold;">
+                <td>
+                    General
+                </td>
+                <td>
+                    @countNewRegistrationGeneral
+                </td>
+                <td>
+                    @countRenewalGeneral
+                </td>
+                <td>
+                    @countVariationsGeneral
+                </td>
+                <td>
+                    @countGMPconfirmationGeneral
+                </td>
+                <td>
+                    @countGMPinspectionGeneral
+                </td>
+            </tr>
+    </table>
+}

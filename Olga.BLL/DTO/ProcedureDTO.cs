@@ -18,6 +18,8 @@ namespace  Olga.BLL.DTO
         public DateTime SubmissionDate { get; set; }
         public DateTime EstimatedApprovalDate { get; set; }
         public DateTime? ApprovalDate { get; set; }
+        public DateTime? EstimatedSubmissionDate { get; set; }
+
         public string Comments { get; set; }
         public ProcedureType ProcedureType { get; set; }
 

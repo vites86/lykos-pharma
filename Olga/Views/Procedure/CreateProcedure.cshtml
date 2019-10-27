@@ -1,7 +1,8 @@
-﻿@using System.Web.Mvc.Html
+﻿@using System.Globalization
+@using System.Web.Mvc.Html
 @model Olga.Models.ProcedureViewModel
 @{
-    ViewBag.Title = "Create Procedure";
+    ViewBag.Title = @Resources.Title.CreateProcedure;
 }
 
 <div>
@@ -10,7 +11,7 @@
             <h2>@ViewBag.Country</h2>
         </div>
         <h2>
-            Create Procedure for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
+            @Resources.Title.CreateProcedureFor:<span style="color: blue; font-weight: bold; margin-top: 20px;">
                 @Html.ActionLink($"{ViewBag.Product.ProductName ?? "Unnamed"}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
             </span>
         </h2>
@@ -32,7 +33,6 @@
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.ProductId)
-                @*<input type="hidden" name="Product" id="countryId" value="@ViewBag.CountryId" />*@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-1" })
                     <div class="col-md-10">
@@ -50,13 +50,13 @@
                 <div class="form-group">
                     @Html.Label("", "Archive", htmlAttributes: new { @class = "control-label col-md-1" })
                     <div class="col-md-10">
-                        <input style="margin-top: 7px !important; margin-right: 20px;" class="checkbox-success" id="SubmissionDateCheckbox" name="SubmissionDateCheckbox" onclick="submissionDateUnknownClick()" type="checkbox">   Submission Date Unknown
+                        <input style="margin-top: 7px !important; margin-right: 20px;" class="checkbox-success" id="SubmissionDateCheckbox" name="SubmissionDateCheckbox" onclick="submissionDateUnknownClick()" type="checkbox">   @Resources.Labels.SubmissionDateUn
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.Label("", "Estimated", htmlAttributes: new { @class = "control-label col-md-1" })
                     <div class="col-md-10">
-                        <input style="margin-top: 7px !important; margin-right: 20px;" class="checkbox-success" id="EstimatedSubmissionDateCheckbox" name="EstimatedSubmissionDateCheckbox" onclick="submissionDateEstimatedClick()" type="checkbox">   Submission Date Estimated
+                        <input style="margin-top: 7px !important; margin-right: 20px;" class="checkbox-success" id="EstimatedSubmissionDateCheckbox" name="EstimatedSubmissionDateCheckbox" onclick="submissionDateEstimatedClick()" type="checkbox">   @Resources.Labels.SubmissionDateEst
                     </div>
                 </div>
                 <div class="form-group">
@@ -68,7 +68,7 @@
                                     ? String.Empty
                                     : Model.EstimatedSubmissionDate.ToString();
                         }
-                        <input class="form-control rounded" data-val="true" id="EstimatedSubmissionDate" style= "visibility:hidden" name="EstimatedSubmissionDate" value="@dateValue3" required="required" />
+                        <input class="form-control rounded" id="EstimatedSubmissionDate" style= "visibility:hidden" name="EstimatedSubmissionDate" value="@dateValue3" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -144,22 +144,20 @@
     <script type="text/javascript">
         (function(parameters) {
             $(document).ready(function() {
-                console.log('@Model.ApprovalDate');
                 var format = 'YYYY-MM-DD';
                 $('#ApprovalDate').datetimepicker({
                     format: format
                 });
-                console.log('@Model.SubmissionDate');
                 $('#SubmissionDate').datetimepicker({
                     format: format
                 });
-                console.log('@Model.EstimatedApprovalDate');
                 $('#EstimatedApprovalDate').datetimepicker({
                     format: format
                 });
                 $('#EstimatedSubmissionDate').datetimepicker({
                     format: format
                 });
+
             });
         }());
 

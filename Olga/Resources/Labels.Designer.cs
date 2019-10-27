@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report about procedures.
+        /// </summary>
+        public static string ProcedureReport {
+            get {
+                return ResourceManager.GetString("ProcedureReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register new user.
         /// </summary>
         public static string RegisterNewUser {
@@ -111,6 +120,24 @@ namespace Resources {
         public static string SubmissionDate {
             get {
                 return ResourceManager.GetString("SubmissionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submission Date Estimated.
+        /// </summary>
+        public static string SubmissionDateEst {
+            get {
+                return ResourceManager.GetString("SubmissionDateEst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submission Date Unknown.
+        /// </summary>
+        public static string SubmissionDateUn {
+            get {
+                return ResourceManager.GetString("SubmissionDateUn", resourceCulture);
             }
         }
     }

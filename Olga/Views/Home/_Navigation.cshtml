@@ -103,6 +103,21 @@
             <li>@Html.ActionLink("Users", "Users", "Account")</li>
         </ul>
     </li>
+    <li class="panel">
+        <a role="button"
+           data-toggle="collapse"
+           data-parent=".navigation"
+           aria-expanded="false"
+           aria-controls="collapse7"
+           href="#collapse7"
+           class="collapsed">
+            <i class="glyphicon glyphicon-signal"></i>
+            <span class="sidebar-title">Reports</span>
+        </a>
+        <ul id="collapse7" class="list-unstyled collapse">
+            <li>@Html.ActionLink("Reports", "Index", "Report")</li>
+        </ul>
+    </li>
 }
 
 </ul>

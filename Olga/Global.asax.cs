@@ -143,15 +143,52 @@ namespace Olga
                     .ForMember(x => x.ProductId, o => o.MapFrom(s => s.ProductId))
                     .ForMember(x => x.Name, o => o.MapFrom(s => s.Name))
                     .ForMember(x => x.ProcedureType, o => o.MapFrom(s => s.ProcedureType))
+                    .ForMember(x => x.EstimatedSubmissionDate, o => o.MapFrom(s => s.EstimatedSubmissionDate))
+                    .ForMember(x => x.EstimatedApprovalDate, o => o.MapFrom(s => s.EstimatedApprovalDate))
                     .ForMember(x => x.SubmissionDate, o => o.MapFrom(s => s.SubmissionDate));
 
-                cfg.CreateMap<ProcedureDTO, ProcedureViewModel>();
+                cfg.CreateMap<ProcedureDTO, ProcedureViewModel>()
+                    .ForMember(x => x.ApprovalDate, o => o.MapFrom(s => s.ApprovalDate))
+                    .ForMember(x => x.Comments, o => o.MapFrom(s => s.Comments))
+                    .ForMember(x => x.ProductId, o => o.MapFrom(s => s.ProductId))
+                    .ForMember(x => x.Name, o => o.MapFrom(s => s.Name))
+                    .ForMember(x => x.ProcedureType, o => o.MapFrom(s => s.ProcedureType))
+                    .ForMember(x => x.EstimatedSubmissionDate, o => o.MapFrom(s => s.EstimatedSubmissionDate))
+                    .ForMember(x => x.EstimatedApprovalDate, o => o.MapFrom(s => s.EstimatedApprovalDate))
+                    .ForMember(x => x.SubmissionDate, o => o.MapFrom(s => s.SubmissionDate));
+
+                cfg.CreateMap<ProcedureDTO, ProcedureEditModel>()
+                    .ForMember(x => x.ApprovalDate, o => o.MapFrom(s => s.ApprovalDate))
+                    .ForMember(x => x.Comments, o => o.MapFrom(s => s.Comments))
+                    .ForMember(x => x.ProductId, o => o.MapFrom(s => s.ProductId))
+                    .ForMember(x => x.Name, o => o.MapFrom(s => s.Name))
+                    .ForMember(x => x.ProcedureType, o => o.MapFrom(s => s.ProcedureType))
+                    .ForMember(x => x.EstimatedSubmissionDate, o => o.MapFrom(s => s.EstimatedSubmissionDate))
+                    .ForMember(x => x.EstimatedApprovalDate, o => o.MapFrom(s => s.EstimatedApprovalDate))
+                    .ForMember(x => x.SubmissionDate, o => o.MapFrom(s => s.SubmissionDate));
+
+                cfg.CreateMap<ProcedureDTO, Procedure>()
+                    .ForMember(x => x.ApprovalDate, o => o.MapFrom(s => s.ApprovalDate))
+                    .ForMember(x => x.Comments, o => o.MapFrom(s => s.Comments))
+                    .ForMember(x => x.ProductId, o => o.MapFrom(s => s.ProductId))
+                    .ForMember(x => x.Name, o => o.MapFrom(s => s.Name))
+                    .ForMember(x => x.ProcedureType, o => o.MapFrom(s => s.ProcedureType))
+                    .ForMember(x => x.EstimatedSubmissionDate, o => o.MapFrom(s => s.EstimatedSubmissionDate))
+                    .ForMember(x => x.EstimatedApprovalDate, o => o.MapFrom(s => s.EstimatedApprovalDate))
+                    .ForMember(x => x.SubmissionDate, o => o.MapFrom(s => s.SubmissionDate));
 
                 cfg.CreateMap<ProcedureEditModel, ProcedureDTO>()
                 .ForMember(x => x.ProductId, o => o.Ignore())
                 .ForMember(x => x.Product, o => o.Ignore())
-                //.ForMember(x => x.ProcedureDocuments, o => o.Ignore())
-                ;
+                    .ForMember(x => x.ApprovalDate, o => o.MapFrom(s => s.ApprovalDate))
+                    .ForMember(x => x.Comments, o => o.MapFrom(s => s.Comments))
+                    .ForMember(x => x.Name, o => o.MapFrom(s => s.Name))
+                    .ForMember(x => x.ProcedureType, o => o.MapFrom(s => s.ProcedureType))
+                    .ForMember(x => x.EstimatedSubmissionDate, o => o.MapFrom(s => s.EstimatedSubmissionDate))
+                    .ForMember(x => x.EstimatedApprovalDate, o => o.MapFrom(s => s.EstimatedApprovalDate))
+                    .ForMember(x => x.SubmissionDate, o => o.MapFrom(s => s.SubmissionDate));
+
+
                 cfg.CreateMap<Emailer, EmailerDTO>();
 
             });

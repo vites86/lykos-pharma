@@ -126,6 +126,9 @@
   <data name="NoPermission" xml:space="preserve">
     <value>You don't have permissions for this operation!</value>
   </data>
+  <data name="NoPermissionToRecource" xml:space="preserve">
+    <value>You don't have permission to requested recource!</value>
+  </data>
   <data name="NoProcCauseNoProd" xml:space="preserve">
     <value>don't have Products! So there are no Procedures to work with!</value>
   </data>

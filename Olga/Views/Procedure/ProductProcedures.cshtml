@@ -47,6 +47,7 @@
                                 <th>@Resources.TableHead.ProcedureType</th>
                                 <th>@Resources.TableHead.LifecycleDocuments</th>
                                 <th>@Resources.TableHead.NameEng</th>
+                                <th>@Resources.Labels.EstimatedSubmissionDate</th>
                                 <th>@Resources.Labels.SubmissionDate</th>
                                 <td>@Resources.Labels.EstimatedApprovalDate</td>
                                 <th>@Resources.Labels.ApprovalDate</th>
@@ -84,6 +85,7 @@
                                         </div>
                                     </td>
                                     <td>@Model[i].Name</td>
+                                    <td>@{ var estimatedSubmissionDate = Model[i].EstimatedSubmissionDate != null ? DateTime.Parse(@Model[i].EstimatedSubmissionDate.ToString()).ToString("u").Substring(0, 10) : "Not defined"; } @estimatedSubmissionDate</td>
                                     <td>
                                         @{ var submissionDate = @Model[i].SubmissionDate != DateTime.Parse("1900-01-01 00:00:00.000") ? DateTime.Parse(@Model[i].SubmissionDate.ToString()).ToString("u").Substring(0, 10) : "Not defined"; }
                                         @submissionDate
@@ -93,7 +95,7 @@
                                         @estimatedApprovalDate
                                     </td>
                                     <td>
-                                        @{ var approvalDate = Model[i].ApprovalDate != null ? DateTime.Parse(@Model[i].ApprovalDate.ToString()).ToString("u").Substring(0, 10) : null; }
+                                        @{ var approvalDate = Model[i].ApprovalDate != null ? DateTime.Parse(@Model[i].ApprovalDate.ToString()).ToString("u").Substring(0, 10) : "Not defined"; }
                                         @approvalDate
                                     </td>
                                     <td>@Model[i].Comments</td>
