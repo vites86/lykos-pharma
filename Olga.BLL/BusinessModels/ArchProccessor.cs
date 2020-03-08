@@ -123,7 +123,7 @@ namespace Olga.BLL.BusinessModels
                 files.ForEach(f => CopyFile(pathToFilesFolder, f, tempFolder));
 
                 if (File.Exists(archive)) File.Delete(archive);
-                ZipFileCustom.CreateFromDirectory(tempFolder, archive, CompressionLevel.Fastest, false);
+                ZipFileCustom.CreateFromDirectory(tempFolder, archive, CompressionLevel.Optimal, false);
 
                 return $"../tempout/{curDate}/{productId}/{archName}";
         }
