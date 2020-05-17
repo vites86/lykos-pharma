@@ -20,12 +20,14 @@ namespace Olga.BLL.Interfaces
         IEnumerable<T> GetItems();
     }
 
-    public interface IProcedure : IBase<ProcedureDTO>
+    public interface IProcedure : IPagination<ProcedureDTO>, IBase<ProcedureDTO>
     {
         //IEnumerable<ProcedureDTO> GetItems();
         IEnumerable<ProcedureDTO> GetItems(int productId);
         void Update(ProcedureDTO procedure);
         void DeleteDocument(string fileName);
+        IEnumerable<ProcedureDTO> GetPaginated(int? countryId, string searchValue, string sortOrder, int initialPage, int pageSize, out int totalRecords, out int recordsFiltered);
+        IEnumerable<ProcedureDTO> GetProceduresOptimized(int? countryId, string searchValue, string sortColumnName, string sortDirection, int start, int length, out int totalrows, out int totalrowsafterfiltering);
         //void UpdateDocument(ProcedureDTO procedure);
     }
 

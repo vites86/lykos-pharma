@@ -136,6 +136,12 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -230,6 +236,7 @@
     <Compile Include="Models\MarketingAuthorizHolderViewModel.cs" />
     <Compile Include="Models\PharmaceuticalFormViewModel.cs" />
     <Compile Include="Models\ProcedureViewModel.cs" />
+    <Compile Include="Models\ProcedureViewOptimized.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\StrengthViewModel.cs" />
@@ -328,6 +335,7 @@
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.structure.css" />
     <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\plugins\DataTable\jquery.dataTables.min.css" />
     <Content Include="Content\plugins\DataTable\jquery.dataTables.min.js" />
     <Content Include="Content\plugins\images\sort_asc.png" />
@@ -5023,6 +5031,7 @@
     <None Include="Properties\PublishProfiles\Production 185.112.41.146.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.12.4.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -5119,6 +5128,8 @@
     <Content Include="Views\Shared\FlashMessage.cshtml" />
     <Content Include="Views\Procedure\AllProcedures.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Procedure\OptimizedProcedures1.cshtml" />
+    <Content Include="Views\Procedure\OptimizedProcedures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

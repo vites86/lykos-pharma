@@ -51,6 +51,7 @@ namespace Olga.Models
         public virtual ProductViewModel Product { get; set; }
 
         public List<ProcedureDocument> ProcedureDocuments { get; set; }
+
     }
 
     public class ProcedureEditModel
