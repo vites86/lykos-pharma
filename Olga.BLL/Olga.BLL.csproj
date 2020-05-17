@@ -150,6 +150,7 @@
     <Compile Include="Infrastructure\ValidationException.cs" />
     <Compile Include="Interfaces\IArchProccessor.cs" />
     <Compile Include="Interfaces\IBase.cs" />
+    <Compile Include="Interfaces\IPagination.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
     <Compile Include="Interfaces\IServiceCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

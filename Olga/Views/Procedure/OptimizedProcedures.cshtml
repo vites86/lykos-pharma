@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "OptimizedProcedures";
+}
+@{
+    ViewBag.Title = $"Procedurs {@ViewBag.CountryName}";
+    var flagSrc = $"{@ViewBag.CountryId}.gif";
+}
+<div class="container">
+    <h2>Procedures</h2>
+    <h3 class="alert-success">
+        @ViewBag.CountryName
+        <img style="margin-left: 15px; height: 20px;" src="~/Content/images/countries/@flagSrc" />
+    </h3>
+    <h2>OptimizedProcedures</h2>
+
+    <table id="proceduretable" class="table table-striped table-bordered table-responsive" style='overflow: auto'>
+        <thead class="thead_table">
+            <tr>
+                <td>Procedure type</td>
+                <td>Name</td>
+                <td>@Resources.Labels.EstimatedSubmissionDate</td>
+                <td>@Resources.Labels.SubmissionDate</td>
+                <td>@Resources.Labels.EstimatedApprovalDate</td>
+                <td>@Resources.Labels.ApprovalDate</td>
+                <td>Comments</td>
+                <td>Product</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@*<link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css" rel="stylesheet" />*@
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css" />
+
+@section scripts{
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+
+    @*<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>*@
+
+    <script>
+        $(document).ready(function () {
+            $("#proceduretable").DataTable({
+                "ajax": {
+                    "url": "/Procedure/GetOptimizedProcedures?countryId=1",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "ProcedureType",             "name": "Procedure type" },
+                    { "data": "Name",                      "name": "Name" },
+                    { "data": "EstimatedSubmissionDate",   "name": "@Resources.Labels.EstimatedSubmissionDate" },
+                    { "data": "SubmissionDate",            "name": "@Resources.Labels.SubmissionDate" },
+                    { "data": "EstimatedApprovalDate",     "name": "@Resources.Labels.EstimatedApprovalDate" },
+                    { "data": "ApprovalDate",              "name": "@Resources.Labels.ApprovalDate" },
+                    { "data": "Comments",                  "name": "Comments" },
+                    { "data": "ProductInfo",               "name": "Product" }
+                ],
+
+                "serverSide": "true",
+                "order": [0, "asc"],
+                "processing": "true",
+                "language": {
+                    "processing": "<div style='padding-top:60px !important;'><img style='width:50px; height:50px;' src='/Content/images/loader.gif' /></div>"
+                }
+            });
+        });
+    </script>
+}
+<style>
+
+</style>
