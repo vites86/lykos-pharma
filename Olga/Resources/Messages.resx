@@ -123,6 +123,9 @@
   <data name="FilesDownoadSuccess" xml:space="preserve">
     <value>Files upload successfuly!</value>
   </data>
+  <data name="FilesDownoadSuccessWait" xml:space="preserve">
+    <value>File downloaded successful! Wait while the file appears on this page!</value>
+  </data>
   <data name="ProcedureCreatedSuccess" xml:space="preserve">
     <value>Procedure was created  successfuly!</value>
   </data>
@@ -140,5 +143,11 @@
   </data>
   <data name="ProductUpdatedSuccess" xml:space="preserve">
     <value>Product was Created/Updated  successfuly!</value>
+  </data>
+  <data name="SettingsCreateSuccess" xml:space="preserve">
+    <value>Country setting was created successfuly!!</value>
+  </data>
+  <data name="SettingsUpdateSuccess" xml:space="preserve">
+    <value>Country setting was updated successfuly!</value>
   </data>
 </root>

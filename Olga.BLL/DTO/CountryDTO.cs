@@ -20,5 +20,7 @@ namespace Olga.BLL.DTO
             MarketingAuthorizNumbers = new List<MarketingAuthorizNumberDTO>();
             PackSizes = new List<PackSizeDTO>();
         }
+        public CountrySettingDTO CountrySettings { get; set; }
+
     }
 }

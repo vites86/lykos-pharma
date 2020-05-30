@@ -26,6 +26,7 @@ namespace Olga.DAL.Entities
             Users = new List<ClientProfile>();
             //Products = new List<Product>();
         }
+        public virtual CountrySetting CountrySettings { get; set; }
 
         //public virtual IEnumerable<Product> Products { get; set; }
     }

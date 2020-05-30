@@ -10,181 +10,235 @@
 <div class="row" style="overflow: auto; margin-left:  10px; margin-right: 10px;">
         <h2>Product <span class="product_name">@Model.ProductName</span></h2>
 
-            <div class="form-horizontal">
-                <br />
-                <hr />
-                <div class="form-group">
-                    @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info ">@Model.Country</label>
-                    </div>
+        <div class="form-horizontal">
+            <br />
+            <hr />
+            <div class="form-group">
+                @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info ">@Model.Country</label>
                 </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info ">@Model.ProductName</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info ">@Model.ProductCode</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info ">@Model.Strength</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PharmaceuticalForm, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info">@Model.PharmaceuticalForm</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MarketingAuthorizNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info">@Model.MarketingAuthorizNumber</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info">@Model.PackSize</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <label class="control-label text-info">@Model.MarketingAuthorizHolder</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 left">
-                        @Html.HiddenFor(m => m.DocumentImagesListStringApprs)
-                        <table class="table">
-                            @foreach (var apprDocsType in ViewBag.apprDocsTypes)
-                            {
-                                var apprId = @apprDocsType.Value;
-                                <tr>
-                                    <td colspan="2" style="text-align: left; padding-left: 0px !important">
-                                        <label class="text-info">@apprDocsType.Text</label>
-                                    </td>
-                                    <td>
-                                        @foreach (var fileName in Model.DocumentImagesApprs)
-                                        {
-                                            if (fileName.Contains(@apprId + "__"))
-                                            {
-                                                var folder = GetApprFolder(apprDocsType.Text);
-
-                                                <label class="control-label text-info">
-                                                    <span class="glyphicon glyphicon-file" />
-                                                    <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">
-                                                        @fileName
-                                                    </a>
-                                                </label><br/>
-                                            }
-                                        }
-                                        @if (apprId.Equals("3") && !ViewBag.NcAccess && User.IsInRole("User"))
-                                        {
-                                            <img src="~/Content/images/locked.jpg" width="50" />
-                                        }
-                                        @if (apprId.Equals("5") && User.IsInRole("User"))
-                                        {
-                                            <img src="~/Content/images/locked.jpg" width="50" />
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Manufacturers, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @foreach (var manufacturer in Model.Manufacturers)
-                        {
-                            <label class="control-label text-info">@manufacturer.Name</label><br />
-                        }
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Artworks, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10 left">
-                        @Html.HiddenFor(m => m.DocumentImagesListStringArtworks)
-
-                        <table class="table">
-                            @foreach (var artwork in Model.Artworks)
-                            {
-                                var artworkId = @artwork.Id;
-                                <tr>
-                                    <td colspan="2" style="text-align: left; padding-left: 0px !important">
-                                        <label class="text-info">@artwork.Artwork_name</label>
-                                    </td>
-                                    <td>
-                                        @foreach (var fileName in Model.DocumentImagesArtworks)
-                                        {
-                                            if (fileName.Contains(@artworkId + "__"))
-                                            {
-                                                var folder = $"Artwork/{@artworkId}";
-
-                                                <label class="control-label text-info">
-                                                    <span class="glyphicon glyphicon-file" />
-                                                    <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">
-                                                        @fileName
-                                                    </a>
-                                                </label><br />
-                                            }
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @{
-                            var dateValue =
-                                string.IsNullOrEmpty(Model.IssuedDate)
-                                    ? "No Issued Date"
-                                    : DateTime.Parse(@Model.IssuedDate).ToString("u").Substring(0, 10);
-
-                        }
-                        <label class="control-label text-info">@dateValue</label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ExpiredDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @{
-                            var dateValue2 = string.IsNullOrEmpty(Model.ExpiredDate) ? "ExpiredDate" : Model.ExpiredDate;
-                            if (Model.UnLimited)
-                            {
-                                dateValue2 = "UnLimited";
-                            }
-                        }
-                        <label class="control-label text-info">@dateValue2</label>
-                    </div>
-                </div>
-                <br /><br />
-                <hr />
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info ">@Model.ProductName</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info ">@Model.ProductCode</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info ">@Model.Strength</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PharmaceuticalForm, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info">@Model.PharmaceuticalForm</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MarketingAuthorizNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info">@Model.MarketingAuthorizNumber</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info">@Model.PackSize</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="control-label text-info">@Model.MarketingAuthorizHolder</label>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 left">
+                    @Html.HiddenFor(m => m.DocumentImagesListStringApprs)
+                    <table class="table">
+                        @foreach (var apprDocsType in ViewBag.apprDocsTypes)
+                        {
+                            var apprId = @apprDocsType.Value;
+                            <tr>
+                                <td colspan="2" style="text-align: left; padding-left: 0px !important">
+                                    <label class="text-info">@apprDocsType.Text</label>
+                                </td>
+                                <td>
+                                    @foreach (var fileName in Model.DocumentImagesApprs)
+                                    {
+                                        if (fileName.Contains(@apprId + "__"))
+                                        {
+                                            var folder = GetApprFolder(apprDocsType.Text);
+
+                                            <label class="control-label text-info">
+                                                <span class="glyphicon glyphicon-file" />
+                                                <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">
+                                                    @fileName
+                                                </a>
+                                            </label><br />
+                                        }
+                                    }
+                                    @if (apprId.Equals("3") && !ViewBag.NcAccess && User.IsInRole("User"))
+                                    {
+                                        <img src="~/Content/images/locked.jpg" width="50" />
+                                    }
+                                    @if (apprId.Equals("5") && User.IsInRole("User"))
+                                    {
+                                        <img src="~/Content/images/locked.jpg" width="50" />
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Manufacturers, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @foreach (var manufacturer in Model.Manufacturers)
+                    {
+                        <label class="control-label text-info">@manufacturer.Name</label><br />
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Artworks, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 left">
+                    @Html.HiddenFor(m => m.DocumentImagesListStringArtworks)
+
+                    <table class="table">
+                        @foreach (var artwork in Model.Artworks)
+                        {
+                            var artworkId = @artwork.Id;
+                            <tr>
+                                <td colspan="2" style="text-align: left; padding-left: 0px !important">
+                                    <label class="text-info">@artwork.Artwork_name</label>
+                                </td>
+                                <td>
+                                    @foreach (var fileName in Model.DocumentImagesArtworks)
+                                    {
+                                        if (fileName.Contains(@artworkId + "__"))
+                                        {
+                                            var folder = $"Artwork/{@artworkId}";
+
+                                            <label class="control-label text-info">
+                                                <span class="glyphicon glyphicon-file" />
+                                                <a href="#" onclick="doesFileExist('/Upload/Documents/@folder/@fileName')">
+                                                    @fileName
+                                                </a>
+                                            </label><br />
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            @{
+                if (@ViewBag.GtinActive)
+                {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Gtin, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <label class="control-label text-info">@Model.Gtin</label>
+                                <hr>
+                            </div>
+                    </div>
+
+                    @*<div class="form-group">
+                        @Html.LabelFor(model => model.DocumentImagesListStringGtin, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="row" style="display: inline-block;">
+                                @{
+                                    foreach (var file in Model.DocumentListStringGtin)
+                                    {
+                                        var fileName = @Path.GetFileName(file.PathToDocument);
+                                        <label class="control-label text-info">
+                                            <span class="glyphicon glyphicon-file" />
+                                            <a onclick="doesFileExist('/Upload/Documents/Additional/Gtin/@fileName')">@fileName</a>
+                                        </label>
+                                        <br />
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>*@ 
+                }
+
+                if (ViewBag.EanActive)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DocumentImagesListStringEan, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="left" style="display: inline-block;">
+                                @{
+                                    foreach (var file in Model.DocumentListStringEan)
+                                    {
+                                        var fileName = @Path.GetFileName(file.PathToDocument);
+                                        <label class="control-label text-info">
+                                            <span class="glyphicon glyphicon-file" />
+                                            <a onclick="doesFileExist('/Upload/Documents/Additional/Ean/@fileName')">@fileName</a>
+                                        </label>
+                                        <br />
+                                    }
+                                }
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="form-group">
+                @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                        var dateValue =
+                            string.IsNullOrEmpty(Model.IssuedDate)
+                                ? "No Issued Date"
+                                : DateTime.Parse(@Model.IssuedDate).ToString("u").Substring(0, 10);
+
+                    }
+                    <label class="control-label text-info">@dateValue</label>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ExpiredDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                        var dateValue2 = string.IsNullOrEmpty(Model.ExpiredDate) ? "ExpiredDate" : Model.ExpiredDate;
+                        if (Model.UnLimited)
+                        {
+                            dateValue2 = "UnLimited";
+                        }
+                    }
+                    <label class="control-label text-info">@dateValue2</label>
+                </div>
+            </div>
+            <br /><br />
+            <hr />
+        </div>
         </div>
     </div>
     @Html.Partial("~/Views/Shared/_UploadFiles.cshtml")

@@ -120,6 +120,15 @@
   <data name="EmailNotSendCantFindProdToProc" xml:space="preserve">
     <value>Email not send! Can not detect the product for procedure!</value>
   </data>
+  <data name="ErrorHappened" xml:space="preserve">
+    <value>Error happened!</value>
+  </data>
+  <data name="NoCountryId" xml:space="preserve">
+    <value>No countryId in request!</value>
+  </data>
+  <data name="NoFileToLoad" xml:space="preserve">
+    <value>No file to load!</value>
+  </data>
   <data name="NoIdInRequest" xml:space="preserve">
     <value>No Id in request!</value>
   </data>
@@ -137,5 +146,8 @@
   </data>
   <data name="ProductDeleteSuccess" xml:space="preserve">
     <value>The product deleted successfully!</value>
+  </data>
+  <data name="SettingAlreadyExists" xml:space="preserve">
+    <value>Setting for country already exists!</value>
   </data>
 </root>

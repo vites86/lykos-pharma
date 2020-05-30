@@ -222,4 +222,10 @@
   <data name="ProcedureType" xml:space="preserve">
     <value>Procedure type</value>
   </data>
+  <data name="ShowEan" xml:space="preserve">
+    <value>Show EAN files</value>
+  </data>
+  <data name="ShowGtin" xml:space="preserve">
+    <value>Show GTIN files</value>
+  </data>
 </root>

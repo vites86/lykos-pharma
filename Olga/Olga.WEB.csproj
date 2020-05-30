@@ -229,6 +229,7 @@
     </Compile>
     <Compile Include="Models\ApprDocsTypeViewModel.cs" />
     <Compile Include="Models\ArtworkViewModel.cs" />
+    <Compile Include="Models\CountrySettingViewModel.cs" />
     <Compile Include="Models\Emailer.cs" />
     <Compile Include="Models\InfoViewModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -319,6 +320,7 @@
     <Content Include="Content\images\extentions\pdf.jpg" />
     <Content Include="Content\images\extentions\txt.jpg" />
     <Content Include="Content\images\extentions\xlsx.jpg" />
+    <Content Include="Content\images\false.png" />
     <Content Include="Content\images\favicon.png" />
     <Content Include="Content\images\loader.gif" />
     <Content Include="Content\images\loading-bg.png" />
@@ -326,6 +328,7 @@
     <Content Include="Content\images\loading2.gif" />
     <Content Include="Content\images\locked.jpg" />
     <Content Include="Content\images\remove.png" />
+    <Content Include="Content\images\true.jpg" />
     <Content Include="Content\images\ui-icons_444444_256x240.png" />
     <Content Include="Content\images\ui-icons_555555_256x240.png" />
     <Content Include="Content\images\ui-icons_777620_256x240.png" />
@@ -5130,6 +5133,10 @@
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Procedure\OptimizedProcedures1.cshtml" />
     <Content Include="Views\Procedure\OptimizedProcedures.cshtml" />
+    <Content Include="Views\Settings\CountrySettings.cshtml" />
+    <Content Include="Views\Settings\CreateCountrySetting.cshtml" />
+    <Content Include="Views\Settings\EditCountrySetting.cshtml" />
+    <Content Include="Views\Product\EditProductAdditionalFiles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

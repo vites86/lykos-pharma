@@ -21,6 +21,7 @@ namespace Olga.DAL.Interfaces
         IRepository<PharmaceuticalForm> PharmaceuticalForms { get; }
         IRepository<ProductName> ProductNames { get; }
         IRepository<ProductCode> ProductCodes { get; }
+        IRepository<CountrySetting> CountrySettings { get; }
 
         void Save();
     }

@@ -69,6 +69,9 @@ namespace Olga.Models
         public virtual List<ArtworkDTO> Artworks { get; set; }
         public virtual List<ManufacturerDTO> Manufacturers { get; set; }
         public virtual List<ProcedureDTO> Procedures { get; set; }
+
+        [Display(Name = "GTIN")]
+        public string Gtin { get; set; }
     }
 
     public class ProductCreateModel
@@ -81,6 +84,8 @@ namespace Olga.Models
             this.DocumentImagesArtworks = new List<string>();
             this.Procedures = new List<ProcedureViewModel>();
             this.Documents = new List<ProductDocument>();
+            this.DocumentListStringGtin = new List<ProductDocument>();
+            this.DocumentListStringEan = new List<ProductDocument>();
         }
 
         public int? Id { get; set; }
@@ -92,10 +97,7 @@ namespace Olga.Models
         [Display(Name = "Expiry Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ExpiredDate { get; set; }
-
         public bool UnLimited { get; set; }
-
-
         public virtual Country Country { get; set; }
         public int? CountryId { get; set; }
 
@@ -135,8 +137,19 @@ namespace Olga.Models
         public string DocumentImagesListStringArtworks { get; set; }
         public List<string> DocumentImagesArtworks { get; set; }
 
+        [Display(Name = "GTIN")]
+        public string DocumentImagesListStringGtin { get; set; }
+        public List<ProductDocument> DocumentListStringGtin { get; set; }
+
+        [Display(Name = "EAN")]
+        public string DocumentImagesListStringEan { get; set; }
+        public List<ProductDocument> DocumentListStringEan { get; set; }
+
         public List<ProcedureViewModel> Procedures { get; set; }
         public List<ProductDocument> Documents { get; set; }
+
+        [Display(Name = "GTIN")]
+        public string Gtin { get; set; }
     }
 
     public class ShowProductModel
@@ -149,6 +162,8 @@ namespace Olga.Models
             this.DocumentImagesArtworks = new List<string>();
             this.Procedures = new List<ProcedureViewModel>();
             this.Documents = new List<ProductDocument>();
+            this.DocumentListStringGtin = new List<ProductDocument>();
+            this.DocumentListStringEan = new List<ProductDocument>();
         }
 
         public int? Id { get; set; }
@@ -191,6 +206,17 @@ namespace Olga.Models
 
         public List<ProcedureViewModel> Procedures { get; set; }
         public List<ProductDocument> Documents { get; set; }
+
+        [Display(Name = "GTIN")]
+        public string DocumentImagesListStringGtin { get; set; }
+        public List<ProductDocument> DocumentListStringGtin { get; set; }
+
+        [Display(Name = "EAN")]
+        public string DocumentImagesListStringEan { get; set; }
+        public List<ProductDocument> DocumentListStringEan { get; set; }
+
+        [Display(Name = "GTIN")]
+        public string Gtin { get; set; }
     }
 
     public class ProductCompareModel
@@ -210,5 +236,49 @@ namespace Olga.Models
         public int? ProductCodeId { get; set; }
         public int? ProductNameId { get; set; }
         public int? StrengthId { get; set; }
+    }
+
+    public class ProductAdditionalDocsModel
+    {
+        public ProductAdditionalDocsModel()
+        {
+            this.Documents = new List<ProductDocument>();
+            this.DocumentListStringGtin = new List<ProductDocument>();
+            this.DocumentListStringEan = new List<ProductDocument>();
+        }
+
+        public int Id { get; set; }
+
+        [Display(Name = "Country Name")]
+        public string CountryName { get; set; }
+
+        public int CountryId { get; set; }
+
+        [Display(Name = "Product Name")]
+        public string ProductName { get; set; }
+
+        [Display(Name = "Pharmaceutical Form")]
+        public string PharmaceuticalForm { get; set; }
+
+        [Display(Name = "Strength")]
+        public string Strength { get; set; }
+
+        [Display(Name = "Marketing Authorize Number")]
+        public string MarketingAuthorizNumber { get; set; }
+
+        [Display(Name = "Product Code")]
+        public string ProductCode { get; set; }
+
+        [Display(Name = "GTIN")]
+        public List<ProductDocument> DocumentListStringGtin { get; set; }
+
+        [Display(Name = "EAN")]
+        public List<ProductDocument> DocumentListStringEan { get; set; }
+
+        [Display(Name = "Documents")]
+        public List<ProductDocument> Documents { get; set; }
+
+        [Display(Name = "GTIN")]
+        public string Gtin { get; set; }
     }
 }

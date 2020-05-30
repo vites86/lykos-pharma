@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
@@ -26,12 +27,13 @@ namespace Olga.Controllers
         IArtwork _artworkService;
         IMarketingAuthorizHolder _marketingAuthorizHolderService;
         IPharmaceuticalForm _pharmaceuticalFormService;
+        IBase<CountrySettingDTO> _countrySettingsService;
 
 
         // GET: Settings
         public SettingsController(ICountry serv, IProductName prodName, IProductCode prodCode, IMarketingAuthorizNumber marketingAuthorizNumber, IPackSize packSize,
             IApprDocsType apprDocsType, IStrength strength, IManufacturer manufacturer, IArtwork artwork, IMarketingAuthorizHolder marketingAuthorizHolder, 
-            IPharmaceuticalForm pharmaceuticalForm)
+            IPharmaceuticalForm pharmaceuticalForm, IBase<CountrySettingDTO> countrySettingsService)
         {
             _countryService = serv;
             _productNameService = prodName;
@@ -44,6 +46,7 @@ namespace Olga.Controllers
             _artworkService = artwork;
             _marketingAuthorizHolderService = marketingAuthorizHolder;
             _pharmaceuticalFormService = pharmaceuticalForm;
+            _countrySettingsService = countrySettingsService;
         }
 
         public ActionResult Index(int? id)
@@ -558,6 +561,141 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
+                @ViewBag.Error = ex.Message;
+                return View("Error");
+            }
+        }
+
+        public ActionResult CountrySettings()
+        {
+            var countrySettingDto = _countrySettingsService.GetItems();
+            var countrSettings = Mapper.Map<IEnumerable<CountrySettingDTO>, IEnumerable<CountrySettingViewModel>>(countrySettingDto);
+            return View(countrSettings.ToList());
+        }
+
+        [HttpGet]
+        public ActionResult CreateCountrySetting()
+        {
+            try
+            {
+                var countries = _countryService.GetItems();
+                @ViewBag.Countries = countries.OrderBy(a => a.Name);
+                return View();
+            }
+            catch (Exception e)
+            {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: CreateCountrySetting() {e.Message} ");
+
+                @ViewBag.Error = e.Message;
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateCountrySetting(CountrySettingViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Error");
+            }
+
+            var countryId = model.CountryId ?? 0;
+            if (countryId == 0)
+            {
+                ViewBag.Error = @Resources.ErrorMessages.NoCountryId;
+                return View("Error");
+            }
+
+            var setting = _countrySettingsService.GetItem(countryId);
+            if (setting != null)
+            {
+                ViewBag.Error = @Resources.ErrorMessages.SettingAlreadyExists;
+                return View("Error");
+            }
+
+            try
+            {
+                var item = Mapper.Map<CountrySettingViewModel, CountrySettingDTO>(model);
+                
+                _countrySettingsService.AddItem(item);
+                _countrySettingsService.Commit();
+                _countrySettingsService.Dispose();
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: CreateCountrySetting {model.CountryId} ");
+
+                TempData["Success"] = Resources.Messages.SettingsCreateSuccess;
+                return RedirectToAction("CountrySettings");
+            }
+            catch (Exception ex)
+            {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: CreateProduct() {ex.Message} ");
+
+                @ViewBag.Error = ex.Message;
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EditCountrySetting(int? countryId)
+        {
+            var _countryId = countryId ?? 0;
+            if (_countryId == 0)
+            {
+                @ViewBag.Error = @Resources.ErrorMessages.NoCountryId;
+                return View("Error");
+            }
+
+            try
+            {
+                var countrySetting = _countrySettingsService.GetItem(_countryId);
+                var model = new CountrySettingViewModel()
+                {
+                    CountryId = _countryId,
+                    Country = Mapper.Map<Country, CountryDTO>(countrySetting.Country),
+                    EanActive = countrySetting.EanActive,
+                    GtinActive = countrySetting.GtinActive
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: CreateCountrySetting() {e.Message} ");
+
+                @ViewBag.Error = e.Message;
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateCountrySetting(CountrySettingViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Error");
+            }
+
+            try
+            {
+                var item = Mapper.Map<CountrySettingViewModel, CountrySettingDTO>(model);
+                _countrySettingsService.AddItem(item);
+                _countrySettingsService.Commit();
+                _countrySettingsService.Dispose();
+
+                var userName = User.Identity.Name;
+                Logger.Log.Info($"{userName}: CreateCountrySetting {model.CountryId} ");
+
+                TempData["Success"] = Resources.Messages.SettingsCreateSuccess;
+                return RedirectToAction("CountrySettings");
+            }
+            catch (Exception ex)
+            {
+                var userName = User.Identity.Name;
+                Logger.Log.Error($"{userName}: CreateProduct() {ex.Message} ");
+
                 @ViewBag.Error = ex.Message;
                 return View("Error");
             }

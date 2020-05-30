@@ -129,6 +129,7 @@
     <Compile Include="Entities\ApprDocsType.cs" />
     <Compile Include="Entities\Artwork.cs" />
     <Compile Include="Entities\Country.cs" />
+    <Compile Include="Entities\CountrySetting.cs" />
     <Compile Include="Entities\Manufacturer.cs" />
     <Compile Include="Entities\MarketingAuthorizHolder.cs" />
     <Compile Include="Entities\MarketingAuthorizNumber.cs" />
@@ -147,13 +148,14 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUnitOfWorkGeneral.cs" />
-    <Compile Include="Migrations\201910272234504_Add EstimatedSubmissionDate.cs" />
-    <Compile Include="Migrations\201910272234504_Add EstimatedSubmissionDate.Designer.cs">
-      <DependentUpon>201910272234504_Add EstimatedSubmissionDate.cs</DependentUpon>
+    <Compile Include="Migrations\202005272028418_DataMigration-gtin.cs" />
+    <Compile Include="Migrations\202005272028418_DataMigration-gtin.Designer.cs">
+      <DependentUpon>202005272028418_DataMigration-gtin.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
+    <Compile Include="Repositories\CountrySettingRepository.cs" />
     <Compile Include="Repositories\EFUnitOfWorkGeneral.cs" />
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Repositories\ProcedureRepository.cs" />
@@ -175,8 +177,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910272234504_Add EstimatedSubmissionDate.resx">
-      <DependentUpon>201910272234504_Add EstimatedSubmissionDate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202005272028418_DataMigration-gtin.resx">
+      <DependentUpon>202005272028418_DataMigration-gtin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

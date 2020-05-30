@@ -1,0 +1,64 @@
+﻿@using Olga.Models
+@model List<Olga.Models.CountrySettingViewModel>
+@{
+    ViewBag.Title = @Resources.Title.CountrySettings;
+}
+
+<div class="container">
+    <h2>@Resources.Title.CountrySettings</h2>
+    <div class="row" style="overflow: auto;">
+        <table class="table" id="country-settings-table" style='overflow: auto'>
+            <thead style='font-weight: bold'>
+                <tr>
+                    <td>@Resources.TableHead.Countries</td>
+                    <td>@Resources.TableHead.ShowEan</td>
+                    <td>@Resources.TableHead.ShowGtin</td>
+                    <td>@Resources.TableHead.Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var gifImage = $"{@Model[i].CountryId.ToString()}.gif";
+                    <tr data-rowid="@i">
+
+                        <td>@Model[i].Country.Name<img style="margin-left: 5%; height: 20px;" src="~/Content/images/countries/@gifImage" /></td>
+                        <td>
+                            @{
+                                var eanActive = Model[i].EanActive;
+                                var eanActiveImage = eanActive ? "true.jpg" : "false.png";
+                            }
+                            <img src="/Content/images/@eanActiveImage" style="height: 50px" />
+                        </td>
+                        <td>
+                            @{
+                                var gtin = Model[i].GtinActive;
+                                var gtinmage = gtin ? "true.jpg" : "false.png";
+                            }
+                            <img src="/Content/images/@gtinmage" style="height: 50px" />
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                              <span>@Html.ActionLink("Edit setting", "EditCountrySetting", "Settings", new { countryId = @Model[i].CountryId }, null)</span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("Create settings", "CreateCountrySetting", "SettingsController", new { @class = "btn btn-primary", data_icon = "gear" })
+        }
+        @if (Model.Count < 13)
+        {
+            <div style="height: 500px;"><br /></div>
+            <br />
+        }
+    </div>
+</div>
+@Scripts.Render("~/bundles/Ajax")
+@{Html.RenderPartial("FlashMessage");}
+

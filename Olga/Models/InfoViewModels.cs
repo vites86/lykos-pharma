@@ -18,6 +18,7 @@ namespace Olga.Models
         public virtual IEnumerable<ProductCodeDTO> ProductCodes { get; set; }
         public virtual IEnumerable<MarketingAuthorizNumberDTO> MarketingAuthorizNumbers { get; set; }
         public virtual IEnumerable<PackSizeDTO> PackSizes { get; set; }
+        public CountrySettingDTO CountrySettings { get; set; }
     }
 
     public class ProductNameViewModel

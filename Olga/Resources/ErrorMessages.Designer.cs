@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ErrorMessages {
@@ -66,6 +66,33 @@ namespace Resources {
         public static string EmailNotSendCantFindProdToProc {
             get {
                 return ResourceManager.GetString("EmailNotSendCantFindProdToProc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error happened!.
+        /// </summary>
+        public static string ErrorHappened {
+            get {
+                return ResourceManager.GetString("ErrorHappened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No countryId in request!.
+        /// </summary>
+        public static string NoCountryId {
+            get {
+                return ResourceManager.GetString("NoCountryId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No file to load!.
+        /// </summary>
+        public static string NoFileToLoad {
+            get {
+                return ResourceManager.GetString("NoFileToLoad", resourceCulture);
             }
         }
         
@@ -120,6 +147,15 @@ namespace Resources {
         public static string ProductDeleteSuccess {
             get {
                 return ResourceManager.GetString("ProductDeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting for country already exists!.
+        /// </summary>
+        public static string SettingAlreadyExists {
+            get {
+                return ResourceManager.GetString("SettingAlreadyExists", resourceCulture);
             }
         }
     }

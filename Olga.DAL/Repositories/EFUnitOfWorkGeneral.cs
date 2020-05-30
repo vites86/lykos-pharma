@@ -20,6 +20,7 @@ namespace Olga.DAL.Repositories
         private PharmaceuticalFormRepository _pharmaceuticalFormRepository;
         private ProductNameRepository _productNameRepository;
         private ProductCodeRepository _productCodeRepository;
+        private CountrySettingRepository _countrySettingRepository;
 
         public EfUnitOfWorkGeneral(string connectionString)
         {
@@ -38,6 +39,7 @@ namespace Olga.DAL.Repositories
         public IRepository<PharmaceuticalForm> PharmaceuticalForms => _pharmaceuticalFormRepository ?? (_pharmaceuticalFormRepository = new PharmaceuticalFormRepository(_db));
         public IRepository<ProductName> ProductNames => _productNameRepository ?? (_productNameRepository = new ProductNameRepository(_db));
         public IRepository<ProductCode> ProductCodes => _productCodeRepository ?? (_productCodeRepository = new ProductCodeRepository(_db));
+        public IRepository<CountrySetting> CountrySettings => _countrySettingRepository ?? (_countrySettingRepository = new CountrySettingRepository(_db));
 
         public void Save()
         {
