@@ -130,9 +130,11 @@
   <ItemGroup>
     <Compile Include="AutoMapper\MapperForUser.cs" />
     <Compile Include="BusinessModels\ArchProccessor.cs" />
+    <Compile Include="BusinessModels\FileProcessor.cs" />
     <Compile Include="DTO\ApprDocsTypeDTO.cs" />
     <Compile Include="DTO\ArtworkDTO.cs" />
     <Compile Include="DTO\CountryDTO.cs" />
+    <Compile Include="DTO\CountrySettingDTO.cs" />
     <Compile Include="DTO\EmailerDTO.cs" />
     <Compile Include="DTO\ManufacturerDTO.cs" />
     <Compile Include="DTO\MarketingAuthorizHolderDTO.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Interfaces\IBaseEmailService.cs" />
     <Compile Include="Services\BaseEmailerService.cs" />
+    <Compile Include="Services\CountrySettingsService.cs" />
     <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Services\ProcedureService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />

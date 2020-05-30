@@ -4,6 +4,7 @@ using Autofac.Core;
 using Autofac.Integration.Mvc;
 using System.Web.Mvc;
 using Olga.BLL.BusinessModels;
+using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.BLL.Services;
 using Olga.DAL.EF;
@@ -47,6 +48,8 @@ namespace Olga.Util
             builder.RegisterType<BaseEmailerService>().As<IBaseEmailService>();
 
             builder.RegisterType<ArchProccessor>().As<IArchProccessor>();
+
+            builder.RegisterType<CountrySettingsService>().As<IBase<CountrySettingDTO>>();
 
 
             // создаем новый контейнер с теми зависимостями, которые определены выше

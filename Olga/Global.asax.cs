@@ -78,6 +78,7 @@ namespace Olga
                     .ForMember(x => x.ProductDocuments, o => o.MapFrom(s => s.ProductDocuments))
                     .ForMember(m => m.DocumentImages, opt => opt.Ignore())
                     .ForMember(m => m.DocumentImagesListString, opt => opt.Ignore())
+                    .ForMember(x => x.Gtin, o => o.MapFrom(s => s.Gtin))
                     .MaxDepth(3);
 
                 cfg.CreateMap<ProductDTO, ProductCreateModel>()
@@ -107,6 +108,8 @@ namespace Olga
                         opt => opt.MapFrom(m => m.PharmaceuticalForm == null ? "No Pharmaceutical Form" : m.PharmaceuticalForm.PharmaForm))
                     .ForMember(m => m.Country,
                         opt => opt.MapFrom(m => m.Country == null ? "No Country" : m.Country.Name))
+                    .ForMember(m => m.Gtin,
+                        opt => opt.MapFrom(m => m.Gtin))
                     .ForMember(m => m.IssuedDate,
                         opt => opt.MapFrom(m => m.IssuedDate == null ? null : m.IssuedDate.ToString()))
                     .ForMember(m => m.ExpiredDate,
@@ -191,8 +194,40 @@ namespace Olga
 
                 cfg.CreateMap<Emailer, EmailerDTO>();
 
-            });
+                cfg.CreateMap<Country, CountryDTO>();
+                cfg.CreateMap<CountrySetting, CountrySettingDTO>();
 
+                cfg.CreateMap<CountrySettingDTO, CountrySettingViewModel>()
+                    .ForMember(x => x.Country, o
+                    => o.MapFrom(s => s.Country));
+
+                cfg.CreateMap<CountrySettingViewModel, CountrySettingDTO>();
+                cfg.CreateMap<CountrySettingDTO, CountrySetting>();
+
+                cfg.CreateMap<ProductDTO, ProductAdditionalDocsModel>()
+                    .ForMember(x=>x.Id, o
+                        =>o.MapFrom(s=>s.Id))
+                    .ForMember(x=>x.CountryName, o
+                        =>o.MapFrom(s=>s.Country.Name))
+                    .ForMember(x => x.CountryId, o
+                        => o.MapFrom(s => s.Country.Id))
+                    .ForMember(x=>x.ProductName, o
+                        =>o.MapFrom(s=>s.ProductName.Name))
+                    .ForMember(x=>x.PharmaceuticalForm, o
+                        =>o.MapFrom(s=>s.PharmaceuticalForm.PharmaForm))
+                    .ForMember(x=>x.Strength, o
+                        =>o.MapFrom(s=>s.Strength.Strngth))
+                    .ForMember(x => x.MarketingAuthorizNumber, o
+                        => o.MapFrom(s => s.MarketingAuthorizNumber.Number))
+                    .ForMember(x => x.ProductCode, o
+                        => o.MapFrom(s => s.ProductCode.Code))
+                    .ForMember(x => x.Documents, o
+                        => o.MapFrom(s => s.ProductDocuments))
+                    ;
+
+                cfg.CreateMap<CountryDTO, CountryViewModel>();
+
+            });
         }
     }
 

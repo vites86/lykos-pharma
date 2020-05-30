@@ -48,5 +48,6 @@ namespace Olga.BLL.DTO
         public List<ManufacturerDTO> Manufacturers { get; set; }
         public List<ProductDocument> ProductDocuments { get; set; }
         public List<ProcedureDTO> Procedures { get; set; }
+        public string Gtin { get; set; }
     }
 }

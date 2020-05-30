@@ -15,305 +15,368 @@
             {
                 @Html.AntiForgeryToken()
 
-                <div class="form-horizontal">
-                    <br />
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+    <br />
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    <input type="hidden" id="CountryId" name="CountryId" value="@ViewBag.ContryId" />
-                    <input type="hidden" id="CountryName" name="CountryName" value="@ViewBag.ContryName" />
-                    @Html.HiddenFor(model => model.CountryId)
-                    @Html.HiddenFor(model => model.Id)
-                    <div class="form-group">
-                        @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <label class="control-label text-info ">@ViewBag.ContryName</label>
-                        </div>
-                    </div>
+    <input type="hidden" id="CountryId" name="CountryId" value="@ViewBag.ContryId" />
+    <input type="hidden" id="CountryName" name="CountryName" value="@ViewBag.ContryName" />
+    @Html.HiddenFor(model => model.CountryId)
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        @Html.Label("CountryName", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <label class="control-label text-info ">@ViewBag.ContryName</label>
+        </div>
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.ProductNameId, new SelectList(@ViewBag.ProductNames, "Id", "Name"), new { @class = "form-control" })
-                        </div>
-                    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ProductNameId, new SelectList(@ViewBag.ProductNames, "Id", "Name"), new { @class = "form-control" })
+        </div>
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.ProductCodeId, new SelectList(@ViewBag.ProductCodes, "Id", "Code"), "-- No Product Code --", new { @class = "form-control" })
-                        </div>
-                    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ProductCodeId, new SelectList(@ViewBag.ProductCodes, "Id", "Code"), "-- No Product Code --", new { @class = "form-control" })
+        </div>
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.StrengthId, new SelectList(ViewBag.strength, "Id", "Strngth"), "-- No Strength --", new { @class = "form-control" })
-                        </div>
-                    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.StrengthId, new SelectList(ViewBag.strength, "Id", "Strngth"), "-- No Strength --", new { @class = "form-control" })
+        </div>
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PharmaceuticalForm, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.PharmaceuticalFormId, new SelectList(ViewBag.pharmaceuticalForm, "Id", "PharmaForm"), "-- No Pharmaceutical Form --", new { @class = "form-control" })
-                        </div>
-                    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PharmaceuticalForm, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.PharmaceuticalFormId, new SelectList(ViewBag.pharmaceuticalForm, "Id", "PharmaForm"), "-- No Pharmaceutical Form --", new { @class = "form-control" })
+        </div>
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MarketingAuthorizNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.MarketingAuthorizNumberId, new SelectList(@ViewBag.MarketingAuthorizNumbers, "Id", "Number"), "-- No MarketingAuthorizNumber --", new { @class = "form-control" })
-                        </div>
-                    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.MarketingAuthorizNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.MarketingAuthorizNumberId, new SelectList(@ViewBag.MarketingAuthorizNumbers, "Id", "Number"), "-- No MarketingAuthorizNumber --", new { @class = "form-control" })
+        </div>
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.PackSizeId, new SelectList(@ViewBag.PackSizes, "Id", "Size"), "-- No PackSize --", new { @class = "form-control" })
-                        </div>
-                    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PackSize, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.PackSizeId, new SelectList(@ViewBag.PackSizes, "Id", "Size"), "-- No PackSize --", new { @class = "form-control" })
+        </div>
+    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.MarketingAuthorizHolderId, new SelectList(ViewBag.marketingAuthorizHolder, "Id", "Name"), "-- No MarketingAuthorizHolder --", new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10 left">
-                            @Html.HiddenFor(m => m.DocumentImagesListStringApprs)
+    <div class="form-group">
+        @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.MarketingAuthorizHolderId, new SelectList(ViewBag.marketingAuthorizHolder, "Id", "Name"), "-- No MarketingAuthorizHolder --", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 left">
+            @Html.HiddenFor(m => m.DocumentImagesListStringApprs)
 
-                            <table>
-                                @foreach (var apprDocsType in ViewBag.apprDocsTypes)
-                                {
-                                    var apprId = @apprDocsType.Value;
-                                    <tr style="line-height: 50px;" class="border_bottom">
-                                        <td style="width:230px !important;">
-                                            <span class="glyphicon glyphicon-file" />  <label for="UploadImg@(apprId)">@apprDocsType.Text</label>
-                                        </td>
-                                        <td style="padding-left: 25px;">
-                                            <a class="btn btn-default" href="#"
-                                               data-toggle="modal" data-target="#uploadImageModal@(apprId)"
-                                               id="UploadImg@(apprId)">Upload Documents</a>
-                                        </td>
-                                        <td style="padding-left: 25px;">
-                                            @*input for taking value for DocumentImagesListStringApprs*@
-                                            <input type="hidden" value="@ViewBag.DocumentImagesApprs@(apprId)" id="imageListApprs@(apprId)" />
-                                            @{
-                                                var res = Request.Form[$"imageListApprs" + @apprId];
-                                                res = res != @apprId ? "" : Request.Form[$"imageListApprs" + apprId];
-                                            }
-                                            <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" value="@res" />
-                                            <div class="row" style="display: inline-block;" id="filesDiv@(apprId)" name="filesDiv@(apprId)">
-                                                @{
-                                                    foreach (var fileName in Model.DocumentImagesApprs)
-                                                    {
-                                                        if (fileName.Contains(@apprId + "__"))
-                                                        {
-                                                            //var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
-                                                            var folder = GetApprFolder(apprDocsType.Text);
-
-                                                            var blockName = GetBlockNameTrimmed(fileName);
-
-                                                            //var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
-
-                                                            <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
-                                                                <span class="glyphicon glyphicon-file" />
-                                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">@fileName</a>
-                                                                    <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Delete" />
-                                                            </div>
-                                                        }
-                                                    }
-                                                }
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Manufacturers, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <ul style="list-style-type: none; padding-left: 0px">
-                                @foreach (var manufacturer in ViewBag.manufacturers)
-                                {
-                                    <li>
-                                        <input type="checkbox" name="selectedManufacturers" value="@manufacturer.Value" id="@manufacturer.Value"
-                                               @{ if (Model != null) { var foundItem = Model.Manufacturers.FirstOrDefault(i => i.Name == manufacturer.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
-                                        <label for="@manufacturer.Value">@manufacturer.Text</label>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Artworks, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10 left">
-                            @Html.HiddenFor(m => m.DocumentImagesListStringArtworks)
-
-                            <table>
-                                @foreach (var artwork in ViewBag.artworks)
-                                {
-                                    var artworkId = @artwork.Value;
-                                    <tr style="line-height: 50px;" class="border_bottom">
-                                        <td>
-                                            <input type="checkbox" onclick="showDownloads(this)" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
-                                                   @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
-                                        </td>
-                                        <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
-                                        <td style="padding-left: 25px;">
-                                            <a class="btn btn-default" href="#"
-                                               data-toggle="modal" data-target="#uploadArtworImageModal@(artworkId)"
-                                               id="UploadImg@(artworkId)">Upload Documents</a>
-                                        </td>
-                                        <td style="padding-left: 25px;">
-                                            @*input for taking value for DocumentImagesListStringApprs*@
-                                            <input type="hidden" value="@ViewBag.DocumentImagesArtworks@(artworkId)" id="imageListArtworks@(artworkId)" />
-                                            @{
-                                                var res = Request.Form[$"imageListArtworks" + @artworkId];
-                                                res = res != @artworkId ? "" : Request.Form[$"imageListArtworks" + artworkId];
-                                            }
-                                            <input type="hidden" id="DocumentImagesListStringArtworks@(artworkId)" value="@res" />
-                                            <div class="row" style="display: inline-block;" id="filesArtworkDiv@(artworkId)" name="filesArtworkDiv@(artworkId)">
-                                                @{
-                                                    foreach (var fileName in Model.DocumentImagesArtworks)
-                                                    {
-                                                        if (fileName.Contains(@artworkId + "__"))
-                                                        {
-                                                            //var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
-                                                            var folder = String.Format("Artwork/{0}", @artworkId.ToString());
-
-                                                            var blockName = GetBlockNameTrimmed(fileName);
-
-                                                            //var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
-
-                                                            <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
-                                                                <span class="glyphicon glyphicon-file" />
-                                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">@fileName</a>
-                                                                    <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Delete" />
-                                                            </div>
-                                                        }
-                                                    }
-                                                }
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+            <table>
+                @foreach (var apprDocsType in ViewBag.apprDocsTypes)
+                {
+                    var apprId = @apprDocsType.Value;
+                    <tr style="line-height: 50px;" class="border_bottom">
+                        <td style="width:230px !important;">
+                            <span class="glyphicon glyphicon-file" />  <label for="UploadImg@(apprId)">@apprDocsType.Text</label>
+                        </td>
+                        <td style="padding-left: 25px;">
+                            <a class="btn btn-default" href="#"
+                               data-toggle="modal" data-target="#uploadImageModal@(apprId)"
+                               id="UploadImg@(apprId)">Upload Documents</a>
+                        </td>
+                        <td style="padding-left: 25px;">
+                            @*input for taking value for DocumentImagesListStringApprs*@
+                            <input type="hidden" value="@ViewBag.DocumentImagesApprs@(apprId)" id="imageListApprs@(apprId)" />
                             @{
-                                var dateValue =
-                                    DateTime.MinValue == Model.IssuedDate || Model.IssuedDate == null
-                                        ? String.Empty
-                                        //: Model.IssuedDate.ToString();
-                                        : DateTime.Parse(@Model.IssuedDate.ToString()).ToString("u").Substring(0, 10);
-
+                                var res = Request.Form[$"imageListApprs" + @apprId];
+                                res = res != @apprId ? "" : Request.Form[$"imageListApprs" + apprId];
                             }
-                            <input class="form-control rounded"
-                                   data-val="true"
-                                   id="IssuedDate"
-                                   name="IssuedDate"
-                                   value="@dateValue" />
-                        </div>
-                    </div>
+                            <input type="hidden" id="DocumentImagesListStringApprs@(apprId)" value="@res" />
+                            <div class="row" style="display: inline-block;" id="filesDiv@(apprId)" name="filesDiv@(apprId)">
+                                @{
+                                    foreach (var fileName in Model.DocumentImagesApprs)
+                                    {
+                                        if (fileName.Contains(@apprId + "__"))
+                                        {
+                                            //var docImagePath = GetFileImagePath(fileName, "ApprDocsType", apprDocsType.Text);
+                                            var folder = GetApprFolder(apprDocsType.Text);
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ExpiredDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                                            var blockName = GetBlockNameTrimmed(fileName);
+
+                                            //var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+
+                                            <div name="showImageBlock_@blockName" id="showImageBlock_@blockName" class="show_blockOfImage">
+                                                <span class="glyphicon glyphicon-file" />
+                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">@fileName</a>
+                                                <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__files" value="Delete" />
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Manufacturers, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <ul style="list-style-type: none; padding-left: 0px">
+                @foreach (var manufacturer in ViewBag.manufacturers)
+                {
+                    <li>
+                        <input type="checkbox" name="selectedManufacturers" value="@manufacturer.Value" id="@manufacturer.Value"
+                               @{ if (Model != null) { var foundItem = Model.Manufacturers.FirstOrDefault(i => i.Name == manufacturer.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                        <label for="@manufacturer.Value">@manufacturer.Text</label>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Artworks, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 left">
+            @Html.HiddenFor(m => m.DocumentImagesListStringArtworks)
+
+            <table>
+                @foreach (var artwork in ViewBag.artworks)
+                {
+                    var artworkId = @artwork.Value;
+                    <tr style="line-height: 50px;" class="border_bottom">
+                        <td>
+                            <input type="checkbox" onclick="showDownloads(this)" name="selectedArtworks" value="@artwork.Value" id="@artwork.Value"
+                                   @{ if (Model != null) { var foundItem = Model.Artworks.FirstOrDefault(i => i.Artwork_name == artwork.Text); if (foundItem != null) { <text> checked='checked' </text>  } } } />
+                        </td>
+                        <td style="padding-left: 25px;"><label for="@artwork.Value">@artwork.Text</label></td>
+                        <td style="padding-left: 25px;">
+                            <a class="btn btn-default" href="#"
+                               data-toggle="modal" data-target="#uploadArtworImageModal@(artworkId)"
+                               id="UploadImg@(artworkId)">Upload Documents</a>
+                        </td>
+                        <td style="padding-left: 25px;">
+                            @*input for taking value for DocumentImagesListStringApprs*@
+                            <input type="hidden" value="@ViewBag.DocumentImagesArtworks@(artworkId)" id="imageListArtworks@(artworkId)" />
                             @{
-                                var dateValue2 =
-                                    DateTime.MinValue == Model.ExpiredDate || Model.ExpiredDate == null
-                                        ? String.Empty
-                                        // : Model.ExpiredDate.ToString();
-                                        : DateTime.Parse(@Model.ExpiredDate.ToString()).ToString("u").Substring(0, 10);
+                                var res = Request.Form[$"imageListArtworks" + @artworkId];
+                                res = res != @artworkId ? "" : Request.Form[$"imageListArtworks" + artworkId];
                             }
-                            <input class="form-control rounded"
-                                   data-val="true"
-                                   id="ExpiredDate"
-                                   name="ExpiredDate"
-                                   value="@dateValue2" />
-                        </div>
+                            <input type="hidden" id="DocumentImagesListStringArtworks@(artworkId)" value="@res" />
+                            <div class="row" style="display: inline-block;" id="filesArtworkDiv@(artworkId)" name="filesArtworkDiv@(artworkId)">
+                                @{
+                                    foreach (var fileName in Model.DocumentImagesArtworks)
+                                    {
+                                        if (fileName.Contains(@artworkId + "__"))
+                                        {
+                                            //var docImagePath = GetFileImagePath(fileName, "Artwork", @artworkId.ToString());
+                                            var folder = String.Format("Artwork/{0}", @artworkId.ToString());
+
+                                            var blockName = GetBlockNameTrimmed(fileName);
+
+                                            //var alt = fileName.Substring(fileName.IndexOf("_") + 2, fileName.LastIndexOf("_") - 3).Replace(" ", "").Replace("-", "");
+
+                                            <div name="showArtworkImageBlock_@blockName" id="showArtworkImageBlock_@blockName" class="show_blockOfImage">
+                                                <span class="glyphicon glyphicon-file" />
+                                                <a href="~/Upload/Documents/@folder/@fileName" target="_blank">@fileName</a>
+                                                <input style="height: 25px" data-id="@fileName" type="button" class="btn_delete delete__artwork_files" value="Delete" />
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    @{
+        if (@ViewBag.GtinActive)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gtin, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Gtin, new { @class = "form-control" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.DocumentImagesListStringGtin, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 left">
+                    <div class="row" style="display: inline-block;">
+                        @{ foreach (var file in Model.DocumentListStringGtin)
+                            {
+                                var fileName = @Path.GetFileName(file.PathToDocument);
+                                var blockId = $"datafile{@file.Id}";
+
+                                <div id="@blockId" class="show_blockOfImage">
+                                    <span class="glyphicon glypicon-file" />
+                                    <a href="~/Upload/Documents/Gtin/@fileName" target="_blank">@fileName</a>
+                                    <input style="height: 25px" data-id="@file.Id" type="button" class="btn_delete delete_additionalFiles" value="Delete" /> <br />
+                                </div><br />
+                            }
+                        }
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-2"></label>
-                        <div class="col-md-2">
-                            <span id="UnLimited">
-                                UnLimited @Html.CheckBoxFor(m => m.UnLimited)
-                            </span>
-                        </div>
-                    </div>
-                    <br /><br /> <br /> <br />
-                    <hr />
-                    <div class="form-group">
-                        <div class="col-md-1 col-xs-1 col-md-offset-1">
-                            <input type="submit" value="Save" class="btn btn-primary" id="submit-all" />
-                        </div>
+                    <div>
+                        @Html.ActionLink("Edit documents", "EditProductAdditionalFiles", "Product", new { productId = @Model.Id }, new { @class = "btn btn-default", data_icon = "gear", target = "_blank" })
                     </div>
                 </div>
+            </div>*@
+        }
+
+        if (@ViewBag.EanActive)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.DocumentImagesListStringEan, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 left">
+                    <div class="row" style="display: inline-block;">
+
+                        @{ foreach (var file in Model.DocumentListStringEan)
+                            {
+                                var fileName = @Path.GetFileName(file.PathToDocument);
+                                var blockId = $"datafile{@file.Id}";
+
+                                <div id="@blockId" class="show_blockOfImage">
+                                    <span class="glyphicon glyphicon-file" />
+                                    <a href="~/Upload/Documents/Ean/@fileName" target="_blank">@fileName</a>
+                                    <input style="height: 25px" data-id="@file.Id" type="button" class="btn_delete delete_additionalFiles" value="Delete" /> <br />
+                                </div><br />
+                            }
+                        }
+                    </div>
+                    <div>
+                        @Html.ActionLink("Edit documents", "EditProductAdditionalFiles", "Product", new { productId = @Model.Id }, new { @class = "btn btn-default", data_icon = "gear", target = "_blank" })
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @{
+                var dateValue =
+                    DateTime.MinValue == Model.IssuedDate || Model.IssuedDate == null
+                        ? String.Empty
+                        //: Model.IssuedDate.ToString();
+                        : DateTime.Parse(@Model.IssuedDate.ToString()).ToString("u").Substring(0, 10);
+
             }
+            <input class="form-control rounded"
+                   data-val="true"
+                   id="IssuedDate"
+                   name="IssuedDate"
+                   value="@dateValue" />
         </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ExpiredDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @{
+                var dateValue2 =
+                    DateTime.MinValue == Model.ExpiredDate || Model.ExpiredDate == null
+                        ? String.Empty
+                        // : Model.ExpiredDate.ToString();
+                        : DateTime.Parse(@Model.ExpiredDate.ToString()).ToString("u").Substring(0, 10);
+            }
+            <input class="form-control rounded"
+                   data-val="true"
+                   id="ExpiredDate"
+                   name="ExpiredDate"
+                   value="@dateValue2" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2"></label>
+        <div class="col-md-2">
+            <span id="UnLimited">
+                UnLimited @Html.CheckBoxFor(m => m.UnLimited)
+            </span>
+        </div>
+    </div>
+    <br /><br /> 
+    <hr />
+    <div class="form-group">
+        <div class="col-md-1 col-xs-1 col-md-offset-1">
+            <input type="submit" value="Save" class="btn btn-primary" id="submit-all" />
+        </div>
+    </div>
 </div>
-@Html.Partial("~/Views/Shared/_UploadFiles.cshtml")
+                    }
+                </div>
+            </div>
+            @Html.Partial("~/Views/Shared/_UploadFiles.cshtml")
 
-<style>
-    h2 {
-        margin-left: 150px;
-    }
-    .show_blockOfImage {
-        display: block;
-        /*text-align: center;*/
-        margin-left: 10px;
-        /*margin-top: 15px;*/
-    }
+            <style>
+                h2 {
+                    margin-left: 150px;
+                }
 
-    .hidden {
-        display: none;
-    }
+                .show_blockOfImage {
+                    display: block;
+                    /*text-align: center;*/
+                    margin-left: 10px;
+                    /*margin-top: 15px;*/
+                }
 
-    .btn_delete {
-        color: #fff;
-        background-color: #d9534f;
-        border-color: #d43f3a;
-        /*line-height: 20px;*/
-    }
+                .hidden {
+                    display: none;
+                }
 
-    .shadow {
-        background: #1f364f; /* Цвет фона */
-        box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
-        padding: 2px;
-    }
+                .btn_delete {
+                    color: #fff;
+                    background-color: #d9534f;
+                    border-color: #d43f3a;
+                    /*line-height: 20px;*/
+                }
 
-    .preview_image {
-        height: 120px;
-        width: 120px;
-        vert-align: middle;
-        background: #1f364f; /* Цвет фона */
-        box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
-        margin-bottom: 10px;
-    }
-    tr.border_bottom td {
-        border-bottom: 1px solid lightgrey;
-        border-top: 1px solid lightgrey;
-    }
-</style>
+                .shadow {
+                    background: #1f364f; /* Цвет фона */
+                    box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
+                    padding: 2px;
+                }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/dropzonescripts")
-    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
-    <script src='@Url.Content("~/Scripts/Products/products.js")'></script>
-    <script src='@Url.Content("~/Scripts/Products/artworks.js")'></script>
+                .preview_image {
+                    height: 120px;
+                    width: 120px;
+                    vert-align: middle;
+                    background: #1f364f; /* Цвет фона */
+                    box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
+                    margin-bottom: 10px;
+                }
 
-    <script type="text/javascript">
+                tr.border_bottom td {
+                    border-bottom: 1px solid lightgrey;
+                    border-top: 1px solid lightgrey;
+                }
+            </style>
+
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+                @Scripts.Render("~/bundles/dropzonescripts")
+                <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
+                <script src='@Url.Content("~/Scripts/Products/products.js")'></script>
+                <script src='@Url.Content("~/Scripts/Products/artworks.js")'></script>
+
+                <script type="text/javascript">
         (function(parameters) {
             $(document).ready(function() {
                 console.log('@Model.IssuedDate');
@@ -330,10 +393,9 @@
 
         }());
 
-
         function showDownloads(elem) {
             var artworkId = elem.value;
-            var buttonToHideId = document.getElementById("UploadImg"+artworkId);
+            var buttonToHideId = document.getElementById("UploadImg" + artworkId);
             document.getElementById("UploadImg" + artworkId.toString()).style.display = elem.checked ? "block" : "none";
         }
 
@@ -341,91 +403,132 @@
             toastr.info(fileName);
         }
 
-    function doesFileExist(_urlToFile) {
-        var encodedUrl = _urlToFile.replace("#","%23");
-        console.log('encodedUrl =' + encodedUrl);
-        var domain = document.location.origin;
-        var urlToFile = domain + encodedUrl;
-        var xhr = new XMLHttpRequest();
-        xhr.open('HEAD', urlToFile, false);
-        xhr.send();
+        function doesFileExist(_urlToFile) {
+            var encodedUrl = _urlToFile.replace("#", "%23");
+            console.log('encodedUrl =' + encodedUrl);
+            var domain = document.location.origin;
+            var urlToFile = domain + encodedUrl;
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', urlToFile, false);
+            xhr.send();
 
-        if (xhr.status == "404") {
-            console.log("File /" + urlToFile +"/ doesn't exist");
-            toastr.error("File doesn't exist");
-        } else {
-            toastr.info("Opening/Downloading file...");
-            console.log("File exists");
-            window.open(urlToFile, '_blank');
-        }
-    }</script>
-}
-
-@functions {
-
-    public static string GetFileImagePath(string fileName, string docsType, string docsSubType)
-    {
-        var folder = "/";
-        if (docsType.Contains("Appr"))
-        {
-            folder = GetApprFolder(docsSubType);
-        }
-        if (docsType.Contains("Artwork"))
-        {
-            folder = "Artwork/" + docsSubType;
+            if (xhr.status == "404") {
+                console.log("File /" + urlToFile + "/ doesn't exist");
+                toastr.error("File doesn't exist");
+            } else {
+                toastr.info("Opening/Downloading file...");
+                console.log("File exists");
+                window.open(urlToFile, '_blank');
+            }
         }
 
+        $('.delete_additionalFiles').on('click',
+            function(e) {
 
-        var ext = fileName.Substring(fileName.LastIndexOf("."), fileName.Length - fileName.LastIndexOf("."));
-        var docImage = String.Concat("/Upload/Documents/", folder, "/", fileName);
-        if (ext.Equals(".txt"))
-        {
-            docImage = "/Content/images/extentions/txt.jpg";
-        }
-        if (ext.Equals(".pdf"))
-        {
-            docImage = "/Content/images/extentions/pdf.jpg";
-        }
-        if (ext.Equals(".ai"))
-        {
-            docImage = "/Content/images/extentions/ai.jpg";
-        }
-        if (ext.Equals(".docx") || ext.Equals(".doc") || ext.Equals(".DOC"))
-        {
-            docImage = "/Content/images/extentions/docx.jpg";
-        }
-        if (ext.Equals(".xlsx") || ext.Equals(".xls"))
-        {
-            docImage = "/Content/images/extentions/xlsx.jpg";
-        }
-        if (ext.Equals(".cdr"))
-        {
-            docImage = "/Content/images/extentions/cdr.jpg";
-        }
-        return docImage;
-    }
+                toastr.options.timeOut = 20000;
+                toastr.info("Wait a moment! File deleting...");
 
-    public static string GetApprFolder(string appr)
-    {
-        switch (@appr)
-        {
-            case "Registration certificate":
-                return "ApprDocType/RegistrationCertificate";
-            case "PIL":
-                return $"ApprDocType/{@appr}";
-            case "ND / MQC":
-                return "ApprDocType/NDMQC";
-            case "Pack materials / Labelling":
-                return "ApprDocType/PackMaterialsLabelling";
-            case "Trademarks":
-                return "ApprDocType/Trademarks";
-        }
-        return appr;
-    }
+                console.log('#delete_additionalFiles click');
+                e.preventDefault();
 
-    public string GetBlockNameTrimmed(string fileName)
-    {
-        return fileName.Replace(".", "").Replace(" ", "").Replace("#", "№").Replace("&", "_");
-    }
-}
+                var documentId = $(this).attr("data-id");
+                console.log('data-id = ' + documentId);
+
+                var productId = $('#Id').val();
+                console.log('productId = ' + productId);
+
+                $.ajax({
+                    url: '/Product/DeleteProductAdditionalFile',
+                    method: 'POST',
+                    data: { documentId: documentId, productId: productId },
+                    success: function(response) {
+                        toastr.options.timeOut = 20000;
+                        toastr.info("File deleted successful! Wait while it appears away from the page!");
+                        $('#datafile'+documentId).hide();
+
+                    },
+                    error: function(response) {
+                        toastr.error(response.Message);
+                    },
+                    complete: function (xhr) {
+                        toastr.info("Page refreshing! Please wait!");
+                        timeRefresh(0);
+                    }
+                });
+
+            });
+
+        function timeRefresh(timeoutPeriod) {
+            setTimeout("location.reload(true);", timeoutPeriod);
+        }
+                </script>
+            }
+
+            @functions {
+
+                public static string GetFileImagePath(string fileName, string docsType, string docsSubType)
+                {
+                    var folder = "/";
+                    if (docsType.Contains("Appr"))
+                    {
+                        folder = GetApprFolder(docsSubType);
+                    }
+                    if (docsType.Contains("Artwork"))
+                    {
+                        folder = "Artwork/" + docsSubType;
+                    }
+
+
+                    var ext = fileName.Substring(fileName.LastIndexOf("."), fileName.Length - fileName.LastIndexOf("."));
+                    var docImage = String.Concat("/Upload/Documents/", folder, "/", fileName);
+                    if (ext.Equals(".txt"))
+                    {
+                        docImage = "/Content/images/extentions/txt.jpg";
+                    }
+                    if (ext.Equals(".pdf"))
+                    {
+                        docImage = "/Content/images/extentions/pdf.jpg";
+                    }
+                    if (ext.Equals(".ai"))
+                    {
+                        docImage = "/Content/images/extentions/ai.jpg";
+                    }
+                    if (ext.Equals(".docx") || ext.Equals(".doc") || ext.Equals(".DOC"))
+                    {
+                        docImage = "/Content/images/extentions/docx.jpg";
+                    }
+                    if (ext.Equals(".xlsx") || ext.Equals(".xls"))
+                    {
+                        docImage = "/Content/images/extentions/xlsx.jpg";
+                    }
+                    if (ext.Equals(".cdr"))
+                    {
+                        docImage = "/Content/images/extentions/cdr.jpg";
+                    }
+                    return docImage;
+                }
+
+                public static string GetApprFolder(string appr)
+                {
+                    switch (@appr)
+                    {
+                        case "Registration certificate":
+                            return "ApprDocType/RegistrationCertificate";
+                        case "PIL":
+                            return $"ApprDocType/{@appr}";
+                        case "ND / MQC":
+                            return "ApprDocType/NDMQC";
+                        case "Pack materials / Labelling":
+                            return "ApprDocType/PackMaterialsLabelling";
+                        case "Trademarks":
+                            return "ApprDocType/Trademarks";
+                    }
+                    return appr;
+                }
+
+                public string GetBlockNameTrimmed(string fileName)
+                {
+                    return fileName.Replace(".", "").Replace(" ", "").Replace("#", "№").Replace("&", "_");
+                }
+            }
 

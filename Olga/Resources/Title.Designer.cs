@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Title {
@@ -61,6 +61,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Countries settings.
+        /// </summary>
+        public static string CountrySettings {
+            get {
+                return ResourceManager.GetString("CountrySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Country Setting.
+        /// </summary>
+        public static string CreateCountrySetting {
+            get {
+                return ResourceManager.GetString("CreateCountrySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Procedure.
         /// </summary>
         public static string CreateProcedure {
@@ -75,6 +93,24 @@ namespace Resources {
         public static string CreateProcedureFor {
             get {
                 return ResourceManager.GetString("CreateProcedureFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Country Setting.
+        /// </summary>
+        public static string EditCountrySetting {
+            get {
+                return ResourceManager.GetString("EditCountrySetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Product Additional Files.
+        /// </summary>
+        public static string EditProductAdditionalFiles {
+            get {
+                return ResourceManager.GetString("EditProductAdditionalFiles", resourceCulture);
             }
         }
     }

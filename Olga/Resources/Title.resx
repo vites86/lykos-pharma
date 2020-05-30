@@ -117,10 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CountrySettings" xml:space="preserve">
+    <value>Countries settings</value>
+  </data>
+  <data name="CreateCountrySetting" xml:space="preserve">
+    <value>Create Country Setting</value>
+  </data>
   <data name="CreateProcedure" xml:space="preserve">
     <value>Create Procedure</value>
   </data>
   <data name="CreateProcedureFor" xml:space="preserve">
     <value>Create Procedure for</value>
+  </data>
+  <data name="EditCountrySetting" xml:space="preserve">
+    <value>Edit Country Setting</value>
+  </data>
+  <data name="EditProductAdditionalFiles" xml:space="preserve">
+    <value>Edit Product Additional Files</value>
   </data>
 </root>

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Olga.BLL.DTO;
 using Olga.DAL.Entities;
+using System.Web;
 
 namespace Olga.BLL.Interfaces
 {
@@ -20,5 +22,7 @@ namespace Olga.BLL.Interfaces
         ArtworkDTO GetArtwork(int id);
         ManufacturerDTO GetManufacturer(int id);
         void DeleteDocument(string name);
+        void DeleteAdditionalDocument(string productId, string documentId);
+        Task<bool> AddFileToProd(string localFileName, int productId, string prodDocType);
     }
 }
