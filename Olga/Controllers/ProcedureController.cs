@@ -20,6 +20,9 @@ using Olga.BLL.Services;
 using Olga.DAL.Entities;
 using Olga.Models;
 using Olga.Util;
+using PagedList;
+using System.IO.Compression;
+using ZipFile = System.IO.Compression.ZipFile;
 
 namespace Olga.Controllers
 {
@@ -44,12 +47,13 @@ namespace Olga.Controllers
         Emailer emailer;
         private UserViewModel _currentUser;
         IArchProccessor _archProccessor;
-
+        IPagination<ProcedureDTO> procedureWithPAgination;
+        static object locker = new object();
 
 
         public ProcedureController(ICountry serv, IProductName prodName, IProductCode prodCode, IMarketingAuthorizNumber marketingAuthorizNumber, IPackSize packSize,
             IApprDocsType apprDocsType, IStrength strength, IManufacturer manufacturer, IArtwork artwork, IMarketingAuthorizHolder marketingAuthorizHolder,
-            IPharmaceuticalForm pharmaceuticalForm, IProductService product, IProcedure procedure,IBaseEmailService emailService, IArchProccessor archProccessor)
+            IPharmaceuticalForm pharmaceuticalForm, IProductService product, IProcedure procedure, IBaseEmailService emailService, IArchProccessor archProccessor)
         {
             _countryService = serv;
             _productNameService = prodName;
@@ -105,7 +109,36 @@ namespace Olga.Controllers
             var allProcedures = GetProcedures((int)countryId);
             return View(allProcedures);
         }
-       
+
+        public ActionResult AllProcedures(int? country, string dateFrom, string dateTo)
+        {
+            if (!User.IsInRole("Admin"))
+            {
+                return View("Index");
+            }
+            var allProcedures = new List<ProcedureViewModel>();
+            var _allProcedures = _procedureService.GetItems();
+            
+            if (country != null && country != 0)
+            {
+                _allProcedures = _allProcedures.Where(p => p.Product.Country.Id == country);
+            }
+            if (!string.IsNullOrEmpty(dateFrom) || !string.IsNullOrEmpty(dateTo))
+            {
+                var _dateFrom = string.IsNullOrEmpty(dateFrom) ? DateTime.MinValue : DateTime.Parse(dateFrom);
+                var _dateTo = string.IsNullOrEmpty(dateTo) ? DateTime.MaxValue : DateTime.Parse(dateTo);
+                _allProcedures = _allProcedures.Where(p => p.SubmissionDate >= _dateFrom && p.SubmissionDate <= _dateTo);
+            }
+
+            var procedures = Mapper.Map<IEnumerable<ProcedureDTO>, IEnumerable<ProcedureViewModel>>(_allProcedures).ToList();
+            allProcedures.AddRange(procedures);
+
+            var countries = _countryService.GetItems().OrderBy(a => a.Name).ToList();
+            countries.Insert(0, new CountryDTO() { Name = "All", Id = 0 });
+            ViewBag.Countries = new SelectList(countries, "Id", "Name");
+            return View(allProcedures);
+        }
+
 
         public bool InitialiseModel(int? countryId, out string errorMessage)
         {
@@ -147,7 +180,7 @@ namespace Olga.Controllers
             }
             return allProcedures;
         }
-
+       
         /*----------------------------------------------------------------------------*/
 
         private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
@@ -365,7 +398,6 @@ namespace Olga.Controllers
                 procedureDto.ProductId = (int)productId;
                 ViewBag.Country = product.Country;
                 ViewBag.CountryId = productDto.CountryId;
-                ViewBag.Product = product;
                 ViewBag.Product = product;
                 ViewBag.User = _currentUser;
                 ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
@@ -733,5 +765,118 @@ namespace Olga.Controllers
             }
         }
 
+        [HttpPost]
+        public string DownloadZip(string filesToDownload, string archName, string productId)
+        {
+            try
+            {
+                lock (locker)
+                {
+                    var urlToDonload = _archProccessor.DownloadZip(filesToDownload, archName, productId,
+                        "\\Upload\\Documents\\Procedures\\");
+                    return @Url.Content(urlToDonload);
+                }
+            }
+            catch (Exception ex)
+            {
+                var curDate = DateTime.Now.ToShortDateString().Replace("-", "").Replace(":", "").Replace(".", "").Replace("\\", "");
+                Logger.Log.Error($"DownloadZip: curDate={curDate} - {ex.Message}");
+                return $"../Procedure/ProductProcedures/{productId}";
+            }
+        }
+
+        [HttpGet]
+        public ActionResult OptimizedProcedures1(int? countryId, string sortOrder, string currentFilter, string searchString, int? page)
+       {
+            if (User.IsInRole("Holder"))
+            {
+                return null;
+            }
+            
+            ViewBag.CountryId = countryId;
+            ViewBag.User = GetCurrentUser();
+            ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
+            
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+
+            @ViewBag.CountryId = countryId;
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.ProcedureTypeSortParm = string.IsNullOrEmpty(sortOrder) ? "ProcedureType_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.CurrentFilter = searchString;
+
+            var proc = _procedureService.GetPaginated(countryId, searchString, sortOrder, pageNumber, pageSize, out int totalRecords, out int recordsFiltered);
+            var procedures = Mapper.Map<IEnumerable<ProcedureDTO>, IEnumerable<ProcedureViewModel>>(proc).ToList();
+            var pagedIst = procedures.ToPagedList(pageNumber, pageSize);
+
+            var country = _countryService.GetItem((int)countryId);
+            ViewBag.CountryName = country.Name;
+            ViewBag.CountryId = country.Id;
+
+            return View("OptimizedProcedures", pagedIst);
+        }
+
+        [HttpGet]
+        public ActionResult OptimizedProcedures(int? countryId)
+        {
+            _currentUser = GetCurrentUser();
+            /*Todo add to check && !User.IsInRole("Holder")*/
+            if (_currentUser.Countries.All(a => a.Id != countryId) && (!User.IsInRole("Admin") || !User.IsInRole("Manager")))
+            {
+                ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                return View("Error");
+            }
+            ViewBag.User = _currentUser;
+
+            var country = Mapper.Map<CountryDTO, CountryViewModel>(_countryService.GetItem((int)countryId));
+            @ViewBag.CountryName = country.Name;
+            @ViewBag.CountryId = countryId;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult GetOptimizedProcedures(int? countryId)
+        {
+            if (countryId == 0)
+            {
+                return null;
+            }       
+
+            int start = Convert.ToInt32(Request["start"]);
+            int length = Convert.ToInt32(Request["length"]);
+            string searchValue = Request["search[value]"];
+            string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+            string sortDirection = Request["order[0][dir]"];
+
+            var proceduresDto = _procedureService.GetProceduresOptimized(countryId, searchValue, sortColumnName, sortDirection, start, length, out int totalrows, out int totalrowsafterfiltering);
+
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<ProcedureDTO, ProcedureViewOptimized>()
+                    .ForMember(dest => dest.ProcedureType, opt => opt.MapFrom(c => c.ProcedureType.ToString()))
+                    .ForMember(dest => dest.ProductInfo, opt => opt.MapFrom(c => string.Format($"{c.Product.ProductName.Name} {c.Product.ProductCode}")))
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(c => c.Name))
+                    .ForMember(dest => dest.EstimatedSubmissionDate, opt => opt.MapFrom(c => c.EstimatedSubmissionDate.ToString()))
+                    .ForMember(dest => dest.SubmissionDate, opt => opt.MapFrom(c => c.SubmissionDate.ToString()))
+                    .ForMember(dest => dest.EstimatedApprovalDate, opt => opt.MapFrom(c => c.EstimatedApprovalDate.ToString()))
+                    .ForMember(dest => dest.ApprovalDate, opt => opt.MapFrom(c => c.ApprovalDate.ToString()))
+                    .ForMember(dest => dest.Comments, opt => opt.MapFrom(c => c.Comments))
+                    .ForMember(dest => dest.ProductId, opt => opt.MapFrom(c => c.ProductId))
+                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id)));
+            var mapper = config.CreateMapper();
+            var procedures = mapper.Map<List<ProcedureDTO>, List<ProcedureViewOptimized>>(proceduresDto.ToList());
+
+            var json = Json(new { data = procedures, draw = Request["draw"], recordsTotal = totalrows, recordsFiltered = totalrowsafterfiltering }, JsonRequestBehavior.AllowGet);
+            return json;
+        }
     }
 }

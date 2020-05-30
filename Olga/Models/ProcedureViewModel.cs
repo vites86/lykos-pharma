@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Olga.BLL.DTO;
 using Olga.DAL.Entities;
+using Resources;
 
 namespace Olga.Models
 {
@@ -17,6 +18,11 @@ namespace Olga.Models
         }
 
         public int Id { get; set; }
+
+        [Display(Name = "EstimatedSubmissionDate", ResourceType = typeof(Resources.Labels))]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? EstimatedSubmissionDate { get; set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -46,8 +52,6 @@ namespace Olga.Models
 
         public List<ProcedureDocument> ProcedureDocuments { get; set; }
 
-
-
     }
 
     public class ProcedureEditModel
@@ -56,6 +60,10 @@ namespace Olga.Models
 
         [Required]
         public string Name { get; set; }
+
+        [Display(Name = "EstimatedSubmissionDate", ResourceType = typeof(Resources.Labels))]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? EstimatedSubmissionDate { get; set; }
 
         [Required]
         [Display(Name = "SubmissionDate", ResourceType = typeof(Resources.Labels))]

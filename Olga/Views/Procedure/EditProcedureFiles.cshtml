@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "EditProcedureFiles";
 }
+@using System.Drawing.Imaging
 @using System.Web.Mvc.Html
 @using Olga.DAL.Entities
 @model Olga.Models.ProcedureViewModel
@@ -97,7 +98,7 @@
                 <div class="row">
                     <div class="col-md-10">
                         <h3>Choose file to download:</h3>
-                        @using (Html.BeginForm("EditProcedureFiles", "Procedure"))
+                        @using (Html.BeginForm("EditProcedureFiles", "Procedure", new { enctype = "multipart/form-data" }))
                         {
                             @Html.AntiForgeryToken()
 
@@ -165,7 +166,7 @@
 
             $('form').ajaxForm({
                 beforeSend: function(e) {
-
+                    toastr.options.timeOut = 20000;
                     var fileInput = document.getElementById('uploads');
                     var selectedDocType = $('#procedureDocsType :selected').text();
                     console.log("selectedDocTypeIndex = " + selectedDocType);
@@ -211,6 +212,7 @@
                     $(".progress").hide();
                     $("#loading").hide();
                     toastr.info("File downloaded successfuly!");
+                    toastr.info("Page refreshing! Please wait!");
                     timeRefresh(0);
                 }
             });
@@ -267,13 +269,14 @@
                     beforeSend: function() {
                         $('#load').show();
                         document.getElementById('load').style.visibility = "visible";
+                        toastr.options.timeOut = 20000;
                         toastr.info("Wait a moment! File deleting...");},
                     success: function() {
                         commentContainer.slideUp('slow', function() { $(this).remove(); });
                         $('#load').fadeOut();
                         document.getElementById('load').style.visibility = "hidden";
                         console.log("deleted success!");
-                        toastr.info("File deleted successfuly!");
+                        toastr.info("File deleted successful! Wait while it appears away from the page!");
                     }
                 });
                 return false;

@@ -44,6 +44,7 @@ namespace Olga.DAL.Repositories
             existingProcedure.Comments = item.Comments;
             existingProcedure.ProcedureType = item.ProcedureType;
             existingProcedure.SubmissionDate = item.SubmissionDate;
+            existingProcedure.EstimatedSubmissionDate = item.EstimatedSubmissionDate;
 
             foreach (var document in item.ProcedureDocuments)
             {

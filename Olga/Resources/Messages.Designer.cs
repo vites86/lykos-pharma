@@ -19,24 +19,24 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Messages {
+    public class Messages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Messages() {
+        public Messages() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Olga.Resources.Messages", typeof(Messages).Assembly);
@@ -51,7 +51,7 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to File deleted successfuly!.
         /// </summary>
-        internal static string FilesDeletedSuccess {
+        public static string FilesDeletedSuccess {
             get {
                 return ResourceManager.GetString("FilesDeletedSuccess", resourceCulture);
             }
@@ -72,16 +72,25 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Files upload successfuly!.
         /// </summary>
-        internal static string FilesDownoadSuccess {
+        public static string FilesDownoadSuccess {
             get {
                 return ResourceManager.GetString("FilesDownoadSuccess", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File downloaded successful! Wait while the file appears on this page!.
+        /// </summary>
+        public static string FilesDownoadSuccessWait {
+            get {
+                return ResourceManager.GetString("FilesDownoadSuccessWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Procedure was created  successfuly!.
         /// </summary>
-        internal static string ProcedureCreatedSuccess {
+        public static string ProcedureCreatedSuccess {
             get {
                 return ResourceManager.GetString("ProcedureCreatedSuccess", resourceCulture);
             }
@@ -90,7 +99,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Procedure was deleted  successfuly!.
         /// </summary>
-        internal static string ProcedureDeletedSuccess {
+        public static string ProcedureDeletedSuccess {
             get {
                 return ResourceManager.GetString("ProcedureDeletedSuccess", resourceCulture);
             }
@@ -99,7 +108,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Procedure was updated  successfuly!.
         /// </summary>
-        internal static string ProcedureUpdatedSuccess {
+        public static string ProcedureUpdatedSuccess {
             get {
                 return ResourceManager.GetString("ProcedureUpdatedSuccess", resourceCulture);
             }
@@ -108,7 +117,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Product was Created/Updated  successfuly!.
         /// </summary>
-        internal static string ProductCreatedSuccess {
+        public static string ProductCreatedSuccess {
             get {
                 return ResourceManager.GetString("ProductCreatedSuccess", resourceCulture);
             }
@@ -117,7 +126,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Product was deleted  successfuly!.
         /// </summary>
-        internal static string ProductDeletedSuccess {
+        public static string ProductDeletedSuccess {
             get {
                 return ResourceManager.GetString("ProductDeletedSuccess", resourceCulture);
             }
@@ -126,9 +135,27 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Product was Created/Updated  successfuly!.
         /// </summary>
-        internal static string ProductUpdatedSuccess {
+        public static string ProductUpdatedSuccess {
             get {
                 return ResourceManager.GetString("ProductUpdatedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country setting was created successfuly!!.
+        /// </summary>
+        public static string SettingsCreateSuccess {
+            get {
+                return ResourceManager.GetString("SettingsCreateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country setting was updated successfuly!.
+        /// </summary>
+        public static string SettingsUpdateSuccess {
+            get {
+                return ResourceManager.GetString("SettingsUpdateSuccess", resourceCulture);
             }
         }
     }

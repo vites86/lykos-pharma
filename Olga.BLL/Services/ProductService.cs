@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Owin.Security.Provider;
+using Olga.BLL.BusinessModels;
 using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
 using Olga.DAL.EF;
@@ -79,6 +80,58 @@ namespace Olga.BLL.Services
         {
             if(string.IsNullOrEmpty(name)) return;
             Database.Products.DeleteDocuments(name);
+        }
+
+        public void DeleteAdditionalDocument(string productId, string documentId)
+        {
+            if (string.IsNullOrEmpty(productId) || string.IsNullOrEmpty(documentId))
+            {
+                return;
+            }
+            
+            var documentID = int.Parse(documentId);
+            var productID = int.Parse(productId);
+
+            var product = GetProduct(productID);
+            var document = product.ProductDocuments.FirstOrDefault(a => a.Id == documentID);
+
+            FileProcessor fileProcessor = new FileProcessor();
+
+            var deleteRes = fileProcessor.DeleteFile(document.PathToDocument);
+            if (deleteRes)
+            {
+                DeleteDocument(document.PathToDocument);
+            }
+        }
+
+        public async Task<bool> AddFileToProd(string localFileName, int productId, string prodDocType)
+        {
+            try
+            {
+                Enum.TryParse(prodDocType, out ProductAdditionalDocsType fileType);
+                
+                var doc = new ProductDocument()
+                {
+                    PathToDocument = localFileName,
+                    ProductId = productId,
+                    IsEan = fileType == ProductAdditionalDocsType.Ean
+                    //IsGtin = fileType == ProductAdditionalDocsType.Gtin
+                };
+
+                AddDocumentToProduct(doc);
+                Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public void AddDocumentToProduct(ProductDocument productDocument)
+        {
+            var product = Database.Products.Get(productDocument.ProductId);
+            product.ProductDocuments.Add(productDocument);
         }
     }
 }

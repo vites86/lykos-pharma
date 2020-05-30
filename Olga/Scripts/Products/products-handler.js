@@ -125,15 +125,16 @@
         containerBlock.appendChild(blockToInsert);
     }
 
-    function saveFileNameInHiddenList(fileName, imageStringElement) {
+function saveFileNameInHiddenList(fileName, imageStringElement) {
 
-        var imageString = imageStringElement.val();
-        if (imageString.length > 1) {
-            imageString += ',';
-        }
-        for (i = 0; i < images.length; i++) {
-            imageString += fileName + ',';
-        }
-        imageString = imageString.substring(0, imageString.length - 1);
-        imageStringElement.val(imageString);
+    var imageString = imageStringElement.val();
+    if (imageString.length > 1) {
+        imageString += ',';
     }
+    for (i = 0; i < images.length; i++) {
+        imageString += fileName + ',';
+    }
+    imageString = imageString.substring(0, imageString.length - 1);
+    imageStringElement.val(imageString);
+}
+

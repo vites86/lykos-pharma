@@ -15,9 +15,7 @@ namespace Olga.DAL.EF
     {
         public ProductContext() : base("name=DefaultConectionString") { }
         public ProductContext(string connectionString) : base(connectionString) { }
-
         public DbSet<ClientProfile> ClientProfiles { get; set; }
-
         public DbSet<Product> Products { get; set; }
         public DbSet<ApprDocsType> ApprDocsTypes { get; set; }
         public DbSet<Artwork> Artworks { get; set; }
@@ -33,6 +31,7 @@ namespace Olga.DAL.EF
         public DbSet<ProductDocument> ProductDocuments { get; set; }
         public DbSet<Procedure> Procedures { get; set; }
         public DbSet<ProcedureDocument> ProcedureDocuments { get; set; }
+        public DbSet<CountrySetting> CountrySettings{ get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -40,9 +39,6 @@ namespace Olga.DAL.EF
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
         }
-
-       
-
     }
 
 

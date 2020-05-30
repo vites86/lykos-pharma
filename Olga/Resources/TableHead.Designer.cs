@@ -19,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class TableHead {
@@ -29,14 +29,14 @@ namespace Resources {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal TableHead() {
+        public TableHead() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Olga.Resources.TableHead", typeof(TableHead).Assembly);
@@ -51,7 +51,7 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -59,7 +59,7 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Resources {
                 return ResourceManager.GetString("Account", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Resources {
                 return ResourceManager.GetString("Action", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Countries.
         /// </summary>
@@ -86,7 +86,7 @@ namespace Resources {
                 return ResourceManager.GetString("Countries", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Сотрудник.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Resources {
                 return ResourceManager.GetString("Coworker", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Дата создания.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Resources {
                 return ResourceManager.GetString("DateCreated", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
@@ -113,7 +113,7 @@ namespace Resources {
                 return ResourceManager.GetString("Email", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Event.
         /// </summary>
@@ -122,7 +122,7 @@ namespace Resources {
                 return ResourceManager.GetString("Event", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Expired Date.
         /// </summary>
@@ -131,7 +131,7 @@ namespace Resources {
                 return ResourceManager.GetString("ExpiredDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ФИО.
         /// </summary>
@@ -140,7 +140,7 @@ namespace Resources {
                 return ResourceManager.GetString("FIO", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to От.
         /// </summary>
@@ -149,7 +149,7 @@ namespace Resources {
                 return ResourceManager.GetString("From", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Issued Date.
         /// </summary>
@@ -158,7 +158,16 @@ namespace Resources {
                 return ResourceManager.GetString("IssuedDate", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lifecycle / Documents.
+        /// </summary>
+        public static string LifecycleDocuments {
+            get {
+                return ResourceManager.GetString("LifecycleDocuments", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Логин.
         /// </summary>
@@ -167,7 +176,7 @@ namespace Resources {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Marketing Authoriz Holder.
         /// </summary>
@@ -176,7 +185,7 @@ namespace Resources {
                 return ResourceManager.GetString("MAHolder", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Manufacturer.
         /// </summary>
@@ -185,7 +194,7 @@ namespace Resources {
                 return ResourceManager.GetString("Manufacturer", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Marketing Authoriz Number.
         /// </summary>
@@ -194,7 +203,7 @@ namespace Resources {
                 return ResourceManager.GetString("MANumber", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Marketing Authoriz Holder.
         /// </summary>
@@ -203,7 +212,7 @@ namespace Resources {
                 return ResourceManager.GetString("MarketingAuthorizHolder", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Имя.
         /// </summary>
@@ -212,7 +221,16 @@ namespace Resources {
                 return ResourceManager.GetString("Name", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string NameEng {
+            get {
+                return ResourceManager.GetString("NameEng", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to ND/MQC access.
         /// </summary>
@@ -221,7 +239,7 @@ namespace Resources {
                 return ResourceManager.GetString("NcAccess", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to №.
         /// </summary>
@@ -230,7 +248,7 @@ namespace Resources {
                 return ResourceManager.GetString("Number", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Pharmaceutical Form.
         /// </summary>
@@ -239,7 +257,16 @@ namespace Resources {
                 return ResourceManager.GetString("PharmaceuticalForm", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procedure type.
+        /// </summary>
+        public static string ProcedureType {
+            get {
+                return ResourceManager.GetString("ProcedureType", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Product Code.
         /// </summary>
@@ -257,7 +284,7 @@ namespace Resources {
                 return ResourceManager.GetString("ProductName", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Rank.
         /// </summary>
@@ -266,7 +293,7 @@ namespace Resources {
                 return ResourceManager.GetString("Rank", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Result.
         /// </summary>
@@ -275,7 +302,7 @@ namespace Resources {
                 return ResourceManager.GetString("Result", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Role.
         /// </summary>
@@ -284,7 +311,25 @@ namespace Resources {
                 return ResourceManager.GetString("Role", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show EAN files.
+        /// </summary>
+        public static string ShowEan {
+            get {
+                return ResourceManager.GetString("ShowEan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show GTIN files.
+        /// </summary>
+        public static string ShowGtin {
+            get {
+                return ResourceManager.GetString("ShowGtin", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Статус.
         /// </summary>
@@ -293,7 +338,7 @@ namespace Resources {
                 return ResourceManager.GetString("Status", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Strength.
         /// </summary>
@@ -302,7 +347,7 @@ namespace Resources {
                 return ResourceManager.GetString("Strength", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Телефон.
         /// </summary>
@@ -311,7 +356,7 @@ namespace Resources {
                 return ResourceManager.GetString("Telephone", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Кому.
         /// </summary>
@@ -320,7 +365,7 @@ namespace Resources {
                 return ResourceManager.GetString("To", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Тип.
         /// </summary>
@@ -329,7 +374,7 @@ namespace Resources {
                 return ResourceManager.GetString("Type", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
@@ -338,7 +383,7 @@ namespace Resources {
                 return ResourceManager.GetString("User", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Who created.
         /// </summary>

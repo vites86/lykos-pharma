@@ -126,10 +126,22 @@
   <data name="EstimatedApprovalDate" xml:space="preserve">
     <value>Estimated Approval Date</value>
   </data>
+  <data name="EstimatedSubmissionDate" xml:space="preserve">
+    <value>Estimated Submission Date </value>
+  </data>
+  <data name="ProcedureReport" xml:space="preserve">
+    <value>Report about procedures</value>
+  </data>
   <data name="RegisterNewUser" xml:space="preserve">
     <value>Register new user</value>
   </data>
   <data name="SubmissionDate" xml:space="preserve">
     <value>Submission Date</value>
+  </data>
+  <data name="SubmissionDateEst" xml:space="preserve">
+    <value>Submission Date Estimated</value>
+  </data>
+  <data name="SubmissionDateUn" xml:space="preserve">
+    <value>Submission Date Unknown</value>
   </data>
 </root>

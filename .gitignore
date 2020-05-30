@@ -280,3 +280,5 @@ Olga/Content/*
 Olga.DAL/Migrations/*
 !Olga.DAL/Migrations/Configuration.cs
 Olga/App_Start/connections.config
+Olga/temp/*
+Olga/tempout/*

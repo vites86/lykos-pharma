@@ -18,7 +18,7 @@
             @for (var i = 0; i < Model.Count; i++)
             {
                 var hasAccess = false;
-                if (@ViewBag.User.Countries != null)
+                if (ViewBag.User.Countries != null)
                 {
                     hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
                 }
@@ -52,13 +52,19 @@
             <span class="sidebar-title">Regulatory procedur.</span>
         </a>
         <ul id="collapse6" class="list-unstyled collapse">
+            @if (User.IsInRole("Admin"))
+            {
+                <li>
+                    @Html.ActionLink("All Procedures", "AllProcedures", "Procedure")
+                </li>
+            }
             @for (var i = 0; i < Model.Count; i++)
             {
                 var hasAccess = false;
                 if (@ViewBag.User.Countries != null)
                 {
                     hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
-                }/* Todo добавить в проверку ниже для доступа холдера к процедурам || User.IsInRole("Holder") */
+                } /* Todo добавить в проверку ниже для доступа холдера к процедурам || User.IsInRole("Holder") */
                 if (User.IsInRole("Admin") || (hasAccess && User.IsInRole("Manager")))
                 {
                     <li>
@@ -95,6 +101,22 @@
             <li>@Html.ActionLink("Settings", "Settings", "Settings")</li>
             <li>@Html.ActionLink("Register new user", "Register", "Account")</li>
             <li>@Html.ActionLink("Users", "Users", "Account")</li>
+            <li>@Html.ActionLink(@Resources.Title.CountrySettings, "CountrySettings", "Settings")</li>
+        </ul>
+    </li>
+    <li class="panel">
+        <a role="button"
+           data-toggle="collapse"
+           data-parent=".navigation"
+           aria-expanded="false"
+           aria-controls="collapse7"
+           href="#collapse7"
+           class="collapsed">
+            <i class="glyphicon glyphicon-signal"></i>
+            <span class="sidebar-title">Reports</span>
+        </a>
+        <ul id="collapse7" class="list-unstyled collapse">
+            <li>@Html.ActionLink("Reports", "Index", "Report")</li>
         </ul>
     </li>
 }

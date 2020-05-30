@@ -29,14 +29,14 @@ namespace Resources {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Labels() {
+        public Labels() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Olga.Resources.Labels", typeof(Labels).Assembly);
@@ -51,7 +51,7 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -88,6 +88,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Estimated Submission Date .
+        /// </summary>
+        public static string EstimatedSubmissionDate {
+            get {
+                return ResourceManager.GetString("EstimatedSubmissionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report about procedures.
+        /// </summary>
+        public static string ProcedureReport {
+            get {
+                return ResourceManager.GetString("ProcedureReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register new user.
         /// </summary>
         public static string RegisterNewUser {
@@ -102,6 +120,24 @@ namespace Resources {
         public static string SubmissionDate {
             get {
                 return ResourceManager.GetString("SubmissionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submission Date Estimated.
+        /// </summary>
+        public static string SubmissionDateEst {
+            get {
+                return ResourceManager.GetString("SubmissionDateEst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submission Date Unknown.
+        /// </summary>
+        public static string SubmissionDateUn {
+            get {
+                return ResourceManager.GetString("SubmissionDateUn", resourceCulture);
             }
         }
     }

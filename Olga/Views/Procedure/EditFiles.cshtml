@@ -46,7 +46,7 @@
             <div class="row">
                 <div class="col-md-10">
                     <h3>Choose file to download:</h3>
-                    @using (Html.BeginForm("EditProcedureFiles", "Procedure"))
+                    @using (Html.BeginForm("EditProcedureFiles", "Procedure", new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
                         var procedureDocsTypeId = (int)ViewBag.ProcedureDocsType;
