@@ -520,8 +520,7 @@ namespace Olga.Controllers
                     HttpPostedFileBase file = Request.Files[fileName];
                     if (file != null && file.ContentLength > 0)
                     {
-                        var fileTrimmName = file.FileName.Replace(",", "_").Replace("#", "№").Replace(" ", "_")
-                            .Replace("(", "_").Replace(")", "_");
+                        var fileTrimmName = file.FileName.TrimFileName();
                         apprFolder = GetApprFolder(apprId);
                         var targetFolder = Server.MapPath($"~/Upload/Documents/{apprFolder}");
                         var localFileName =
@@ -562,8 +561,7 @@ namespace Olga.Controllers
                     HttpPostedFileBase file = Request.Files[fileName];
                     if (file != null && file.ContentLength > 0)
                     {
-                        var fileTrimmName = file.FileName.Replace(",", "_").Replace("#", "№").Replace(" ", "_")
-                            .Replace("(", "_").Replace(")", "_");
+                        var fileTrimmName = file.FileName.TrimFileName();
                         artworkFolder = $"Artwork/{artworkId}";
                         var targetFolder = Server.MapPath($"~/Upload/Documents/{artworkFolder}");
                         var id = artworkId != null ? artworkId : "";

@@ -494,7 +494,7 @@ namespace Olga.Controllers
 
         public bool SaveHttpPostedFile(HttpPostedFileBase file, ref string targetFolder, out string targetPath, out string localFileName)
         {
-            var fileTrimmName = file.FileName.Replace(",", "_");
+            var fileTrimmName = file.FileName.TrimFileName();
             try
             {
                 var fileExt = Path.GetExtension(fileTrimmName);
