@@ -307,7 +307,7 @@
     }
 
     function getFileNameTrimmed(fileName) {
-        return fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').replace('&', '_').replace('(', '_').replace(')', '_').trim();
+        return fileName.replace(/\./g, '').replace(/\s+/g, '').replace(/#/g, '№').replace('&', '_').replace('(', '_').replace(')', '_').replace('%', '_').trim();
     }
 
     function getExt(fileName) {
