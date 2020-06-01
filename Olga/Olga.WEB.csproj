@@ -280,6 +280,7 @@
       <DependentUpon>Title.resx</DependentUpon>
     </Compile>
     <Compile Include="Util\AutofacConfig.cs" />
+    <Compile Include="Util\FileHelper.cs" />
     <Compile Include="Util\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -5055,7 +5056,6 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\Procedures\EditProcFiles.js" />
-    <Content Include="Scripts\Procedures\procedures.js" />
     <Content Include="Scripts\Products\artworks.js" />
     <Content Include="Scripts\Products\products-handler.js" />
     <Content Include="Scripts\Products\products4.js" />
