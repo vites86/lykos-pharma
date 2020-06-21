@@ -209,45 +209,24 @@
     @{
         if (@ViewBag.GtinActive)
         {
-            <div class="form-group">
-                @Html.LabelFor(model => model.Gtin, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Gtin, new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gtin, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Gtin, new { @class = "form-control" })
+                <hr />
                 </div>
-            </div>
-
-            @*<div class="form-group">
-                @Html.LabelFor(model => model.DocumentImagesListStringGtin, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10 left">
-                    <div class="row" style="display: inline-block;">
-                        @{ foreach (var file in Model.DocumentListStringGtin)
-                            {
-                                var fileName = @Path.GetFileName(file.PathToDocument);
-                                var blockId = $"datafile{@file.Id}";
-
-                                <div id="@blockId" class="show_blockOfImage">
-                                    <span class="glyphicon glypicon-file" />
-                                    <a href="~/Upload/Documents/Gtin/@fileName" target="_blank">@fileName</a>
-                                    <input style="height: 25px" data-id="@file.Id" type="button" class="btn_delete delete_additionalFiles" value="Delete" /> <br />
-                                </div><br />
-                            }
-                        }
-                    </div>
-                    <div>
-                        @Html.ActionLink("Edit documents", "EditProductAdditionalFiles", "Product", new { productId = @Model.Id }, new { @class = "btn btn-default", data_icon = "gear", target = "_blank" })
-                    </div>
-                </div>
-            </div>*@
+        </div>
         }
 
         if (@ViewBag.EanActive)
         {
             <div class="form-group">
-                @Html.LabelFor(model => model.DocumentImagesListStringEan, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.DocumentImagesListStringEan, htmlAttributes: new {@class = "control-label col-md-2"})
                 <div class="col-md-10 left">
                     <div class="row" style="display: inline-block;">
 
-                        @{ foreach (var file in Model.DocumentListStringEan)
+                        @{
+                            foreach (var file in Model.DocumentListStringEan)
                             {
                                 var fileName = @Path.GetFileName(file.PathToDocument);
                                 var blockId = $"datafile{@file.Id}";
@@ -259,14 +238,42 @@
                                 </div><br />
                             }
                         }
+
                     </div>
-                    <div>
-                        @Html.ActionLink("Edit documents", "EditProductAdditionalFiles", "Product", new { productId = @Model.Id }, new { @class = "btn btn-default", data_icon = "gear", target = "_blank" })
-                    </div>
+                    @*<div>
+            @Html.ActionLink("Edit documents", "EditProductAdditionalFiles", "Product", new { productId = @Model.Id }, new { @class = "btn btn-default", data_icon = "gear", target = "_blank" })
+        </div>*@
+                    <hr />
                 </div>
             </div>
         }
     }
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DocumentImagesListStringGmp, htmlAttributes: new { @class = "control-label col-md-2" })
+<div class="col-md-10 left">
+    <div class="row" style="display: inline-block;">
+
+        @{
+            foreach (var file in Model.DocumentListStringGmp)
+            {
+                var fileName = @Path.GetFileName(file.PathToDocument);
+                var blockId = $"datafile{@file.Id}";
+
+                <div id="@blockId" class="show_blockOfImage">
+                    <span class="glyphicon glyphicon-file" />
+                    <a href="~/Upload/Documents/Gmp/@fileName" target="_blank">@fileName</a>
+                    <input style="height: 25px" data-id="@file.Id" type="button" class="btn_delete delete_additionalFiles" value="Delete" /> <br />
+                </div><br />
+            }
+        }
+    </div>
+    <hr />
+    <div>
+        @Html.ActionLink("Edit documents", "EditProductAdditionalFiles", "Product", new { productId = @Model.Id }, new { @class = "btn btn-default", data_icon = "gear", target = "_blank" })
+    </div>
+</div>
+</div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -312,7 +319,7 @@
             </span>
         </div>
     </div>
-    <br /><br /> 
+    <br /><br />
     <hr />
     <div class="form-group">
         <div class="col-md-1 col-xs-1 col-md-offset-1">

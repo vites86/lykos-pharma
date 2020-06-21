@@ -114,8 +114,8 @@ namespace Olga.BLL.Services
                 {
                     PathToDocument = localFileName,
                     ProductId = productId,
-                    IsEan = fileType == ProductAdditionalDocsType.Ean
-                    //IsGtin = fileType == ProductAdditionalDocsType.Gtin
+                    IsEan = fileType == ProductAdditionalDocsType.Ean,
+                    IsGmp = fileType == ProductAdditionalDocsType.Gmp
                 };
 
                 AddDocumentToProduct(doc);
