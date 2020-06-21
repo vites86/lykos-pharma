@@ -157,32 +157,32 @@
             @{
                 if (@ViewBag.GtinActive)
                 {
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Gtin, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                <label class="control-label text-info">@Model.Gtin</label>
-                                <hr>
-                            </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Gtin, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <label class="control-label text-info">@Model.Gtin</label>
+                            <hr>
+                        </div>
                     </div>
 
                     @*<div class="form-group">
-                        @Html.LabelFor(model => model.DocumentImagesListStringGtin, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="row" style="display: inline-block;">
-                                @{
-                                    foreach (var file in Model.DocumentListStringGtin)
-                                    {
-                                        var fileName = @Path.GetFileName(file.PathToDocument);
-                                        <label class="control-label text-info">
-                                            <span class="glyphicon glyphicon-file" />
-                                            <a onclick="doesFileExist('/Upload/Documents/Additional/Gtin/@fileName')">@fileName</a>
-                                        </label>
-                                        <br />
-                                    }
+                    @Html.LabelFor(model => model.DocumentImagesListStringGtin, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="row" style="display: inline-block;">
+                            @{
+                                foreach (var file in Model.DocumentListStringGtin)
+                                {
+                                    var fileName = @Path.GetFileName(file.PathToDocument);
+                                    <label class="control-label text-info">
+                                        <span class="glyphicon glyphicon-file" />
+                                        <a onclick="doesFileExist('/Upload/Documents/Additional/Gtin/@fileName')">@fileName</a>
+                                    </label>
+                                    <br />
                                 }
-                            </div>
+                            }
                         </div>
-                    </div>*@ 
+                    </div>
+                </div>*@
                 }
 
                 if (ViewBag.EanActive)
@@ -208,6 +208,27 @@
                     </div>
                 }
             }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DocumentImagesListStringGmp, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="left" style="display: inline-block;">
+                    @{
+                        foreach (var file in Model.DocumentListStringGmp)
+                        {
+                            var fileName = @Path.GetFileName(file.PathToDocument);
+                            <label class="control-label text-info">
+                                <span class="glyphicon glyphicon-file" />
+                                <a onclick="doesFileExist('/Upload/Documents/Additional/Gmp/@fileName')">@fileName</a>
+                            </label>
+                            <br />
+                        }
+                    }
+                </div>
+                <hr>
+            </div>
+        </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.IssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">

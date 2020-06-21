@@ -326,6 +326,7 @@ namespace Olga.Controllers
 
                 product.DocumentListStringEan = prod.ProductDocuments.Where(a => a.IsEan).ToList();
                 product.DocumentListStringGtin = prod.ProductDocuments.Where(a => a.IsGtin).ToList();
+                product.DocumentListStringGmp = prod.ProductDocuments.Where(a => a.IsGmp).ToList();
 
                 return View(product);
             }
@@ -406,9 +407,11 @@ namespace Olga.Controllers
 
                 var userDocumentsEan = prod?.ProductDocuments.Where(a => a.IsEan).ToList();
                 var userDocumentsGtin = prod?.ProductDocuments.Where(a => a.IsGtin).ToList();
+                var userDocumentsGmp = prod?.ProductDocuments.Where(a => a.IsGmp).ToList();
                
                 product.DocumentListStringGtin = userDocumentsGtin;
                 product.DocumentListStringEan = userDocumentsEan;
+                product.DocumentListStringGmp = userDocumentsGmp;
 
                 product.DocumentImagesArtworks = userDocumentsArtworks;
                 product.DocumentImagesApprs = userDocumentsApprs;
@@ -960,8 +963,11 @@ namespace Olga.Controllers
                 var product = Mapper.Map<ProductDTO, ProductAdditionalDocsModel>(productDto);
                 product.DocumentListStringEan = product.Documents.Where(a => a.IsEan).ToList();
                 product.DocumentListStringGtin = product.Documents.Where(a => a.IsGtin).ToList();
+                product.DocumentListStringGmp = product.Documents.Where(a => a.IsGmp).ToList();
                 _currentUser = GetCurrentUser();
-                ViewBag.AdditionalDocsTypes = Enum.GetValues(typeof(ProductAdditionalDocsType));
+
+                SetViewBagAdditionalDocTypesToListWithPermissions((int)productDto.CountryId);
+
                 ViewBag.User = _currentUser;
                 return View(product);
             }
@@ -970,6 +976,25 @@ namespace Olga.Controllers
                 @ViewBag.Error = ex.ToString();
                 return View("Error");
             }
+        }
+
+        public void SetViewBagAdditionalDocTypesToListWithPermissions(int countryId)
+        {
+            var country = _countryService.GetItem(countryId);
+            var isEanActive = country.CountrySettings?.EanActive ?? false;
+
+            var additionalDocsTypeAsList = Enum.GetValues(typeof(ProductAdditionalDocsType)).Cast<ProductAdditionalDocsType>().ToList();
+
+            var additionalDocsTypesWithPermissions = isEanActive ? additionalDocsTypeAsList
+                : additionalDocsTypeAsList.Where(a => a != ProductAdditionalDocsType.Ean).ToList();
+
+            ViewBag.AdditionalDocsTypes = additionalDocsTypesWithPermissions;
+            ViewBag.AdditionalDocsTypesForDropDown = additionalDocsTypesWithPermissions.Select(x =>
+                new SelectListItem
+                {
+                    Value = x.ToString(),
+                    Text = x.ToString()
+                }).ToList();
         }
 
         [HttpPost]
@@ -985,7 +1010,7 @@ namespace Olga.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddProductFile(HttpPostedFileBase uploads, string productId, string productDocsType)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || productDocsType == "")
             {
                 CreateError();
                 return Json(new { success = false, responseText = @Resources.ErrorMessages.ErrorHappened }, JsonRequestBehavior.AllowGet);

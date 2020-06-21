@@ -45,9 +45,9 @@
                                     }
                                     <hr />
                                     break;
-                                @*case ProductAdditionalDocsType.Gtin:
-                                    <span>@ProductAdditionalDocsType.Gtin</span><br /><br />
-                                    foreach (var document in Model.DocumentListStringGtin)
+                                case ProductAdditionalDocsType.Gmp:
+                                    <span>@ProductAdditionalDocsType.Gmp</span><br /><br />
+                                    foreach (var document in Model.DocumentListStringGmp)
                                     {
                                         <div>
                                             <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@Path.GetFileName(@document.PathToDocument)</a>
@@ -55,7 +55,7 @@
                                         </div><br />
                                     }
                                     <hr />
-                                    break;*@
+                                    break;
                             }
                         }
                     </div>
@@ -74,7 +74,7 @@
                                     @Html.Label("Document type:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
                                 </div>
                                 <div class="col-md-8">
-                                    @Html.DropDownList("productDocsType", EnumHelper.GetSelectList(typeof(ProductAdditionalDocsType)), "-- Select Type --", new { @class = "form-control", onchange = "dropdownSelected();" })
+                                    @Html.DropDownList("productDocsType", (List<SelectListItem>) ViewBag.AdditionalDocsTypesForDropDown, "-- Select File Type --", new { @class = "form-control", onchange = "dropdownSelected();" })
 
                                 </div>
                             </div><br /><br /><br />
@@ -135,7 +135,7 @@
                     var fileInput = document.getElementById('uploads');
                     var selectedDocType = $('#productDocsType :selected').text();
                     console.log("selectedDocTypeIndex = " + selectedDocType);
-                    if (selectedDocType == "-- Select Type --") {
+                    if (selectedDocType == "-- Select File Type --") {
                         $('#productDocsType').css('background-color', 'lightcoral');
                         console.log("no doc type selected");
                         toastr.error("Please select a Document Type to download!");
@@ -198,10 +198,9 @@
 
         function dropdownSelected() {
             var selectedDocType = $('#productDocsType :selected').text();
-            if (selectedDocType != "-- Select Type --") {
+            if (selectedDocType != "-- Select File Type --") {
                 console.log("selectedDocType = " + selectedDocType);
-                $('#productDocsType').css('background-color', '#ffffff');;
-
+                $('#productDocsType').css('background-color', '#ffffff');
             }
         }
 
