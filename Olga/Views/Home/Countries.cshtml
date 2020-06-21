@@ -1,48 +1,49 @@
 ﻿@using Olga.Models
 @model List<Olga.Models.CountryViewModel>
-
-<div class="container">
-    <h2>Countries</h2>
-    <div class="row" style="overflow: auto;">
-        <table class="table" id="product-table" style='overflow: auto'>
-            <thead style='font-weight: bold'>
-            <tr>
-                <td></td>
-            </tr>
-            </thead>
-            <tbody>
-            @for (var i = 0; i < Model.Count; i++)
-            {
-                var gifImage = $"{@Model[i].Id}.gif";
-                //var hasAccess = false;
-                //if (@ViewBag.User.Countries != null)
-                //{
-                //    hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
-                //}
-                //if (hasAccess || User.IsInRole("Admin"))
-                //{
-                <tr data-rowid="@i">
-
-                    <td>@Model[i].Name <img style="margin-right: 30%; height: 20px;" src="~/Content/images/countries/@gifImage"/></td>
-                    <td>
-                        @Html.ActionLink("Products", "Index", "Product", new {id = @Model[i].Id}, null)
-                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    <div>
+        <div class="row" style="margin-left:  160px; margin-right: 10px;">
+            <h2>Countries</h2>
+            <div class="row" style="overflow: auto;">
+                <table class="table" id="product-table" style='overflow: auto'>
+                    <thead style='font-weight: bold'>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.Count; i++)
                         {
-                            <span>|</span>
-                            <span>@Html.ActionLink("Create product", "CreateProduct", "Product", new {countryId = @Model[i].Id}, null) |</span>
-                            <span>@Html.ActionLink("EditInfo", "Index", "Settings", new {id = @Model[i].Id}, null)</span>
+                            var gifImage = $"{@Model[i].Id}.gif";
+                            //var hasAccess = false;
+                            //if (@ViewBag.User.Countries != null)
+                            //{
+                            //    hasAccess = (@ViewBag.User.Countries as List<CountryViewModel>).Any(a => a.Id == @Model[i].Id);
+                            //}
+                            //if (hasAccess || User.IsInRole("Admin"))
+                            //{
+                            <tr data-rowid="@i">
+
+                                <td>@Model[i].Name <img style="margin-right: 30%; height: 20px;" src="~/Content/images/countries/@gifImage" /></td>
+                                <td>
+                                    @Html.ActionLink("Products", "Index", "Product", new { id = @Model[i].Id }, null)
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                                    {
+                                        <span>|</span>
+                                        <span>@Html.ActionLink("Create product", "CreateProduct", "Product", new { countryId = @Model[i].Id }, null) |</span>
+                                        <span>@Html.ActionLink("EditInfo", "Index", "Settings", new { id = @Model[i].Id }, null)</span>
+                                    }
+                                </td>
+                            </tr>
+                            //}
                         }
-                    </td>
-                </tr>
-                //}
-            }
-            
-            </tbody>
-        </table>
-        @if(Model.Count<13)
-        {
-            <div style="height: 500px;"><br/></div>
-            <br/>
-        }
+
+                    </tbody>
+                </table>
+                @if (Model.Count < 13)
+                {
+                    <div style="height: 500px;"><br /></div>
+                    <br />
+                }
+            </div>
+        </div>
     </div>
-</div>

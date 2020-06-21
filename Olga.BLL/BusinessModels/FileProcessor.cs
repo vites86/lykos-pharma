@@ -29,19 +29,11 @@ namespace Olga.BLL.BusinessModels
             StringBuilder targetFolder = new StringBuilder(serverMapPath);
 
             var fileExt = Path.GetExtension(documentName);
-            var fileTrimmName = documentName.Replace(",", "_").Replace(" ", "_").Replace("%", "_");
+            var fileTrimmName = documentName.TrimFileName();
             var uniqueFileName = $"{Path.GetFileNameWithoutExtension(fileTrimmName)}_{Guid.NewGuid().ToString().Substring(0, 6)}{fileExt}";
-
-            switch (documentType)
-            {
-                case ProductAdditionalDocsType.Ean:
-                    targetFolder.Append(ProductAdditionalDocsType.Ean);
-                    break;
-                //case ProductAdditionalDocsType.Gtin:
-                //    targetFolder.Append(ProductAdditionalDocsType.Gtin);
-                //    break;
-            }
            
+            targetFolder.Append(documentType);
+
             return targetFolder.Append("\\").Append(uniqueFileName).ToString();
         }
 

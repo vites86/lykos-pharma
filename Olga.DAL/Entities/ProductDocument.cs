@@ -21,17 +21,20 @@ namespace Olga.DAL.Entities
         public Artwork Artwork { get; set; }
         public bool IsGtin { get; set; }
         public bool IsEan { get; set; }
+        public bool IsGmp { get; set; }
     }
 
     public enum FileFormats
     {
-        Txt, Docx, Xlsx,Ai,Pdf,Crd
+        Txt, Docx, Xlsx, Ai, Pdf, Crd
     }
 
+    [Flags]
     public enum ProductAdditionalDocsType
     {
         //Gtin,
-        Ean
+        Ean,
+        Gmp
     }
 
 }

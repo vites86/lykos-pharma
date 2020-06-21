@@ -86,6 +86,7 @@ namespace Olga.Models
             this.Documents = new List<ProductDocument>();
             this.DocumentListStringGtin = new List<ProductDocument>();
             this.DocumentListStringEan = new List<ProductDocument>();
+            this.DocumentListStringGmp = new List<ProductDocument>();
         }
 
         public int? Id { get; set; }
@@ -150,6 +151,11 @@ namespace Olga.Models
 
         [Display(Name = "GTIN")]
         public string Gtin { get; set; }
+
+        [Display(Name = "GMP conclusion")]
+        public string DocumentImagesListStringGmp { get; set; }
+        public List<ProductDocument> DocumentListStringGmp { get; set; }
+
     }
 
     public class ShowProductModel
@@ -164,6 +170,7 @@ namespace Olga.Models
             this.Documents = new List<ProductDocument>();
             this.DocumentListStringGtin = new List<ProductDocument>();
             this.DocumentListStringEan = new List<ProductDocument>();
+            this.DocumentListStringGmp = new List<ProductDocument>();
         }
 
         public int? Id { get; set; }
@@ -217,6 +224,10 @@ namespace Olga.Models
 
         [Display(Name = "GTIN")]
         public string Gtin { get; set; }
+
+        [Display(Name = "GMP conclusion")]
+        public string DocumentImagesListStringGmp { get; set; }
+        public List<ProductDocument> DocumentListStringGmp { get; set; }
     }
 
     public class ProductCompareModel
@@ -280,5 +291,9 @@ namespace Olga.Models
 
         [Display(Name = "GTIN")]
         public string Gtin { get; set; }
+
+        [Display(Name = "GMP conclusion")]
+        public List<ProductDocument> DocumentListStringGmp { get; set; }
+
     }
 }
