@@ -148,6 +148,10 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUnitOfWorkGeneral.cs" />
+    <Compile Include="Migrations\202006210900153_                document.DownloadDt = DateTime.Now%3b.cs" />
+    <Compile Include="Migrations\202006210900153_                document.DownloadDt = DateTime.Now%3b.Designer.cs">
+      <DependentUpon>202006210900153_                document.DownloadDt = DateTime.Now%3b.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
@@ -171,6 +175,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202006210900153_                document.DownloadDt = DateTime.Now%3b.resx">
+      <DependentUpon>202006210900153_                document.DownloadDt = DateTime.Now%3b.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
