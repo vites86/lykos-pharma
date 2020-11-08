@@ -21,5 +21,6 @@ namespace Olga.BLL.DTO
         public Artwork Artwork { get; set; }
         public bool IsGtin { get; set; }
         public bool IsEan { get; set; }
+        public DateTime? DownloadDt { get; set; }
     }
 }

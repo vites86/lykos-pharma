@@ -50,6 +50,7 @@ namespace Olga.DAL.Repositories
             {
                 var res = existingProcedure.ProcedureDocuments.FirstOrDefault(a => a.PathToDocument.Equals(document.PathToDocument));
                 if (res != null) continue;
+                document.DownloadDt = DateTime.Now;
                 existingProcedure.ProcedureDocuments.Add(document);
             }
 
