@@ -40,6 +40,4 @@ namespace Olga.DAL.EF
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
         }
     }
-
-
 }

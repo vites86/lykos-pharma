@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -18,14 +19,22 @@ namespace Olga.DAL.Entities
 
         public int ProcedureId { get; set; }
         public Procedure Procedure { get; set; }
+
+        public DateTime? DownloadDt { get; set; }
     }
 
     public enum ProcedureDocsType
     {
-        //Dossier,
+        [Description("Dossier Obtained from MAH")]
         DossierObtainedFromM,
+
+        [Description("Dossier Submitted to Authority")]
         DossierSubmittedToAuth,
+
+        [Description("Remarks obtained from Authority")] 
         RemarksFromAuth,
+
+        [Description("Responses submitted to Authority")] 
         RemarksToAuth
     }
 }

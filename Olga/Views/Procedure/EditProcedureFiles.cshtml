@@ -31,15 +31,31 @@
                     <div class="col-md-10">
                         @foreach (var period in ViewBag.DocsType)
                         {
-                            switch (period)
+                            var labelName = Enum.GetName(typeof(ProcedureDocsType), period);
+                            <span>@labelName</span><br /><br />
+                            foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == period))
                             {
+                                var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
+                                <div>
+                                    <span>@docDate</span>
+                                    <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                    <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                </div><br />
+                            }
+                            <hr />
+
+                            //switch (period)
+                            @*{
                                 case ProcedureDocsType.DossierObtainedFromM:
                                     <span>Dossier Obtained from MAH</span><br /><br />
-                                    foreach (var document in Model.ProcedureDocuments)
+                                    foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM))
                                     {
+                                        var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
+
                                         if (document.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM)
                                         {
                                             <div>
+                                                <span>@docDate</span>
                                                 <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
                                                 <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
                                             </div><br />
@@ -48,27 +64,34 @@
                                     <hr />
                                     break;
                                 case ProcedureDocsType.DossierSubmittedToAuth:
-                                    <span>Dossier Submitted to Authority</span><br /><br />
-                                    foreach (var document in Model.ProcedureDocuments)
                                     {
-                                        if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
+                                        <span>Dossier Submitted to Authority</span><br /><br />
+                                        foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth))
                                         {
+                                            var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
 
-                                            <div>
-                                                <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
-                                                <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
-                                            </div><br />
+                                            if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
+                                            {
+                                                <div>
+                                                    <span>@docDate</span>
+                                                    <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                                    <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                                </div><br />
+                                            }
                                         }
+                                        <hr />
+                                        break;
                                     }
-                                    <hr />
-                                    break;
                                 case ProcedureDocsType.RemarksFromAuth:
                                     <span>Remarks obtained from Authority</span><br /><br />
-                                    foreach (var document in Model.ProcedureDocuments)
+                                    foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth))
                                     {
+                                        var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
+
                                         if (document.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth)
                                         {
                                             <div>
+                                                <span>@docDate</span>
                                                 <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
                                                 <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
                                             </div><br />
@@ -78,11 +101,14 @@
                                     break;
                                 case ProcedureDocsType.RemarksToAuth:
                                     <span>Responses submitted to Authority</span><br /><br />
-                                    foreach (var document in Model.ProcedureDocuments)
+                                    foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksToAuth))
                                     {
+                                        var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
+
                                         if (document.ProcedureDocsType == ProcedureDocsType.RemarksToAuth)
                                         {
                                             <div>
+                                                <span>@docDate</span>
                                                 <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
                                                 <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
                                             </div><br />
@@ -90,8 +116,7 @@
                                     }
                                     <hr />
                                     break;
-                            }
-
+                            }*@
                         }
                     </div>
                 </div>

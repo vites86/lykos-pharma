@@ -401,6 +401,20 @@ namespace Olga.Controllers
                 ViewBag.Product = product;
                 ViewBag.User = _currentUser;
                 ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
+
+                //var dossierObtainedFromM =
+                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM).OrderBy(s=>s.Id);
+
+                //var dossierSubmittedToAuth =
+                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth).OrderBy(s => s.Id);
+
+                //var remarksFromAuth =
+                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth).OrderBy(s => s.Id);
+
+                //var remarksToAuth =
+                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksToAuth).OrderBy(s => s.Id);
+
+
                 return View(procedureDto);
             }
             catch (Exception ex)
