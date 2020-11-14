@@ -135,6 +135,7 @@
     <Compile Include="Entities\MarketingAuthorizNumber.cs" />
     <Compile Include="Entities\PackSize.cs" />
     <Compile Include="Entities\PharmaceuticalForm.cs" />
+    <Compile Include="Entities\PoductStatus.cs" />
     <Compile Include="Entities\ProcedureDocument.cs" />
     <Compile Include="Entities\Procedures.cs" />
     <Compile Include="Entities\Product.cs" />
@@ -148,6 +149,10 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUnitOfWorkGeneral.cs" />
+    <Compile Include="Migrations\202011142246436_AddProductStatus1.cs" />
+    <Compile Include="Migrations\202011142246436_AddProductStatus1.Designer.cs">
+      <DependentUpon>202011142246436_AddProductStatus1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
@@ -171,6 +176,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202011142246436_AddProductStatus1.resx">
+      <DependentUpon>202011142246436_AddProductStatus1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

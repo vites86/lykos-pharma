@@ -1,5 +1,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Olga.DAL.EF;
+using Olga.DAL.Entities;
 using Olga.DAL.Entities.Account;
 
 namespace Olga.DAL.Migrations
@@ -18,7 +20,8 @@ namespace Olga.DAL.Migrations
 
         protected override void Seed(Olga.DAL.EF.ProductContext context)
         {
-           // AddRoles(context);
+            CreateProductStatuses(context);
+            // AddRoles(context);
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
@@ -45,6 +48,18 @@ namespace Olga.DAL.Migrations
                 role = new IdentityRole(roleCreate.ToString());
                 roleManager.Create(role);
             }
+        }
+
+        private static void CreateProductStatuses(ProductContext db)
+        {
+            ProductStatus p1 = new ProductStatus { Id = 0, Status = "No Status" };
+            ProductStatus p2 = new ProductStatus { Id = 1, Status = "OTC" };
+            ProductStatus p3 = new ProductStatus { Id = 2, Status = "Rx" };
+
+            db.ProductStatuses.Add(p1);
+            db.ProductStatuses.Add(p2);
+            db.ProductStatuses.Add(p3);
+            db.SaveChanges();
         }
     }
 }

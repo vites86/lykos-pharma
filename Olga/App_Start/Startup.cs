@@ -29,7 +29,7 @@ namespace Olga.App_Start
 
         private IUserService CreateUserService()
         {
-            return serviceCreator.CreateUserService("DefaultConectionString");
+            return serviceCreator.CreateUserService("DefaultConnectionString");
         }
     }
 }

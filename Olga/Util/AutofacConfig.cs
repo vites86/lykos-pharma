@@ -25,7 +25,7 @@ namespace Olga.Util
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             // регистрируем споставление типов
-            string cs = ConfigurationManager.ConnectionStrings["DefaultConectionString"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString;
 
             var context = new ProductContext(cs);
 
