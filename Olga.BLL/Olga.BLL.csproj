@@ -146,6 +146,7 @@
     <Compile Include="DTO\ProductDTO.cs" />
     <Compile Include="DTO\ProductCodeDTO.cs" />
     <Compile Include="DTO\ProductNameDTO.cs" />
+    <Compile Include="DTO\ProductStatusDTO.cs" />
     <Compile Include="DTO\StrengthDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="FileHelper.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Services\CountrySettingsService.cs" />
     <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Services\ProcedureService.cs" />
+    <Compile Include="Services\ProductStatusService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
     <Compile Include="Services\StrengthService.cs" />
     <Compile Include="Services\ProductNameService.cs" />
