@@ -52,13 +52,11 @@ namespace Olga.DAL.Migrations
 
         private static void CreateProductStatuses(ProductContext db)
         {
-            ProductStatus p1 = new ProductStatus { Id = 0, Status = "No Status" };
-            ProductStatus p2 = new ProductStatus { Id = 1, Status = "OTC" };
-            ProductStatus p3 = new ProductStatus { Id = 2, Status = "Rx" };
+            ProductStatus p1 = new ProductStatus { Id = 1, Status = "OTC" };
+            ProductStatus p2 = new ProductStatus { Id = 2, Status = "Rx" };
 
             db.ProductStatuses.Add(p1);
             db.ProductStatuses.Add(p2);
-            db.ProductStatuses.Add(p3);
             db.SaveChanges();
         }
     }

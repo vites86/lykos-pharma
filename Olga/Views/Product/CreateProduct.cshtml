@@ -80,6 +80,12 @@
         </div>
     </div>
     <div class="form-group">
+        @Html.LabelFor(model => model.ProductStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ProductStatusId, new SelectList(ViewBag.ProductStatuses, "Id", "Status"), "-- No Status --", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
         @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10 left">
             @Html.HiddenFor(m => m.DocumentImagesListStringApprs)

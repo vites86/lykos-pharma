@@ -110,6 +110,8 @@ namespace Olga
                         opt => opt.MapFrom(m => m.Country == null ? "No Country" : m.Country.Name))
                     .ForMember(m => m.Gtin,
                         opt => opt.MapFrom(m => m.Gtin))
+                    .ForMember(m => m.ProductStatus,
+                        opt => opt.MapFrom(m => m.ProductStatus == null ? "No Product Status" : m.ProductStatus.Status))
                     .ForMember(m => m.IssuedDate,
                         opt => opt.MapFrom(m => m.IssuedDate == null ? null : m.IssuedDate.ToString()))
                     .ForMember(m => m.ExpiredDate,
