@@ -25,7 +25,7 @@ namespace Olga.Util
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             // регистрируем споставление типов
-            string cs = ConfigurationManager.ConnectionStrings["DefaultConectionString"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString;
 
             var context = new ProductContext(cs);
 
@@ -50,6 +50,8 @@ namespace Olga.Util
             builder.RegisterType<ArchProccessor>().As<IArchProccessor>();
 
             builder.RegisterType<CountrySettingsService>().As<IBase<CountrySettingDTO>>();
+
+            builder.RegisterType<ProductStatusService>().As<IProductStatus>().WithParameter("context", context); ;
 
 
             // создаем новый контейнер с теми зависимостями, которые определены выше

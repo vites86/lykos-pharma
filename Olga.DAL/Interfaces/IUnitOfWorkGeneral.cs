@@ -22,7 +22,7 @@ namespace Olga.DAL.Interfaces
         IRepository<ProductName> ProductNames { get; }
         IRepository<ProductCode> ProductCodes { get; }
         IRepository<CountrySetting> CountrySettings { get; }
-
+        IRepository<ProductStatus> ProductStatuses { get; }
         void Save();
     }
 }

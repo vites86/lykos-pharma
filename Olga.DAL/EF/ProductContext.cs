@@ -13,7 +13,7 @@ namespace Olga.DAL.EF
 {
     public class ProductContext : IdentityDbContext<ApplicationUser>
     {
-        public ProductContext() : base("name=DefaultConectionString") { }
+        public ProductContext() : base("name=DefaultConnectionString") { }
         public ProductContext(string connectionString) : base(connectionString) { }
         public DbSet<ClientProfile> ClientProfiles { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -32,6 +32,7 @@ namespace Olga.DAL.EF
         public DbSet<Procedure> Procedures { get; set; }
         public DbSet<ProcedureDocument> ProcedureDocuments { get; set; }
         public DbSet<CountrySetting> CountrySettings{ get; set; }
+        public DbSet<ProductStatus> ProductStatuses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

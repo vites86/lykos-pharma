@@ -56,5 +56,8 @@ namespace Olga.DAL.Entities
         public virtual ICollection<ProductDocument> ProductDocuments { get; set; }
         public virtual ICollection<Procedure> Procedures { get; set; }
         public string Gtin { get; set; }
+
+        public virtual ProductStatus ProductStatus { get; set; }
+        public int? ProductStatusId { get; set; }
     }
 }

@@ -62,13 +62,21 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <label class="control-label text-info">@Model.MarketingAuthorizHolder</label>
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MarketingAuthorizHolder, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label class="control-label text-info">@Model.MarketingAuthorizHolder</label>
             </div>
-            <div class="form-group">
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label class="control-label text-info ">@Model.ProductStatus</label>
+            </div>
+        </div>
+
+        <div class="form-group">
                 @Html.Label("ApprDocsTypes", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10 left">
                     @Html.HiddenFor(m => m.DocumentImagesListStringApprs)

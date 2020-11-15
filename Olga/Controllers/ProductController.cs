@@ -50,6 +50,7 @@ namespace Olga.Controllers
         UserViewModel _currentUser;
         bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotificationProd"]);
         Emailer emailer;
+        readonly IProductStatus _productStatusService;
 
         // GET: Settings
         public ProductController(ICountry serv, IProductName prodName, IProductCode prodCode,
@@ -58,8 +59,9 @@ namespace Olga.Controllers
             IMarketingAuthorizHolder marketingAuthorizHolder,
             IPharmaceuticalForm pharmaceuticalForm, IProductService product, IBaseEmailService emailService,
             IProductName productNameService, IPackSize packSizeService,
-            IProductCode productCode, 
-            IBase<CountrySettingDTO> countrySettingsService)
+            IProductCode productCode,
+            IBase<CountrySettingDTO> countrySettingsService,
+            IProductStatus productStatusService)
         {
             _countryService = serv;
             //_productNameService = prodName;
@@ -87,6 +89,7 @@ namespace Olga.Controllers
             emailer.DirectorMail = WebConfigurationManager.AppSettings["directorMail"];
             emailer.DeveloperMail = WebConfigurationManager.AppSettings["developerMail"];
             _countrySettingsService = countrySettingsService;
+            _productStatusService = productStatusService;
         }
 
         private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
@@ -493,6 +496,11 @@ namespace Olga.Controllers
                 .Map<IEnumerable<PharmaceuticalFormDTO>, IEnumerable<PharmaceuticalFormViewModel>>(
                     pharmaceuticalFormDto).ToList();
             @ViewBag.pharmaceuticalForm = pharmaceuticalForm;
+
+            var productStatusesDto = _productStatusService.GetItems().OrderBy(a => a.Id);
+            var productStatuses = Mapper
+                .Map<IEnumerable<ProductStatusDTO>, IEnumerable<ProductStatusViewModel>>(productStatusesDto).ToList();
+            @ViewBag.ProductStatuses = productStatuses;
         }
 
         public void CreateError()

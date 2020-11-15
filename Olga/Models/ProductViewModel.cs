@@ -29,7 +29,6 @@ namespace Olga.Models
             }
         }
 
-
         [Display(Name = "Issued Date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? IssuedDate { get; set; }
@@ -72,6 +71,9 @@ namespace Olga.Models
 
         [Display(Name = "GTIN")]
         public string Gtin { get; set; }
+
+        [Display(Name = "Product Status")]
+        public string ProductStatus { get; set; }
     }
 
     public class ProductCreateModel
@@ -156,6 +158,9 @@ namespace Olga.Models
         public string DocumentImagesListStringGmp { get; set; }
         public List<ProductDocument> DocumentListStringGmp { get; set; }
 
+        [Display(Name = "Product Status")]
+        public virtual ProductStatus ProductStatus { get; set; }
+        public int? ProductStatusId { get; set; }
     }
 
     public class ShowProductModel
@@ -228,6 +233,9 @@ namespace Olga.Models
         [Display(Name = "GMP conclusion")]
         public string DocumentImagesListStringGmp { get; set; }
         public List<ProductDocument> DocumentListStringGmp { get; set; }
+
+        [Display(Name = "Product Status")]
+        public string  ProductStatus { get; set; }
     }
 
     public class ProductCompareModel

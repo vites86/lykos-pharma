@@ -135,6 +135,7 @@
     <Compile Include="Entities\MarketingAuthorizNumber.cs" />
     <Compile Include="Entities\PackSize.cs" />
     <Compile Include="Entities\PharmaceuticalForm.cs" />
+    <Compile Include="Entities\PoductStatus.cs" />
     <Compile Include="Entities\ProcedureDocument.cs" />
     <Compile Include="Entities\Procedures.cs" />
     <Compile Include="Entities\Product.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Repositories\EFUnitOfWorkGeneral.cs" />
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Repositories\ProcedureRepository.cs" />
+    <Compile Include="Repositories\ProductStatusRepository.cs" />
     <Compile Include="Repositories\StrengthRepository.cs" />
     <Compile Include="Repositories\ProductNameRepository.cs" />
     <Compile Include="Repositories\ProductCodeRepository.cs" />
