@@ -21,6 +21,7 @@ namespace Olga.DAL.Migrations
         protected override void Seed(Olga.DAL.EF.ProductContext context)
         {
             CreateProductStatuses(context);
+            CreateProductCategories(context);
             // AddRoles(context);
             //  This method will be called after migrating to the latest version.
 
@@ -57,6 +58,18 @@ namespace Olga.DAL.Migrations
 
             db.ProductStatuses.Add(p1);
             db.ProductStatuses.Add(p2);
+            db.SaveChanges();
+        }
+
+        private static void CreateProductCategories(ProductContext db)
+        {
+            ProductCategory p1 = new ProductCategory { Id = 1, Category = "Medicine" };
+            ProductCategory p2 = new ProductCategory { Id = 2, Category = "Food supplement" };
+            ProductCategory p3 = new ProductCategory { Id = 3, Category = "Medical device" };
+
+            db.ProductCategories.Add(p1);
+            db.ProductCategories.Add(p2);
+            db.ProductCategories.Add(p3);
             db.SaveChanges();
         }
     }

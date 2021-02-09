@@ -5,9 +5,9 @@ using System.Web;
 
 namespace Olga.Models
 {
-    public class ProductStatusViewModel
-    { 
+    public class ProductCategoryViewModel
+    {
         public int Id { get; set; }
-        public string Status { get; set; }
+        public string Category { get; set; }
     }
 }

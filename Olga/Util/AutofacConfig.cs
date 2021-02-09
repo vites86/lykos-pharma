@@ -52,6 +52,8 @@ namespace Olga.Util
             builder.RegisterType<CountrySettingsService>().As<IBase<CountrySettingDTO>>();
 
             builder.RegisterType<ProductStatusService>().As<IProductStatus>().WithParameter("context", context); ;
+           
+            builder.RegisterType<ProductCategoryService>().As<IProductCategory>().WithParameter("context", context); ;
 
 
             // создаем новый контейнер с теми зависимостями, которые определены выше

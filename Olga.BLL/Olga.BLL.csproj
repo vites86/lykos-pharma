@@ -142,6 +142,7 @@
     <Compile Include="DTO\PackSizeDTO.cs" />
     <Compile Include="DTO\PharmaceuticalFormDTO.cs" />
     <Compile Include="DTO\ProcedureDTO.cs" />
+    <Compile Include="DTO\ProductCategoryDTO.cs" />
     <Compile Include="DTO\ProductDocumentDTO.cs" />
     <Compile Include="DTO\ProductDTO.cs" />
     <Compile Include="DTO\ProductCodeDTO.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Services\CountrySettingsService.cs" />
     <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Services\ProcedureService.cs" />
+    <Compile Include="Services\ProductCategoryService.cs" />
     <Compile Include="Services\ProductStatusService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
     <Compile Include="Services\StrengthService.cs" />

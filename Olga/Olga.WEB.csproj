@@ -238,6 +238,7 @@
     <Compile Include="Models\PharmaceuticalFormViewModel.cs" />
     <Compile Include="Models\ProcedureViewModel.cs" />
     <Compile Include="Models\ProcedureViewOptimized.cs" />
+    <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductStatusViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />

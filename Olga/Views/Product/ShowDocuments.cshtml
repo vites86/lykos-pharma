@@ -20,19 +20,26 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <label class="control-label text-info ">@Model.ProductName</label>
-                </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label class="control-label text-info ">@Model.ProductName</label>
             </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductCategory, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label class="control-label text-info ">@Model.ProductCategory</label>
+            </div>
+        </div>
 
-            <div class="form-group">
+        <div class="form-group">
                 @Html.LabelFor(model => model.ProductCode, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <label class="control-label text-info ">@Model.ProductCode</label>
                 </div>
-            </div>
+         </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Strength, htmlAttributes: new { @class = "control-label col-md-2" })
