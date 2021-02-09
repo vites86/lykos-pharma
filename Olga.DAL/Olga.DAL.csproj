@@ -139,6 +139,7 @@
     <Compile Include="Entities\ProcedureDocument.cs" />
     <Compile Include="Entities\Procedures.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ProductCategory.cs" />
     <Compile Include="Entities\ProductCode.cs" />
     <Compile Include="Entities\ProductDocument.cs" />
     <Compile Include="Entities\ProductName.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Repositories\EFUnitOfWorkGeneral.cs" />
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Repositories\ProcedureRepository.cs" />
+    <Compile Include="Repositories\ProductCategoryRepository.cs" />
     <Compile Include="Repositories\ProductStatusRepository.cs" />
     <Compile Include="Repositories\StrengthRepository.cs" />
     <Compile Include="Repositories\ProductNameRepository.cs" />

@@ -22,6 +22,7 @@ namespace Olga.DAL.Repositories
         private ProductCodeRepository _productCodeRepository;
         private CountrySettingRepository _countrySettingRepository;
         private ProductStatusRepository _productStatusRepository;
+        private ProductCategoryRepository _productCategoryRepository;
 
         public EfUnitOfWorkGeneral(string connectionString)
         {
@@ -42,6 +43,7 @@ namespace Olga.DAL.Repositories
         public IRepository<ProductCode> ProductCodes => _productCodeRepository ?? (_productCodeRepository = new ProductCodeRepository(_db));
         public IRepository<CountrySetting> CountrySettings => _countrySettingRepository ?? (_countrySettingRepository = new CountrySettingRepository(_db));
         public IRepository<ProductStatus> ProductStatuses => _productStatusRepository ?? (_productStatusRepository = new ProductStatusRepository(_db));
+        public IRepository<ProductCategory> ProductCategories => _productCategoryRepository ?? (_productCategoryRepository = new ProductCategoryRepository(_db));
 
         public void Save()
         {

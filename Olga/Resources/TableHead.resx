@@ -228,4 +228,7 @@
   <data name="ShowGtin" xml:space="preserve">
     <value>Show GTIN files</value>
   </data>
+  <data name="ProductCategory" xml:space="preserve">
+    <value>Product Category</value>
+  </data>
 </root>

@@ -74,6 +74,9 @@ namespace Olga.Models
 
         [Display(Name = "Product Status")]
         public string ProductStatus { get; set; }
+
+        [Display(Name = "Product Category")]
+        public string ProductCategory { get; set; }
     }
 
     public class ProductCreateModel
@@ -161,6 +164,11 @@ namespace Olga.Models
         [Display(Name = "Product Status")]
         public virtual ProductStatus ProductStatus { get; set; }
         public int? ProductStatusId { get; set; }
+
+        [Display(Name = "Product Category")]
+        public virtual ProductCategory ProductCategory { get; set; }
+        [Required(ErrorMessage = "{0} is required.")]
+        public int? ProductCategoryId { get; set; }
     }
 
     public class ShowProductModel
@@ -236,6 +244,9 @@ namespace Olga.Models
 
         [Display(Name = "Product Status")]
         public string  ProductStatus { get; set; }
+
+        [Display(Name = "Product Category")]
+        public string ProductCategory { get; set; }
     }
 
     public class ProductCompareModel

@@ -33,6 +33,7 @@ namespace Olga.DAL.EF
         public DbSet<ProcedureDocument> ProcedureDocuments { get; set; }
         public DbSet<CountrySetting> CountrySettings{ get; set; }
         public DbSet<ProductStatus> ProductStatuses { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

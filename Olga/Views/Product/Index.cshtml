@@ -32,6 +32,7 @@
                     <thead class="thead_table">
                         <tr>
                             <th>@Resources.TableHead.ProductName</th>
+                            <th>@Resources.TableHead.ProductCategory</th>
                             <th>@Resources.TableHead.PharmaceuticalForm</th>
                             <th>@Resources.TableHead.Strength</th>
                             <th>@Resources.TableHead.ProductCode</th>
@@ -60,6 +61,7 @@
                             }
                         <tr data-rowid="@i">
                             <td>@Model[i].ProductName</td>
+                            <td>@Model[i].ProductCategory</td>
                             <td>@Model[i].PharmaceuticalForm</td>
                             <td>@Model[i].Strength</td>
                             <td>@Model[i].ProductCode</td>
@@ -105,7 +107,7 @@
                                                 <br />
                                                 <br />
                                                 <span>
-                                                    @Html.ActionLink("   ", "DeleteProduct", "Product", new {id = @Model[i].Id, countryId = @ViewBag.CountryId}, new
+                                                    @Html.ActionLink("   ", "DeleteProduct", "Product", new { id = @Model[i].Id, countryId = @ViewBag.CountryId }, new
                                                     {
                                                         @onclick = "return confirm('Are you sure you wish to delete this product?');",
                                                         @class = "glyphicon glyphicon-trash text-warning"

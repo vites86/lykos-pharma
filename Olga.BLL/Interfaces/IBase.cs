@@ -79,6 +79,10 @@ namespace Olga.BLL.Interfaces
         //IEnumerable<PharmaceuticalFormDTO> GetItems();
     }
 
+    public interface IProductCategory : IBase<ProductCategoryDTO>
+    {
+        //IEnumerable<PharmaceuticalFormDTO> GetItems();
+    }
 
     public interface IProductCode : IBase<ProductCodeDTO>
     {

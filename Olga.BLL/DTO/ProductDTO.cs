@@ -52,5 +52,8 @@ namespace Olga.BLL.DTO
 
         public virtual ProductStatus ProductStatus { get; set; }
         public int? ProductStatusId { get; set; }
+
+        public virtual ProductCategory ProductCategory { get; set; }
+        public int? ProductCategoryId { get; set; }
     }
 }

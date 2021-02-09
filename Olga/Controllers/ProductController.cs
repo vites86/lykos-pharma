@@ -51,6 +51,7 @@ namespace Olga.Controllers
         bool toSend = bool.Parse(WebConfigurationManager.AppSettings["makeNotificationProd"]);
         Emailer emailer;
         readonly IProductStatus _productStatusService;
+        readonly IProductCategory _productCategoryService;
 
         // GET: Settings
         public ProductController(ICountry serv, IProductName prodName, IProductCode prodCode,
@@ -61,7 +62,8 @@ namespace Olga.Controllers
             IProductName productNameService, IPackSize packSizeService,
             IProductCode productCode,
             IBase<CountrySettingDTO> countrySettingsService,
-            IProductStatus productStatusService)
+            IProductStatus productStatusService,
+            IProductCategory productCategoryService)
         {
             _countryService = serv;
             //_productNameService = prodName;
@@ -90,6 +92,7 @@ namespace Olga.Controllers
             emailer.DeveloperMail = WebConfigurationManager.AppSettings["developerMail"];
             _countrySettingsService = countrySettingsService;
             _productStatusService = productStatusService;
+            _productCategoryService = productCategoryService;
         }
 
         private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
@@ -193,7 +196,7 @@ namespace Olga.Controllers
             try
             {
                 var userEmailsToNotify = _countryService.GetCountryUsersEmails((int) model.CountryId);
-                await SenEmailAboutAddUpdateProduct(model, selectedManufacturers, selectedArtworks, countryName,
+                await SendEmailAboutAddUpdateProduct(model, selectedManufacturers, selectedArtworks, countryName,
                     documentNamesApprs, documentNamesArtworks, userEmailsToNotify);
 
                 var productDto = Mapper.Map<ProductCreateModel, ProductDTO>(model);
@@ -381,7 +384,7 @@ namespace Olga.Controllers
                 var userName = User.Identity.Name;
                 Logger.Log.Error($"{userName}: DeleteProduct() {ex.Message} ");
 
-                @ViewBag.Error = ex.Message;
+                @ViewBag.Error = string.Concat("Delete procedures and then a product! Error details:", ex.Message);
                 TempData["Error"] = ex.Message;
                 return View("Error");
             }
@@ -501,6 +504,11 @@ namespace Olga.Controllers
             var productStatuses = Mapper
                 .Map<IEnumerable<ProductStatusDTO>, IEnumerable<ProductStatusViewModel>>(productStatusesDto).ToList();
             @ViewBag.ProductStatuses = productStatuses;
+
+            var productCategoriesDto = _productCategoryService.GetItems().OrderBy(a => a.Id);
+            var productCategories = Mapper
+                .Map<IEnumerable<ProductCategoryDTO>, IEnumerable<ProductCategoryViewModel>>(productCategoriesDto).ToList();
+            @ViewBag.ProductCategories = productCategories;
         }
 
         public void CreateError()
@@ -695,7 +703,7 @@ namespace Olga.Controllers
             }
         }
 
-        public async Task SenEmailAboutAddUpdateProduct(ProductCreateModel model, string[] selectedManufacturers,
+        public async Task SendEmailAboutAddUpdateProduct(ProductCreateModel model, string[] selectedManufacturers,
             string[] selectedArtworks,
             string countryName, string[] documentNamesApprs, string[] documentNamesArtworks,
             IEnumerable<string> emailsToNotify)
