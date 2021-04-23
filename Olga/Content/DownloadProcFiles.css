@@ -94,3 +94,11 @@
      font-weight: bold;
      color: black;
  }
+ .productInfo img {
+     margin-left: 15px;
+     height: 20px;
+ }
+.flag {
+    margin-left: 15px;
+    height: 20px;
+}

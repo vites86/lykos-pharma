@@ -388,15 +388,10 @@ namespace Olga.Controllers
                 var procedure = _procedureService.GetItem(id);
                 var procedureDto = Mapper.Map<ProcedureDTO, ProcedureViewModel>(procedure);
 
-                //var productDto = _productService.GetProduct((int)productId);
-                //var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
                 _currentUser = GetCurrentUser();
 
                 procedureDto.ProductId = (int)productId;
                 ViewBag.ProcedureDocsType = procedureDocsType;
-                //ViewBag.CountryId = productDto.CountryId;
-                //ViewBag.Country = product.Country;
-                //ViewBag.Product = product;
                 ViewBag.User = _currentUser;
                 ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
                 return View(procedureDto);

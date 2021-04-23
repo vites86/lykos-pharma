@@ -2,7 +2,6 @@
     ViewBag.Title = $"Files {@MyHelpers.GetFileTypeText(ViewBag?.ProcedureDocsType)}";
 }
 @using System.Web.Mvc.Html
-@using Olga.DAL.Entities
 @model Olga.Models.ProcedureViewModel
 
 <div>
@@ -10,9 +9,10 @@
         <div class="row">
             <div class="col-md-10">
                 <div class="alert-success" style="width: auto; margin-top: 10px;">
-                    <h1 class="productInfo">
+                    <h1 >
                         <span id="CountryName"></span>
-                        <img id="CountryFlag"/>
+                        <span class="productInfo"><img class="productInfo" src="../../Content/images/loader.gif" /></span>
+                        <img class="flag" id="CountryFlag" />
                     </h1>
                 </div>
             </div>
@@ -23,11 +23,11 @@
             <span id="ProductNameWithLink" style="color: blue; font-weight: bold; margin-top: 20px;"></span>
         </h2>
         <div class="product_span">
-            <span class="productInfo" id="PharmaceuticalForm"><img src="../../Content/images/loader.gif"/></span>
+            <span class="productInfo" id="PharmaceuticalForm"><img src="../../Content/images/loader.gif" /></span>
             <span class="productInfo" id="Strength"><img src="../../Content/images/loader.gif" /></span>
             <span class="productInfo" id="MarketingAuthorizNumber"><img src="../../Content/images/loader.gif" /></span>
             <span class="productInfo" id="ProductCode"><img src="../../Content/images/loader.gif" /></span>
-           
+
             <div id="load" class="load" align="center">
                 <img src="~/Content/images/loading.gif" style="padding-left: 40px;" width="28" height="20" /> Loading...
             </div>
@@ -87,67 +87,23 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
 
-    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"></script>*@
 
     <script>
         //initialise Action link to Delete File in RenderedScript-file
         var linkToDelProcFile = '@Url.Action("DeleteProcedureFile", "Procedure")';
-        $(function() {
+        var link = '@Url.Action("GetProductInfo", "Procedure")';
+        $(function () {
             window.initScript(linkToDelProcFile);
-            getProductInfo();
+            getProductInfo(link);
         });
-
-
-        function getProductInfo() {
-
-            var link = '@Url.Action("GetProductInfo", "Procedure")';
-            var queryString = window.location.search;
-            var urlParams = new URLSearchParams(queryString);
-            var productId = urlParams.get('productId');
-            console.log("productId = " + productId);
-
-            $.ajax({
-                type: "POST",
-                url: link,
-                data: { productId: productId },
-                cache: false,
-                beforeSend: function() {
-                    $('#CountryFlag').attr('src', "../../Content/images/loader.gif");
-                },
-                success: function (request) {
-                    if (request.success === true) {
-
-                        console.log("request = " + request.responseText);
-                        var product = JSON.parse(request.responseText);
-
-                        $("#CountryName").text(product.countryName);
-                        $("#PharmaceuticalForm").text(product.pharmaceuticalForm);
-                        $("#Strength").text(product.strength);
-                        $("#MarketingAuthorizNumber").text(product.marketingAuthorizNumber);
-                        $("#ProductCode").text(product.productCode);
-                        $('.productInfo img').hide();
-                        $('#CountryFlag').show;
-
-                        var productLink = jQuery('<a>').attr('href', '/Product/ShowDocuments/' + productId + '?countryId=' + product.countryId).text(product.productName);
-                        jQuery('#ProductNameWithLink').append(productLink);
-
-                    } else {
-                        console.log("request = " + request.responseText);
-                        toastr.error(request.responseText);
-                    }
-                }
-            });
-        }
     </script>
-    <script src="~/Scripts/Procedures/EditProcFiles.js"></script>
+    @*<script src="~/Scripts/Procedures/EditProcFiles.js"></script>*@
 }
 
+@Scripts.Render("~/Scripts/ajax-form.js");
+@Scripts.Render("~/Scripts/Procedures/EditProcFiles.js");
 @Styles.Render("~/Content/DownloadProcFiles.css")
-<style>
-    .productInfo img {
-        margin-left: 15px; 
-        height: 20px;
-    }
-    </style>
