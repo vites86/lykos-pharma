@@ -12,13 +12,13 @@
             $('form').ajaxForm({
                 beforeSend: function(e) {
 
-                    var fileInput = document.getElementById('uploads');
+                    var fileInput = document.getElementById('uploadFiles');
 
                     if (!fileInput.files[0]) {
                         $('#FileLable').css('background-color', 'lightcoral');
                         console.log("no file chosen");
                         toastr.error("Please select a file before clicking 'Load'!");
-                        e.preventDefault();
+                        return false;
                     }
 
                     status.empty();
@@ -62,6 +62,9 @@
                     console.log("complete proccessing");
                     $(".progress").hide();
                     $("#loading").hide();
+                    toastr.options.timeOut = 30000;
+                    toastr.info("Page refreshing! Please wait!");
+                    toastr.options.timeOut = 20000;
                     timeRefresh(0);
                 }
             });
@@ -87,7 +90,6 @@
                     }
                 }
                 document.getElementById("choosenFile").innerHTML = filelist === "" ? "no file chosen" : filelist;
-
             }
         }
 
@@ -95,9 +97,6 @@
             setTimeout("location.reload(true);", timeoutPeriod);
         }
 
-        //$(document).ready(function() {
-        //    document.getElementById('load').style.visibility = "hidden";
-        //});
 
 var linkToDelProcFile;
 

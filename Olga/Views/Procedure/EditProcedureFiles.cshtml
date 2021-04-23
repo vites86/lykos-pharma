@@ -20,7 +20,7 @@
                 <span>@ViewBag.Product.MarketingAuthorizNumber</span>
                 <span>@ViewBag.Product.ProductCode</span>
                 <div id="load" class="load" align="center" style="padding-left: 40px;">
-                    <img src="~/Content/images/loading.gif" width="28" height="20" /> Loading...
+                    <img src="../../Content/images/loading.gif" width="28" height="20" /> Loading...
                 </div>
             </div>
 
@@ -40,83 +40,10 @@
                                     <span>@docDate</span>
                                     <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
                                     <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                    <img id="load_@document.Id" style="visibility: hidden; height: 30px; margin-left: 25px;" src="~/Content/images/loader.gif">
                                 </div><br />
                             }
                             <hr />
-
-                            //switch (period)
-                            @*{
-                                case ProcedureDocsType.DossierObtainedFromM:
-                                    <span>Dossier Obtained from MAH</span><br /><br />
-                                    foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM))
-                                    {
-                                        var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
-
-                                        if (document.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM)
-                                        {
-                                            <div>
-                                                <span>@docDate</span>
-                                                <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
-                                                <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
-                                            </div><br />
-                                        }
-                                    }
-                                    <hr />
-                                    break;
-                                case ProcedureDocsType.DossierSubmittedToAuth:
-                                    {
-                                        <span>Dossier Submitted to Authority</span><br /><br />
-                                        foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth))
-                                        {
-                                            var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
-
-                                            if (document.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth)
-                                            {
-                                                <div>
-                                                    <span>@docDate</span>
-                                                    <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
-                                                    <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
-                                                </div><br />
-                                            }
-                                        }
-                                        <hr />
-                                        break;
-                                    }
-                                case ProcedureDocsType.RemarksFromAuth:
-                                    <span>Remarks obtained from Authority</span><br /><br />
-                                    foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth))
-                                    {
-                                        var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
-
-                                        if (document.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth)
-                                        {
-                                            <div>
-                                                <span>@docDate</span>
-                                                <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
-                                                <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
-                                            </div><br />
-                                        }
-                                    }
-                                    <hr />
-                                    break;
-                                case ProcedureDocsType.RemarksToAuth:
-                                    <span>Responses submitted to Authority</span><br /><br />
-                                    foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksToAuth))
-                                    {
-                                        var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
-
-                                        if (document.ProcedureDocsType == ProcedureDocsType.RemarksToAuth)
-                                        {
-                                            <div>
-                                                <span>@docDate</span>
-                                                <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
-                                                <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
-                                            </div><br />
-                                        }
-                                    }
-                                    <hr />
-                                    break;
-                            }*@
                         }
                     </div>
                 </div>
@@ -144,7 +71,7 @@
                                     @Html.Label("Document sources:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
                                 </div>
                                 <div class="col-md-8">
-                                    <label id="FileLable" class="btn btn-default">Browse for file ...<input type="file" id="uploads" name="uploads" onchange="getFileData(this);" hidden /></label>
+                                    <label id="FileLable" class="btn btn-default">Browse for file ...<input type="file" id="uploadFiles" name="uploadFiles" onchange="getFileData(this);" hidden /></label>
                                     <label style="margin-left: 20px;" id="choosenFile" name="choosenFile" />
                                 </div>
                             </div><br /><br /><br />
@@ -172,11 +99,8 @@
 </div>
 </div>
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"></script>
 
     <script>
         (function() {
@@ -191,22 +115,22 @@
 
             $('form').ajaxForm({
                 beforeSend: function(e) {
-                    toastr.options.timeOut = 20000;
-                    var fileInput = document.getElementById('uploads');
+                    var fileInput = document.getElementById('uploadFiles');
                     var selectedDocType = $('#procedureDocsType :selected').text();
                     console.log("selectedDocTypeIndex = " + selectedDocType);
+
                     if (selectedDocType == "-- Select Type --") {
                         $('#procedureDocsType').css('background-color', 'lightcoral');
                         console.log("no doc type selected");
                         toastr.error("Please select a Document Type to download!");
-                        e.preventDefault();
+                        return false;
                     }
 
                     if (!fileInput.files[0]) {
                         $('#FileLable').css('background-color', 'lightcoral');
                         console.log("no file chosen");
                         toastr.error("Please select a file before clicking 'Load'!");
-                        e.preventDefault();
+                        return false;
                     }
 
                     status.empty();
@@ -216,7 +140,6 @@
                     console.log("beforeSend...");
                     $("#loading").show();
 
-
                 },
                 uploadProgress: function(event, position, total, percentComplete) {
                     $(".progress").show();
@@ -225,18 +148,35 @@
                     percent.html(percentVal);
                     console.log("uploadProgress...");
                 },
-                success: function() {
+                success: function(request) {
                     var percentVal = '100%';
                     bar.width(percentVal);
                     percent.html(percentVal);
                     console.log("success downloading");
+
+                    if (request.success === true) {
+                        console.log("success downloading");
+                        toastr.info(request.responseText);
+                        toastr.info("File downloaded successfuly! Wait a few seconds...");
+                    }
+                    if (request.success === false) {
+                        console.log(request.responseText);
+                        toastr.error(request.responseText);
+                    }
+                },
+                error: function() {
+                    var percentVal = '100%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                    console.log(xhr.responseText);
+                    toastr.error(xhr.responseText);
                 },
                 complete: function(xhr) {
                     status.html(xhr.responseText);
+                    console.log(xhr.responseText);
                     console.log("complete downloading");
                     $(".progress").hide();
                     $("#loading").hide();
-                    toastr.info("File downloaded successfuly!");
                     toastr.info("Page refreshing! Please wait!");
                     timeRefresh(0);
                 }
@@ -282,6 +222,7 @@
                 var commentContainer = $(this).parent();
                 var link = '@Url.Action("DeleteProcedureFile", "Procedure")';
                 var documentId = $(this).attr("id");
+                var loaderId = "load_" + documentId;
                 var procedureId = $('#procedureId').val();
                 console.log("documentId = " + documentId);
                 console.log("procedureId = " + procedureId);
@@ -293,10 +234,11 @@
                     cache: false,
                     beforeSend: function() {
                         $('#load').show();
-                        document.getElementById('load').style.visibility = "visible";
-                        toastr.options.timeOut = 20000;
+                        document.getElementById(loaderId).style.visibility = 'visible';
+                        toastr.options.timeOut = 30000;
                         toastr.info("Wait a moment! File deleting...");},
-                    success: function() {
+                    success: function () {
+                        toastr.options.timeOut = 20000;
                         commentContainer.slideUp('slow', function() { $(this).remove(); });
                         $('#load').fadeOut();
                         document.getElementById('load').style.visibility = "hidden";
@@ -354,7 +296,7 @@
     #load {
         position: absolute;
         left: 225px;
-        background-image: url(~/Content/images/loading-bg.png);
+        background-image: url(../../Content/images/loading-bg.png);
         background-position: center;
         background-repeat: no-repeat;
         width: 159px;

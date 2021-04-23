@@ -39,21 +39,21 @@
  }
 
  /*delete files*/
- #load {
-     position: absolute;
-     left: 225px;
-     background-image: url(~/Content/images/loading-bg.png);
-     background-position: center;
-     background-repeat: no-repeat;
-     width: 159px;
-     color: #999;
-     font-size: 18px;
-     font-family: Arial, Helvetica, sans-serif;
-     height: 40px;
-     font-weight: 300;
-     padding-top: 14px;
-     top: 23px;
- }
+#load {
+    position: absolute;
+    left: 225px;
+    background-image: url(../../Content/images/loading-bg.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 159px;
+    color: #999;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 40px;
+    font-weight: 300;
+    padding-top: 14px;
+    top: 23px;
+}
 
 
  .delete {

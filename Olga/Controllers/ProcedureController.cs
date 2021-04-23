@@ -459,17 +459,18 @@ namespace Olga.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditProcedureFiles(IEnumerable<HttpPostedFileBase> uploads, string procedureDocsType, string procedureId, string productId)
+        public async Task<ActionResult> EditProcedureFiles(IEnumerable<HttpPostedFileBase> uploadFiles, string procedureDocsType, string procedureId, string productId)
         {
             if (!ModelState.IsValid)
             {
-                CreateError();
+                ViewBag.Error = CreateError();
+                return View("Error");
             }
             try
             {
-                if (uploads == null) return Json(new { success = false, responseText = "uploads == null!" }, JsonRequestBehavior.AllowGet);
+                if (uploadFiles == null) return Json(new { success = false, responseText = "uploads == null!" }, JsonRequestBehavior.AllowGet);
 
-                foreach (var file in uploads)
+                foreach (var file in uploadFiles)
                 {
                     if (file == null || file.ContentLength <= 0) continue;
                     var targetFolder = Server.MapPath($"~/Upload/Documents/Procedures/");
@@ -577,7 +578,7 @@ namespace Olga.Controllers
             {
                 foreach (ModelError error in modelState.Errors)
                 {
-                    errorMessage.Append(error.ErrorMessage);
+                    errorMessage.Append(error.Exception.Message);
                 }
             }
             Logger.Log.Error($"{errorMessage}");

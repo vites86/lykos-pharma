@@ -22,7 +22,7 @@
         <br />
         <h2>
             Update Procedure Files for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
-                @Html.ActionLink($"{ViewBag.Product.ProductName??"No Name"}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+                @Html.ActionLink($"{ViewBag.Product.ProductName ?? "No Name"}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
             </span>
         </h2>
         <div class="product_span">
@@ -30,7 +30,7 @@
             <span>@ViewBag.Product.Strength</span>
             <span>@ViewBag.Product.MarketingAuthorizNumber</span>
             <span>@ViewBag.Product.ProductCode</span>
-            <div id="load" class="load" align="center" >
+            <div id="load" class="load" align="center">
                 <img src="~/Content/images/loading.gif" style="padding-left: 40px;" width="28" height="20" /> Loading...
             </div>
         </div>
@@ -61,7 +61,7 @@
                             <div class="col-md-8">
                                 <label id="FileLable" class="btn btn-default">
                                     Browse for file ...
-                                    <input type="file" id="uploads" name="uploads" onchange="getFileData(this);" multiple="multiple" hidden />
+                                    <input type="file" id="uploadFiles" name="uploadFiles" onchange="getFileData(this);" multiple="multiple" hidden />
                                 </label>
                                 <label style="margin-left: 20px;" id="choosenFile" name="choosenFile"></label>
                             </div>
@@ -90,11 +90,8 @@
     </div>
 </div>
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script>
+   
+    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"></script>
 
     <script>
         //initialise Action link to Delete File in RenderedScript-file
@@ -105,6 +102,6 @@
     </script>
     <script src="~/Scripts/Procedures/EditProcFiles.js"></script>
 }
-   
+
 @Styles.Render("~/Content/DownloadProcFiles.css")
-    
+
