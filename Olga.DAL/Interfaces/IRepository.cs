@@ -26,6 +26,7 @@ namespace Olga.DAL.Interfaces
         Artwork GetArtwork(int id);
         Manufacturer GetManufacturer(int id);
         void DeleteDocuments(string fileName);
+        Task<T> FindAsync(int id);
     }
 
     public interface IProcedureRepository<T> : IRepository<T> where T : class

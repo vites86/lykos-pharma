@@ -173,6 +173,10 @@ namespace Olga.DAL.Repositories
                 Commit();
             }
         }
+        public async Task<Product> FindAsync(int id)
+        {
+            return await db.Products.FindAsync(id);
+        }
 
 
     }

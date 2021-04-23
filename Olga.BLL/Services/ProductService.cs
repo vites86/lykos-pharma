@@ -128,6 +128,12 @@ namespace Olga.BLL.Services
             }
         }
 
+        public async Task<ProductDTO> FindAsync(int id)
+        {
+            var product = await Database.Products.FindAsync(id);
+            return Mapper.Map<Product, ProductDTO>(product);
+        }
+
         public void AddDocumentToProduct(ProductDocument productDocument)
         {
             var product = Database.Products.Get(productDocument.ProductId);

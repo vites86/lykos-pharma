@@ -24,5 +24,6 @@ namespace Olga.BLL.Interfaces
         void DeleteDocument(string name);
         void DeleteAdditionalDocument(string productId, string documentId);
         Task<bool> AddFileToProd(string localFileName, int productId, string prodDocType);
+        Task<ProductDTO> FindAsync(int id);
     }
 }

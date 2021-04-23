@@ -9,20 +9,17 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using AutoMapper;
-using Ionic.Zip;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using NUnrar.Archive;
 using Olga.AutoMapper;
 using Olga.BLL.DTO;
 using Olga.BLL.Interfaces;
-using Olga.BLL.Services;
 using Olga.DAL.Entities;
 using Olga.Models;
 using Olga.Util;
 using PagedList;
-using System.IO.Compression;
-using ZipFile = System.IO.Compression.ZipFile;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Newtonsoft.Json;
 
 namespace Olga.Controllers
 {
@@ -379,52 +376,6 @@ namespace Olga.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditProcedureFiles(int id, int? productId)
-        {
-            if (id == 0 || productId == 0)
-            {
-                @ViewBag.Error = nameof(id);
-                return View("Error");
-            }
-            try
-            {
-                var procedure = _procedureService.GetItem(id);
-                var procedureDto = Mapper.Map<ProcedureDTO, ProcedureViewModel>(procedure);
-
-                var productDto = _productService.GetProduct((int)productId);
-                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-                //var _currentUser = GetCurrentUser();
-
-                procedureDto.ProductId = (int)productId;
-                ViewBag.Country = product.Country;
-                ViewBag.CountryId = productDto.CountryId;
-                ViewBag.Product = product;
-                ViewBag.User = _currentUser;
-                ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
-
-                //var dossierObtainedFromM =
-                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierObtainedFromM).OrderBy(s=>s.Id);
-
-                //var dossierSubmittedToAuth =
-                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.DossierSubmittedToAuth).OrderBy(s => s.Id);
-
-                //var remarksFromAuth =
-                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksFromAuth).OrderBy(s => s.Id);
-
-                //var remarksToAuth =
-                //    procedureDto.ProcedureDocuments.Where(a => a.ProcedureDocsType == ProcedureDocsType.RemarksToAuth).OrderBy(s => s.Id);
-
-
-                return View(procedureDto);
-            }
-            catch (Exception ex)
-            {
-                @ViewBag.Error = ex.ToString();
-                return View("Error");
-            }
-        }
-
-        [HttpGet]
         public ActionResult EditFiles(int id, int? productId, ProcedureDocsType procedureDocsType)
         {
             if (id == 0 || productId == 0)
@@ -437,15 +388,15 @@ namespace Olga.Controllers
                 var procedure = _procedureService.GetItem(id);
                 var procedureDto = Mapper.Map<ProcedureDTO, ProcedureViewModel>(procedure);
 
-                var productDto = _productService.GetProduct((int)productId);
-                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
+                //var productDto = _productService.GetProduct((int)productId);
+                //var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
                 _currentUser = GetCurrentUser();
 
                 procedureDto.ProductId = (int)productId;
                 ViewBag.ProcedureDocsType = procedureDocsType;
-                ViewBag.CountryId = productDto.CountryId;
-                ViewBag.Country = product.Country;
-                ViewBag.Product = product;
+                //ViewBag.CountryId = productDto.CountryId;
+                //ViewBag.Country = product.Country;
+                //ViewBag.Product = product;
                 ViewBag.User = _currentUser;
                 ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
                 return View(procedureDto);
@@ -454,6 +405,35 @@ namespace Olga.Controllers
             {
                 @ViewBag.Error = ex.ToString();
                 return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> GetProductInfo(int productId)
+        {
+            try
+            {
+                var productDto = await _productService.FindAsync(productId);
+                var productViewModel = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
+
+                var responseModel = new { 
+                    pharmaceuticalForm = productViewModel.PharmaceuticalForm,
+                    strength= productViewModel.Strength,
+                    marketingAuthorizNumber = productViewModel.MarketingAuthorizNumber,
+                    productCode = productViewModel.ProductCode,
+                    productName = productViewModel.ProductName,
+                    countryId = productDto.CountryId,
+                    flagSrc = $"{productDto.CountryId}.gif",
+                    countryName = productDto.Country.Name
+                };
+
+                string json = JsonConvert.SerializeObject(responseModel);
+
+                return Json(new {success = true, responseText = json}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -504,6 +484,39 @@ namespace Olga.Controllers
             {
                 Logger.Log.Error($"{ex}");
                 return Json(new { success = false, responseText = $"{ex}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EditProcedureFiles(int id, int? productId)
+        {
+            if (id == 0 || productId == 0)
+            {
+                @ViewBag.Error = nameof(id);
+                return View("Error");
+            }
+            try
+            {
+                var procedure = _procedureService.GetItem(id);
+                var procedureDto = Mapper.Map<ProcedureDTO, ProcedureViewModel>(procedure);
+
+                var productDto = _productService.GetProduct((int)productId);
+                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
+                //var _currentUser = GetCurrentUser();
+
+                procedureDto.ProductId = (int)productId;
+                ViewBag.Country = product.Country;
+                ViewBag.CountryId = productDto.CountryId;
+                ViewBag.Product = product;
+                ViewBag.User = _currentUser;
+                ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
+
+                return View(procedureDto);
+            }
+            catch (Exception ex)
+            {
+                @ViewBag.Error = ex.ToString();
+                return View("Error");
             }
         }
 
