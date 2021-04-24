@@ -8,18 +8,19 @@
 <div>
     <div class="row" style="overflow: auto; margin-left:  20px;margin-right: 10px;">
         <div class="alert-success" style="width: 100%">
-            <h1>@ViewBag.Country</h1>
+            <h1>
+                <span id="CountryName"></span>
+                <span class="productInfo"><img class="productInfo" src="../../Content/images/loader.gif" /></span>
+                <img class="flag" id="CountryFlag" />
+            </h1>
         </div>
         <h2>
             Update Procedure for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
-                @Html.ActionLink($"{ViewBag.Product.ProductName ?? "No Name"}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
+                <span id="ProductNameWithLink" style="color: blue; font-weight: bold; margin-top: 20px;"></span>
             </span>
         </h2>
         <div class="product_span">
-            <span>@ViewBag.Product.PharmaceuticalForm </span>
-            <span> @ViewBag.Product.ProductCode</span>
-            <span> @ViewBag.Product.Strength</span>
-            <span> @ViewBag.Product.MarketingAuthorizNumber</span>
+            @MyHelpers.MakeProductInfoField()
         </div>
         <br />
         <br />
@@ -146,6 +147,14 @@
         font-size: 20px;
         display: block;
     }
+    .productInfo img {
+        margin-left: 15px;
+        height: 20px;
+    }
+    .flag {
+        margin-left: 15px;
+        height: 20px;
+    }
 </style>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -236,6 +245,49 @@
                 submissionEstDateInput.value = new Date().toISOString().slice(0, 10);
             }
         }
+        function getProductInfo(link) {
+
+    
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var productId = urlParams.get('productId');
+            console.log("productId = " + productId);
+
+            $.ajax({
+                type: "POST",
+                url: link,
+                data: { productId: productId },
+                cache: false,
+                beforeSend: function () {},
+                success: function (request) {
+                    if (request.success === true) {
+
+                        console.log("request = " + request.responseText);
+                        var product = JSON.parse(request.responseText);
+
+                        $("#CountryName").text(product.countryName);
+                        $("#PharmaceuticalForm").text(product.pharmaceuticalForm);
+                        $("#Strength").text(product.strength);
+                        $("#MarketingAuthorizNumber").text(product.marketingAuthorizNumber);
+                        $("#ProductCode").text(product.productCode);
+                        $('.productInfo img').hide();
+                        $('#CountryFlag').attr('src', "../../Content/images/countries/" + product.flagSrc);
+
+                        var productLink = jQuery('<a>').attr('href', '/Product/ShowDocuments/' + productId + '?countryId=' + product.countryId).text(product.productName);
+                        jQuery('#ProductNameWithLink').append(productLink);
+
+                    } else {
+                        console.log("request = " + request.responseText);
+                        toastr.error(request.responseText);
+                    }
+                }
+            });
+        }
+
+        $(function () {
+            var link = '@Url.Action("GetProductInfo", "Procedure")';
+            getProductInfo(link);
+        });
     </script>
 }
 
