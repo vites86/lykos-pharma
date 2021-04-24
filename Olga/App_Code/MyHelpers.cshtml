@@ -94,20 +94,67 @@
         }
         <br />
         <br />
-        foreach (var document in procedureViewModel.ProcedureDocuments)
-        {
-            var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
-            if (document.ProcedureDocsType == (ProcedureDocsType)procedureDocsType)
-            {
 
-                <i class="glyphicon glyphicon-file"></i>
-                <span>@docDate</span>
-                <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
-                <br />
+        var archivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => a.IsArchived
+                                                                              && a.ProcedureDocsType == (ProcedureDocsType)procedureDocsType).ToList();
+        var nonArchivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => !a.IsArchived
+                                                                                 && a.ProcedureDocsType == (ProcedureDocsType)procedureDocsType).ToList();
+
+        if (nonArchivedFiles != null)
+        {
+            foreach (var document in nonArchivedFiles)
+            {
+                @MakeDetailedViewForFile(document);
             }
         }
+
+        if (archivedFiles != null && archivedFiles.Count > 0)
+        {
+            var @filesCount = archivedFiles.Count;
+            var random = Guid.NewGuid();
+            string boxId = $"box{random}";
+            string hrefAnchor = $"#toggler{random}";
+
+            <div style="margin-top: 15px; color: grey;">
+                <span>Archived (@filesCount files)</span>
+                <a onclick="javascript:openbox('@boxId', this, @filesCount);" href="@hrefAnchor">
+                    <span>Show list</span>
+                    <i class="glyphicon glyphicon-arrow-down"></i>
+                </a><br/>
+            </div>
+
+            <div id="@boxId" style="background-color: lightgray; color: darkgray; display: none; text-align: left !important">
+                @foreach (var document in archivedFiles)
+                {
+                    @MakeDetailedViewForFile(document);
+                }
+            </div>
+        }
         <hr />
+        @*foreach (var document in procedureViewModel.ProcedureDocuments)
+            {
+                var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
+                if (document.ProcedureDocsType == (ProcedureDocsType)procedureDocsType)
+                {
+
+                    <i class="glyphicon glyphicon-file"></i>
+                    <span>@docDate</span>
+                    <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
+                    <br />
+                }
+            }
+            <hr />*@
     }
+}
+@helper MakeDetailedViewForFile(ProcedureDocument document)
+{
+    var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
+    var glyphiconIcon = document.IsArchived ? "glyphicon-inbox" : "glyphicon-file";
+    var tooltip = document.IsArchived ? "Archived" : "Actual file";
+    <i class="glyphicon @glyphiconIcon"></i>
+    <span>@docDate</span>
+    <a class="docs_link" tooltip="@tooltip;" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
+    <br />
 }
 
 @helper MakeProductInfoField()

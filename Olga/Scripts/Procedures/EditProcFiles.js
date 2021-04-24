@@ -177,7 +177,7 @@ function getProductInfo(link) {
     });
 }
 
-$(".archive, .archiveOut").click(function () {
+$(".archive, .archiveOut").click(function() {
 
     var documentId = $(this).attr("id");
     var isArchiveValue = $(this).attr("data-isarchive");
@@ -191,17 +191,17 @@ $(".archive, .archiveOut").click(function () {
     $.ajax({
         type: "POST",
         url: linkToArchiveFile,
-        data: { documentId: documentId, isArchiveValue: isArchiveValue},
+        data: { documentId: documentId, isArchiveValue: isArchiveValue },
         cache: false,
-        beforeSend: function () {
+        beforeSend: function() {
             loaderImg.style.visibility = 'visible';
             toastr.info("Wait a moment! File archiving...");
         },
-        success: function (data) {
+        success: function(data) {
             console.log(data.responseText);
             toastr.info(data.responseText);
         },
-        error: function (request) {
+        error: function(request) {
             console.log(request.responseText);
             toastr.error(request.responseText);
         },
@@ -215,3 +215,4 @@ $(".archive, .archiveOut").click(function () {
     });
     return false;
 })
+
