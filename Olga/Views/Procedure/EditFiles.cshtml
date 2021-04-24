@@ -23,11 +23,7 @@
             <span id="ProductNameWithLink" style="color: blue; font-weight: bold; margin-top: 20px;"></span>
         </h2>
         <div class="product_span">
-            <span class="productInfo" id="PharmaceuticalForm"><img src="../../Content/images/loader.gif" /></span>
-            <span class="productInfo" id="Strength"><img src="../../Content/images/loader.gif" /></span>
-            <span class="productInfo" id="MarketingAuthorizNumber"><img src="../../Content/images/loader.gif" /></span>
-            <span class="productInfo" id="ProductCode"><img src="../../Content/images/loader.gif" /></span>
-
+            @MyHelpers.MakeProductInfoField()
             <div id="load" class="load" align="center">
                 <img src="~/Content/images/loading.gif" style="padding-left: 40px;" width="28" height="20" /> Loading...
             </div>
@@ -92,15 +88,17 @@
 
     @*<script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"></script>*@
 
-    <script>
+<script>
         //initialise Action link to Delete File in RenderedScript-file
         var linkToDelProcFile = '@Url.Action("DeleteProcedureFile", "Procedure")';
+        var linkToArchiveFile = '@Url.Action("AddProcedureFileToArchive", "Procedure")';
+
         var link = '@Url.Action("GetProductInfo", "Procedure")';
         $(function () {
-            window.initScript(linkToDelProcFile);
+            window.initScript(linkToDelProcFile, linkToArchiveFile);
             getProductInfo(link);
         });
-    </script>
+</script>
     @*<script src="~/Scripts/Procedures/EditProcFiles.js"></script>*@
 }
 

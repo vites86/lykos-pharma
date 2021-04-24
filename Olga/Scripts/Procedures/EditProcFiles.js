@@ -71,67 +71,71 @@
 
         })();
 
-        function getFileData(myFile) {
-            if (!myFile) {
-                $('#FileLable').css('background-color', 'lightcoral');
-                toastr.error("Please select a Document to download!");
-                console.log("no file chosen");
-            } else {
-                $('#FileLable').css('background-color', 'lightgrey');
-                //var file = myFile.files[0];
-                //var filename = file.name;
-                //console.log("file chosen = " + filename);
-                var key;
-                var filelist = "";
-                for(key in myFile.files) {
-                    if (myFile.files.hasOwnProperty(key)) {
-                        filelist += myFile.files[key].name + '<br>';
-                        console.log(myFile.files[key].name);
-                    }
-                }
-                document.getElementById("choosenFile").innerHTML = filelist === "" ? "no file chosen" : filelist;
+function getFileData(myFile) {
+    if (!myFile) {
+        $('#FileLable').css('background-color', 'lightcoral');
+        toastr.error("Please select a Document to download!");
+        console.log("no file chosen");
+    } else {
+        $('#FileLable').css('background-color', 'lightgrey');
+        //var file = myFile.files[0];
+        //var filename = file.name;
+        //console.log("file chosen = " + filename);
+        var key;
+        var filelist = "";
+        for (key in myFile.files) {
+            if (myFile.files.hasOwnProperty(key)) {
+                filelist += myFile.files[key].name + '<br>';
+                console.log(myFile.files[key].name);
             }
         }
+        document.getElementById("choosenFile").innerHTML = filelist === "" ? "no file chosen" : filelist;
+    }
+}
 
-        function timeRefresh(timeoutPeriod) {
-            setTimeout("location.reload(true);", timeoutPeriod);
-        }
+function timeRefresh(timeoutPeriod) {
+    setTimeout("location.reload(true);", timeoutPeriod);
+}
 
 
 var linkToDelProcFile;
+var linkToArchiveFile;
 
-        $(function() {
-            $(".delete").click(function() {
-                var commentContainer = $(this).parent();
-                var link = linkToDelProcFile;
-                var documentId = $(this).attr("id");
-                var procedureId = $('#procedureId').val();
-                console.log("documentId = " + documentId);
-                console.log("procedureId = " + procedureId);
-                var loaderId = "load_" + documentId;
+$(function () {
+    $(".delete").click(function () {
+        var commentContainer = $(this).parent();
+        var link = linkToDelProcFile;
+        var documentId = $(this).attr("id");
+        var procedureId = $('#procedureId').val();
+        console.log("documentId = " + documentId);
+        console.log("procedureId = " + procedureId);
+        var loaderId = "load_" + documentId;
 
-                $.ajax({
-                    type: "POST",
-                    url: link,
-                    data: { documentId: documentId, procedureId: procedureId },
-                    cache: false,
-                    beforeSend: function() {
-                        document.getElementById(loaderId).style.visibility='visible';
-                        console.log(loaderId);
-                        toastr.info("Wait a moment! File deleting...");},
-                    success: function() {
-                        commentContainer.slideUp('slow', function() { $(this).remove(); });
-                        document.getElementById('load').style.visibility = "hidden";
-                        console.log("deleted success!");
-                        toastr.info("File deleted successfuly!");
-                    }
-                });
-                return false;
-            });
+        $.ajax({
+            type: "POST",
+            url: link,
+            data: { documentId: documentId, procedureId: procedureId },
+            cache: false,
+            beforeSend: function () {
+                document.getElementById(loaderId).style.visibility = 'visible';
+                console.log(loaderId);
+                toastr.info("Wait a moment! File deleting...");
+            },
+            success: function () {
+                commentContainer.slideUp('slow', function () { $(this).remove(); });
+                document.getElementById('load').style.visibility = "hidden";
+                console.log("deleted success!");
+                toastr.info("File deleted successfuly!");
+            }
+        });
+        return false;
+    });
+
 });
 
-function initScript(_linkToDelProcFile) {
+function initScript(_linkToDelProcFile, _linkToArchiveFile) {
     linkToDelProcFile = _linkToDelProcFile;
+    linkToArchiveFile = _linkToArchiveFile;
 }
 
 function getProductInfo(link) {
@@ -172,3 +176,42 @@ function getProductInfo(link) {
         }
     });
 }
+
+$(".archive, .archiveOut").click(function () {
+
+    var documentId = $(this).attr("id");
+    var isArchiveValue = $(this).attr("data-isarchive");
+    var loaderId = "load_" + documentId;
+    var loaderImg = document.getElementById(loaderId);
+
+    console.log("documentId = " + documentId);
+    console.log("loaderId = " + loaderId);
+    console.log("isArchiveValue = " + isArchiveValue);
+
+    $.ajax({
+        type: "POST",
+        url: linkToArchiveFile,
+        data: { documentId: documentId, isArchiveValue: isArchiveValue},
+        cache: false,
+        beforeSend: function () {
+            loaderImg.style.visibility = 'visible';
+            toastr.info("Wait a moment! File archiving...");
+        },
+        success: function (data) {
+            console.log(data.responseText);
+            toastr.info(data.responseText);
+        },
+        error: function (request) {
+            console.log(request.responseText);
+            toastr.error(request.responseText);
+        },
+        complete: function() {
+            loaderImg.style.visibility = "hidden";
+            toastr.options.timeOut = 30000;
+            toastr.info("Page refreshing! Please wait!");
+            toastr.options.timeOut = 20000;
+            timeRefresh(0);
+        }
+    });
+    return false;
+})

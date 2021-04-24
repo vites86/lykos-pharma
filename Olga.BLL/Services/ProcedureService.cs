@@ -159,5 +159,10 @@ namespace Olga.BLL.Services
             return procedures;
         }
 
+        public async Task AddDocumentToArchive(int documentId, bool toArchive)
+        {
+            await Database.Procedures.ArchiveDocumentAsync(documentId, toArchive);
+        }
+
     }
 }

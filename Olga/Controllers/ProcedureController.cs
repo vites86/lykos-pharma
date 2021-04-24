@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -428,6 +429,7 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
+                Logger.Log.Error($"Cannot get product info: {ex.Message}");
                 return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -477,7 +479,7 @@ namespace Olga.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Log.Error($"{ex}");
+                Logger.Log.Error($"EditProcedureFiles: {ex.Message}");
                 return Json(new { success = false, responseText = $"{ex}" }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -577,7 +579,34 @@ namespace Olga.Controllers
                 _procedureService.DeleteDocument(document.PathToDocument);
             }
         }
-        
+
+        [HttpPost]
+        public async Task<ActionResult> AddProcedureFileToArchive(string documentID, string isArchiveValue)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(documentID))
+                {
+                    return Json(new { success = false, responseText = $"#AddProcedureFileToArchive empty parameters" }, JsonRequestBehavior.AllowGet);
+                }
+
+                int.TryParse(documentID, out var documentId);
+                bool.TryParse(isArchiveValue, out var isArchive);
+
+                isArchive = !isArchive;
+
+                await _procedureService.AddDocumentToArchive(documentId, isArchive);
+
+                var resultText = isArchive ? "File added to archive!" : "File extracted from archive!";
+
+                return Json(new { success = true, responseText = resultText }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = $"{ex}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         /*----------------------------------------------------------------------------*/
         public string CreateError()
         {

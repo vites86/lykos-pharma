@@ -29,6 +29,7 @@ namespace Olga.BLL.Interfaces
         IEnumerable<ProcedureDTO> GetPaginated(int? countryId, string searchValue, string sortOrder, int initialPage, int pageSize, out int totalRecords, out int recordsFiltered);
         IEnumerable<ProcedureDTO> GetProceduresOptimized(int? countryId, string searchValue, string sortColumnName, string sortDirection, int start, int length, out int totalrows, out int totalrowsafterfiltering);
         //void UpdateDocument(ProcedureDTO procedure);
+        Task AddDocumentToArchive(int documentId, bool toArchive = true);
     }
 
     public interface IApprDocsType : IBase<ApprDocsTypeDTO>

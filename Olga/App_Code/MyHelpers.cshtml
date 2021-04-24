@@ -5,23 +5,54 @@
 @helper MakeEditFiles(ProcedureViewModel procedureViewModel, ProcedureDocsType procedureDocsType)
 {
     <span class="doc_type_name">@GetFileTypeText(procedureDocsType)</span>
-    <br /><br />
-    foreach (var document in procedureViewModel?.ProcedureDocuments)
+    <br />
+    <br />
+    var archivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => a.IsArchived).ToList();
+    var nonArchivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => !a.IsArchived).ToList();
+
+    if (nonArchivedFiles != null)
     {
-        if (document.ProcedureDocsType == @procedureDocsType)
+        foreach (var document in nonArchivedFiles)
         {
-            @MakeDivForFiles(document)
+            if (document.ProcedureDocsType == @procedureDocsType)
+            {
+                @MakeDivForFiles(document)
+            }
         }
     }
     <hr />
+    if (archivedFiles != null)
+    {
+        <p><span>Archived files:</span></p>
+        foreach (var document in archivedFiles)
+        {
+            if (document.ProcedureDocsType == @procedureDocsType)
+            {
+                @MakeDivForFiles(document)
+            }
+        }
+    }
 }
 
 @helper MakeDivForFiles(ProcedureDocument document)
 {
-    <div>
-        <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
-        <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
-        <img id="load_@document.Id" style="visibility: hidden; height: 30px; margin-left: 25px;" src="~/Content/images/loader.gif">
+    var archiveClass = document.IsArchived ? "archiveOut" : "archive";
+    var archiveToolTip = document.IsArchived ? "Get file from archive" : "Archive file";
+
+    <div style="display: table; height: 70px; overflow: hidden;">
+        <div style="display: table-cell; vertical-align: middle;">
+            <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
+
+            <a href="#" id="@document.Id" class="delete" title="Delete file">
+                <img src="../../Content/images/remove.png" />
+            </a>
+
+            <a href="#" id="@document.Id" class="@archiveClass" data-isArchive="@document.IsArchived" tooltip="@archiveToolTip" title="@archiveToolTip">
+                <img />
+            </a>
+
+            <img id="load_@document.Id" style="visibility: hidden; height: 30px; margin-left: 15px;" src="~/Content/images/loader.gif">
+        </div>
         <br />
     </div>
 }
@@ -68,7 +99,7 @@
             var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
             if (document.ProcedureDocsType == (ProcedureDocsType)procedureDocsType)
             {
-                
+
                 <i class="glyphicon glyphicon-file"></i>
                 <span>@docDate</span>
                 <a class="docs_link" href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument.Replace(@"/Archives/", "")</a>
@@ -78,3 +109,12 @@
         <hr />
     }
 }
+
+@helper MakeProductInfoField()
+{
+    <span class="productInfo" id="PharmaceuticalForm"><img src="../../Content/images/loader.gif" /></span>
+    <span class="productInfo" id="Strength"><img src="../../Content/images/loader.gif" /></span>
+    <span class="productInfo" id="MarketingAuthorizNumber"><img src="../../Content/images/loader.gif" /></span>
+    <span class="productInfo" id="ProductCode"><img src="../../Content/images/loader.gif" /></span>
+}
+

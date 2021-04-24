@@ -32,5 +32,6 @@ namespace Olga.DAL.Interfaces
     public interface IProcedureRepository<T> : IRepository<T> where T : class
     {
         void DeleteDocument(string fileName);
+        Task ArchiveDocumentAsync(int documentId, bool toArchive = true);
     }
 }

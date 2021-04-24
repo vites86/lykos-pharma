@@ -55,30 +55,6 @@
     top: 23px;
 }
 
-
- .delete {
-     /*margin-top: 7px;*/
-     /*float: left;*/
-     margin-left: 30px;
- }
-
- a.delete {
-     padding: 3px;
-     text-align: center;
-     font-size: 18px;
-     font-weight: 700;
-     text-decoration: none;
-     color: #C00;
- }
-
- a.delete:hover {
-     background-color: #900;
-     color: #FFF;
- }
-
- .load {
- }
-
  .product_span span {
      color: darkcyan;
      font-size: 20px;
@@ -102,3 +78,22 @@
     margin-left: 15px;
     height: 20px;
 }
+
+a.archive img {
+    content: url(../../Content/images/inArchive.png);
+}
+
+ a.archiveOut img {
+     content: url(../../Content/images/outArchive.png);
+ }
+
+a.archive img, a.archiveOut img, a.delete img {
+    height: 25px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+    a.archive img:hover, a.archiveOut img:hover, a.delete img:hover {
+        background-color: yellowgreen;
+        color: #FFF;
+    }

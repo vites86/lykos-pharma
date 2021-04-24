@@ -21,6 +21,7 @@ namespace Olga.DAL.Entities
         public Procedure Procedure { get; set; }
 
         public DateTime? DownloadDt { get; set; }
+        public bool IsArchived { get; set; }
     }
 
     public enum ProcedureDocsType

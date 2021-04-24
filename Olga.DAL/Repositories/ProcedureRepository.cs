@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -155,6 +157,17 @@ namespace Olga.DAL.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task ArchiveDocumentAsync(int documentId, bool toArchive)
+        {
+            var doc = await db.ProcedureDocuments.FirstOrDefaultAsync(p => p.Id.Equals(documentId));
+            if (doc != null)
+            {
+                doc.IsArchived = toArchive;
+                db.ProcedureDocuments.AddOrUpdate(doc);
+                Commit();
+            }
         }
     }
 }
