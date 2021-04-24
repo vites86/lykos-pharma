@@ -184,12 +184,13 @@ namespace Olga.Controllers
         private IUserService UserService => HttpContext.GetOwinContext().GetUserManager<IUserService>();
 
         [HttpGet]
-        public ActionResult ProductProcedures(int id)
+        public async Task<ActionResult> ProductProcedures(int id)
         {
             //Todo delete this check
             if (User.IsInRole("Holder"))
             {
-                return null;
+                @ViewBag.Error = Resources.ErrorMessages.NoPermission;
+                return View("Error");
             }
 
             if (id == 0)
@@ -197,11 +198,12 @@ namespace Olga.Controllers
                 @ViewBag.Error = Resources.ErrorMessages.NoIdInRequest;
                 return View("Error");
             }
-            _currentUser = GetCurrentUser();
-            var productDto = _productService.GetProduct(id);
-           
-            var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
 
+            ViewBag.ProductId = id;
+            _currentUser = GetCurrentUser();
+
+            var productDto = await _productService.FindAsync(id);
+            var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
             ViewBag.Country = product.Country;
             ViewBag.CountryId = productDto.CountryId;
 
@@ -217,6 +219,7 @@ namespace Olga.Controllers
             }
 
             ViewBag.Product = product;
+
             ViewBag.User = _currentUser;
             ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
             var proceduresListDto = _procedureService.GetItems().Where(a => a.ProductId == id);
