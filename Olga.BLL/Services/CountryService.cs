@@ -46,11 +46,13 @@ namespace Olga.BLL.Services
             return country.Users.Select(a=>a.ApplicationUser.Email.ToString()).ToList();
         }
 
-        public List<string> GetCountryUsersEmailsViaName(string countryName)
+        public async Task<List<string>> GetCountryUsersEmailsViaNameAsync(string countryName)
         {
-            if (String.IsNullOrEmpty(countryName)) return null;
-            var country = Database.Countries.GetAll().First(a => a.Name.Equals(countryName));
-            return country.Users.Select(a => a.ApplicationUser.Email.ToString()).ToList();
+            if (string.IsNullOrEmpty(countryName)) return null;
+
+            var country = await Database.Countries.GetAll().FirstAsync(a => a.Name.Equals(countryName));
+
+            return country.Users.Select(a => a.ApplicationUser.Email).ToList();
         }
 
         public void DeleteItem(int id)

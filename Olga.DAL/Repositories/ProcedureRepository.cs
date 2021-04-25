@@ -36,6 +36,16 @@ namespace Olga.DAL.Repositories
             return db.Procedures.FirstOrDefault(a => a.Id == id);
         }
 
+        public async Task<Procedure> GetItemAsync(int id)
+        {
+            return await db.Procedures.FirstOrDefaultAsync(a => a.Id == id);
+        }
+
+        public async Task<Procedure> GetItemAsyncWithNoTrack(int id)
+        {
+            return await db.Procedures.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+        }
+
         public void Update(Procedure item)
         {
             var existingProcedure = db.Procedures.FirstOrDefault(a => a.Id == item.Id);

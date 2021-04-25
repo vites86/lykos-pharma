@@ -28,16 +28,6 @@ namespace Olga.Controllers
     public class ProcedureController : Controller
     {
         ICountry _countryService;
-        IProductName _productNameService;
-        IProductCode _productCodeService;
-        IMarketingAuthorizNumber _marketingAuthorizNumberService;
-        IPackSize _packSizeService;
-        IApprDocsType _apprDocsTypeService;
-        IStrength _strengthService;
-        IManufacturer _manufacturerService;
-        IArtwork _artworkService;
-        IMarketingAuthorizHolder _marketingAuthorizHolderService;
-        IPharmaceuticalForm _pharmaceuticalFormService;
         IProductService _productService;
         readonly IBaseEmailService _emailService;
         IProcedure _procedureService;
@@ -45,25 +35,12 @@ namespace Olga.Controllers
         Emailer emailer;
         private UserViewModel _currentUser;
         IArchProccessor _archProccessor;
-        IPagination<ProcedureDTO> procedureWithPAgination;
         static object locker = new object();
 
 
-        public ProcedureController(ICountry serv, IProductName prodName, IProductCode prodCode, IMarketingAuthorizNumber marketingAuthorizNumber, IPackSize packSize,
-            IApprDocsType apprDocsType, IStrength strength, IManufacturer manufacturer, IArtwork artwork, IMarketingAuthorizHolder marketingAuthorizHolder,
-            IPharmaceuticalForm pharmaceuticalForm, IProductService product, IProcedure procedure, IBaseEmailService emailService, IArchProccessor archProccessor)
+        public ProcedureController(ICountry serv,  IProductService product, IProcedure procedure, IBaseEmailService emailService, IArchProccessor archProccessor)
         {
             _countryService = serv;
-            _productNameService = prodName;
-            _productCodeService = prodCode;
-            _packSizeService = packSize;
-            _marketingAuthorizNumberService = marketingAuthorizNumber;
-            _apprDocsTypeService = apprDocsType;
-            _strengthService = strength;
-            _manufacturerService = manufacturer;
-            _artworkService = artwork;
-            _marketingAuthorizHolderService = marketingAuthorizHolder;
-            _pharmaceuticalFormService = pharmaceuticalForm;
             _productService = product;
             _emailService = emailService;
             _procedureService = procedure;
@@ -78,7 +55,6 @@ namespace Olga.Controllers
                 DirectorMail = WebConfigurationManager.AppSettings["directorMail"],
                 DeveloperMail = WebConfigurationManager.AppSettings["developerMail"],
             };
-            _currentUser = GetCurrentUser();
         }
         // GET: Procedure
         public ActionResult Index(int? countryId)
@@ -140,7 +116,7 @@ namespace Olga.Controllers
 
         public bool InitialiseModel(int? countryId, out string errorMessage)
         {
-            errorMessage = String.Empty;
+            errorMessage = string.Empty;
             var country = Mapper.Map<CountryDTO, CountryViewModel>(_countryService.GetItem((int)countryId));
             @ViewBag.CountryName = country.Name;
             @ViewBag.CountryId = countryId;
@@ -202,29 +178,24 @@ namespace Olga.Controllers
             ViewBag.ProductId = id;
             _currentUser = GetCurrentUser();
 
-            var productDto = await _productService.FindAsync(id);
-            var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-            ViewBag.Country = product.Country;
-            ViewBag.CountryId = productDto.CountryId;
+            var proceduresListDto = _procedureService.GetItems(id);
+            var procedureViewModelList = Mapper.Map<IEnumerable<ProcedureDTO>, IList<ProcedureViewModel>>(proceduresListDto);
 
-            if (_currentUser.Countries.All(a => a.Id != productDto.CountryId) && !User.IsInRole("Admin") && !User.IsInRole("Holder"))
+            var countryId = proceduresListDto.First().Product.CountryId;
+            var marketingAuthorizHolderName = proceduresListDto.First().Product.MarketingAuthorizHolder.Name;
+
+            if (_currentUser.Countries.All(a => a.Id != countryId) && !User.IsInRole("Admin") && !User.IsInRole("Holder"))
             {
                 @ViewBag.Error = Resources.ErrorMessages.NoPermission;
                 return View("Error");
             }
-            if (User.IsInRole("Holder") && !product.MarketingAuthorizHolder.Equals(_currentUser.MarketingAuthorizHolder.Name))
+            if (User.IsInRole("Holder") && !marketingAuthorizHolderName.Equals(_currentUser.MarketingAuthorizHolder.Name))
             {
                 @ViewBag.Error = Resources.ErrorMessages.NoPermission;
                 return View("Error");
             }
 
-            ViewBag.Product = product;
-
-            ViewBag.User = _currentUser;
-            ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
-            var proceduresListDto = _procedureService.GetItems().Where(a => a.ProductId == id);
-            var procedureDto = Mapper.Map<IEnumerable<ProcedureDTO>, IList<ProcedureViewModel>>(proceduresListDto);
-            return View(procedureDto);
+            return View(procedureViewModelList);
         }
 
         [HttpGet]
@@ -238,23 +209,15 @@ namespace Olga.Controllers
             try
             {
                 var model = new ProcedureViewModel();
-                var productDto = _productService.GetProduct(id);
-                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-                var _currentUser = GetCurrentUser();
-                model.Product = product;
+                _currentUser = GetCurrentUser();
                 model.ProductId = id;
 
-                ViewBag.CountryId = productDto.CountryId;
-                ViewBag.Product = product;
-
-                ViewBag.Country = product.Country;
-                ViewBag.Product = product;
-                ViewBag.User = _currentUser;
                 return View(model);
             }
             catch (Exception e)
             {
                 @ViewBag.Error = e.Message;
+                Logger.Log.Error($"#{nameof(CreateProcedure)}: {e.Message}");
                 return View("Error");
             }
         }
@@ -282,6 +245,7 @@ namespace Olga.Controllers
             catch (Exception ex)
             {
                 @ViewBag.Error = ex.ToString();
+                Logger.Log.Error($"#{nameof(CreateProcedure)}: {ex.Message}");
                 return View("Error");
             }
         }
@@ -314,12 +278,13 @@ namespace Olga.Controllers
             catch (Exception ex)
             {
                 @ViewBag.Error = ex.Message;
+                Logger.Log.Error($"#{nameof(DeleteProcedure)}: {ex.Message}");
                 return View("Error");
             }
         }
 
         [HttpGet]
-        public ActionResult EditProcedure(int id, int? productId)
+        public async Task<ActionResult> EditProcedure(int id, int? productId)
         {
             if (id==0 || productId == 0)
             {
@@ -328,26 +293,17 @@ namespace Olga.Controllers
             }
             try
             {
-                var procedure = _procedureService.GetItem(id);
+                var procedure = await _procedureService.GetItemAsync(id);
                 var procedureDto = Mapper.Map<ProcedureDTO, ProcedureEditModel>(procedure);
 
-                var productDto = _productService.GetProduct((int)productId);
-                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-                _currentUser = GetCurrentUser();
-                //procedureDto.Product = product;
                 procedureDto.ProductId = id;
-
-                ViewBag.CountryId = productDto.CountryId;
-                ViewBag.Country = product.Country;
-                ViewBag.Product = product;
-                ViewBag.User = _currentUser;
-                ViewBag.DocsType = Enum.GetValues(typeof(ProcedureDocsType));
 
                 return View(procedureDto);
             }
             catch (Exception e)
             {
                 @ViewBag.Error = e.Message;
+                Logger.Log.Error($"#{nameof(EditProcedure)}: {e.Message}");
                 return View("Error");
             }
         }
@@ -363,18 +319,23 @@ namespace Olga.Controllers
             try
             {
                 var procedureDto = Mapper.Map<ProcedureEditModel, ProcedureDTO>(model);
-                await SenEmailAboutUpdateProcedure(model);
+
                 _procedureService.Update(procedureDto);
                 _procedureService.Commit();
+               
                 _currentUser = GetCurrentUser();
                 TempData["Success"] = Resources.Messages.ProcedureUpdatedSuccess;
-                Logger.Log.Info($"{_currentUser.Email} Edited Procedure #{model.Id} for Product #{model.ProductId} ");
+                
+                Logger.Log.Info($"{_currentUser.Email} Updated/Edited Procedure #{model.Id} for Product #{model.ProductId} ");
+
+                await SenEmailAboutUpdateProcedureAsync(model);
 
                 return RedirectToAction("ProductProcedures", new { id = model.ProductId });
             }
             catch (Exception ex)
             {
                 @ViewBag.Error = ex.ToString();
+                Logger.Log.Error($"#{nameof(EditProcedure)}: {ex.Message}");
                 return View("Error");
             }
         }
@@ -403,6 +364,7 @@ namespace Olga.Controllers
             catch (Exception ex)
             {
                 @ViewBag.Error = ex.ToString();
+                Logger.Log.Error($"#{nameof(EditFiles)}: {ex.Message}");
                 return View("Error");
             }
         }
@@ -501,8 +463,8 @@ namespace Olga.Controllers
                 var procedureDto = Mapper.Map<ProcedureDTO, ProcedureViewModel>(procedure);
 
                 var productDto = _productService.GetProduct((int)productId);
-                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto);
-                //var _currentUser = GetCurrentUser();
+                var product = Mapper.Map<ProductDTO, ProductViewModel>(productDto); 
+                _currentUser = GetCurrentUser();
 
                 procedureDto.ProductId = (int)productId;
                 ViewBag.Country = product.Country;
@@ -516,6 +478,7 @@ namespace Olga.Controllers
             catch (Exception ex)
             {
                 @ViewBag.Error = ex.ToString();
+                Logger.Log.Error($"#{nameof(EditProcedureFiles)}: {ex.Message}");
                 return View("Error");
             }
         }
@@ -658,7 +621,7 @@ namespace Olga.Controllers
 
                 var product = Mapper.Map<ProductDTO, ShowProductModel>(prod);
                 var productName = product.ProductName;
-                var userEmailsToNotify = _countryService.GetCountryUsersEmailsViaName(product.Country);
+                var userEmailsToNotify = await _countryService.GetCountryUsersEmailsViaNameAsync(product.Country);
 
                 var subject = Resources.Email.SubjectProcedureCreate.Replace("(name)", productName) + $" {model.ProcedureType}" + $" in {product.Country}";
                 var body = $"{Resources.Email.BodyProcedureCreate} {model.ProcedureType} for <b>{productName}</b> in {product.Country}<br><br>" +
@@ -684,11 +647,11 @@ namespace Olga.Controllers
         }
         
        
-        public async Task SenEmailAboutUpdateProcedure(ProcedureEditModel model)
+        public async Task SenEmailAboutUpdateProcedureAsync(ProcedureEditModel model)
         {
             try
             {
-                var prod = _productService.GetProduct((int)model.ProductId);
+                var prod = await _productService.FindAsync((int)model.ProductId);
                 if (prod == null)
                 {
                     Logger.Log.Error($"{Resources.ErrorMessages.EmailNotSendCantFindProdToProc} ProcedureId={model.Id}");
@@ -697,14 +660,15 @@ namespace Olga.Controllers
 
                 var product = Mapper.Map<ProductDTO, ShowProductModel>(prod);
                 var productName = product.ProductName;
-                var userEmailsToNotify = _countryService.GetCountryUsersEmailsViaName(product.Country);
+                var userEmailsToNotify = await _countryService.GetCountryUsersEmailsViaNameAsync(product.Country);
 
                 var body = new StringBuilder();
-                
-                    var subject = Resources.Email.SubjectProcedureUpdate.Replace("(name)", productName) + $" in {product.Country}";
-                    body.Append(Resources.Email.BodyProcedureUpdate.Replace("(name)", productName) + $" in {product.Country}");
-                    body.Append($" {model.ProcedureType}");
-                    var bodyCompared = await CreateBodyText(model);
+
+                var subject = Resources.Email.SubjectProcedureUpdate.Replace("(name)", productName) + $" in {product.Country}";
+                body.Append(Resources.Email.BodyProcedureUpdate.Replace("(name)", productName) + $" in {product.Country}");
+                body.Append($" {model.ProcedureType}");
+                var bodyCompared = await CreateBodyText(model);
+
                 if (!string.IsNullOrEmpty(bodyCompared))
                 {
                     body.Append(":<br>");
@@ -728,19 +692,54 @@ namespace Olga.Controllers
         {
             var bodyStr = new StringBuilder();
 
-            var oldProcedure = _procedureService.GetItem(model.Id);
+            var oldProcedure = await _procedureService.GetItemAsyncWithNoTrack(model.Id);
 
-            if (oldProcedure.ApprovalDate != model.ApprovalDate)
+            if (oldProcedure.EstimatedSubmissionDate == null && model.EstimatedSubmissionDate != null)
             {
-                bodyStr.Append($"<strong>{Resources.Labels.ApprovalDate}</strong> changed to {model.ApprovalDate.ToString().Substring(0, 10)}<br>");
+                bodyStr.Append($"<strong>{Resources.Labels.EstimatedSubmissionDate}</strong> was added: " +
+                               $"{model.EstimatedSubmissionDate.ToString().Substring(0, 10)}<br>");
             }
-            if (oldProcedure.EstimatedApprovalDate != model.ApprovalDate)
+            else if (oldProcedure.EstimatedSubmissionDate != null && oldProcedure.EstimatedSubmissionDate != model.EstimatedSubmissionDate)
             {
-                bodyStr.Append($"<strong>{Resources.Labels.EstimatedApprovalDate}</strong> changed to {model.EstimatedApprovalDate.ToString(CultureInfo.InvariantCulture).Substring(0, 10)}<br>");
+                bodyStr.Append($"<strong>{Resources.Labels.EstimatedSubmissionDate}</strong> changed to: " +
+                               $"{model.EstimatedSubmissionDate.ToString().Substring(0, 10)}<br>");
             }
-            if (oldProcedure.SubmissionDate != model.SubmissionDate )
+
+            if (oldProcedure.SubmissionDate == DateTime.MinValue && model.SubmissionDate != DateTime.MinValue)
             {
-                bodyStr.Append($"<strong>{Resources.Labels.SubmissionDate}</strong> changed to {model.SubmissionDate.ToString(CultureInfo.InvariantCulture).Substring(0, 10)}<br>");
+                bodyStr.Append($"<strong>{Resources.Labels.SubmissionDate}</strong> was added: " +
+                               $"{model.SubmissionDate.ToString(CultureInfo.InvariantCulture).Substring(0, 10)}<br>");
+
+            }
+            else if (oldProcedure.SubmissionDate != DateTime.MinValue && oldProcedure.SubmissionDate != model.SubmissionDate)
+            {
+                bodyStr.Append($"<strong>{Resources.Labels.SubmissionDate}</strong> changed to: " +
+                               $"{model.SubmissionDate.ToString(CultureInfo.InvariantCulture).Substring(0, 10)}<br>");
+            }
+
+            if (oldProcedure.EstimatedApprovalDate == DateTime.MinValue && model.EstimatedApprovalDate != DateTime.MinValue)
+            {
+                bodyStr.Append($"<strong>{Resources.Labels.EstimatedApprovalDate}</strong> was added: " +
+                               $"{model.EstimatedApprovalDate.ToString(CultureInfo.InvariantCulture).Substring(0, 10)}<br>");
+
+            }
+            else if (oldProcedure.EstimatedApprovalDate != DateTime.MinValue &&  oldProcedure.EstimatedApprovalDate != model.EstimatedApprovalDate)
+            {
+                bodyStr.Append($"<strong>{Resources.Labels.EstimatedApprovalDate}</strong> changed to: " +
+                               $"{model.EstimatedApprovalDate.ToString(CultureInfo.InvariantCulture).Substring(0, 10)}<br>");
+            }
+
+
+            if (oldProcedure.ApprovalDate == null && model.ApprovalDate != null)
+            {
+                bodyStr.Append($"<strong>{Resources.Labels.ApprovalDate}</strong> was added: " +
+                               $"{model.ApprovalDate.ToString().Substring(0, 10)}<br>");
+
+            }
+            else if (oldProcedure.ApprovalDate != null && oldProcedure.ApprovalDate != model.ApprovalDate)
+            {
+                bodyStr.Append($"<strong>{Resources.Labels.ApprovalDate}</strong> changed to: " +
+                               $"{model.ApprovalDate.ToString().Substring(0, 10)}<br>");
             }
 
             if (oldProcedure.Comments != model.Comments)
@@ -777,7 +776,7 @@ namespace Olga.Controllers
 
                 var product = Mapper.Map<ProductDTO, ShowProductModel>(prod);
                 var productName = product.ProductName;
-                var userEmailsToNotify = _countryService.GetCountryUsersEmailsViaName(product.Country);
+                var userEmailsToNotify = await _countryService.GetCountryUsersEmailsViaNameAsync(product.Country);
 
                 var body = new StringBuilder();
 
@@ -809,10 +808,15 @@ namespace Olga.Controllers
         {
             try
             {
-                var userId = HttpContext.User.Identity.GetUserId();
-                var user = UserService.GetUser(userId);
-                var userMapper = MapperForUser.GetUserMapperForView(UserService);
-                return userMapper.Map<UserDTO, UserViewModel>(user);
+                if (_currentUser == null)
+                {
+                    var userId = HttpContext.User.Identity.GetUserId();
+                    var user = UserService.GetUser(userId);
+                    var userMapper = MapperForUser.GetUserMapperForView(UserService);
+                    _currentUser = userMapper.Map<UserDTO, UserViewModel>(user);
+                }
+
+                return _currentUser;
             }
             catch (Exception ex)
             {

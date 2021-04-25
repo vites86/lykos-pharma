@@ -5038,6 +5038,7 @@
     <None Include="Properties\PublishProfiles\Develop.pubxml" />
     <None Include="Properties\PublishProfiles\local HomeComputer.pubxml" />
     <None Include="Properties\PublishProfiles\local WorkingComputer.pubxml" />
+    <None Include="Properties\PublishProfiles\LocalWebServer.pubxml" />
     <None Include="Properties\PublishProfiles\Production 185.112.41.146.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -5062,6 +5063,7 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\Procedures\EditProcFiles.js" />
+    <Content Include="Scripts\Procedures\Procedure.js" />
     <Content Include="Scripts\Products\artworks.js" />
     <Content Include="Scripts\Products\products-handler.js" />
     <Content Include="Scripts\Products\products4.js" />
@@ -5221,6 +5223,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Title.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

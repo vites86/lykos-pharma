@@ -9,101 +9,111 @@
 <div>
     <div class="row" style=" margin-left:  20px;margin-right: 10px;">
         <div class="alert-success" style="width: 100%">
-            <h1>@ViewBag.Country</h1>
+            <h1>
+                <span id="CountryName"></span>
+                <span class="productInfo"><img class="productInfo" src="../../Content/images/loader.gif" /></span>
+                <img class="flag" id="CountryFlag" />
+            </h1>
         </div>
-        <h2>Update Procedure Files for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
-            @Html.ActionLink($"{ViewBag.Product.ProductName??"NoName"}", "ShowDocuments", "Product", new { id = @ViewBag.Product.Id, countryId = @ViewBag.CountryId }, new { target = "_blank" })
-        </span></h2>
-            <div class="product_span">
-                <span>@ViewBag.Product.PharmaceuticalForm</span>
-                <span>@ViewBag.Product.Strength</span>
-                <span>@ViewBag.Product.MarketingAuthorizNumber</span>
-                <span>@ViewBag.Product.ProductCode</span>
-                <div id="load" class="load" align="center" style="padding-left: 40px;">
-                    <img src="../../Content/images/loading.gif" width="28" height="20" /> Loading...
+        <h2>
+            Update Procedure Files for:<span style="color: blue; font-weight: bold; margin-top: 20px;">
+                <span id="ProductNameWithLink" style="color: blue; font-weight: bold; margin-top: 20px;"></span>
+            </span>
+        </h2>
+        <div class="product_span">
+            @MyHelpers.MakeProductInfoField()
+            <div id="load" class="load" align="center" style="padding-left: 40px;">
+                <img src="../../Content/images/loading.gif" width="28" height="20" /> Loading...
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <div class="form-group" id="documentsGroup" name="documentsGroup">
+            <div class="row">
+                <div class="col-md-10">
+                    @foreach (var period in ViewBag.DocsType)
+                    {
+                        var labelName = Enum.GetName(typeof(ProcedureDocsType), period);
+                        <span>@labelName</span><br /><br />
+                        foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == period))
+                        {
+                            var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
+                            <div>
+                                <span>@docDate</span>
+                                <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
+                                <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
+                                <img id="load_@document.Id" style="visibility: hidden; height: 30px; margin-left: 25px;" src="~/Content/images/loader.gif">
+                            </div><br />
+                        }
+                        <hr />
+                    }
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <h3>Choose file to download:</h3>
+                    @using (Html.BeginForm("EditProcedureFiles", "Procedure", new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-            <br />
-            <br />
-            <div class="form-group" id="documentsGroup" name="documentsGroup">
-                <div class="row">
-                    <div class="col-md-10">
-                        @foreach (var period in ViewBag.DocsType)
-                        {
-                            var labelName = Enum.GetName(typeof(ProcedureDocsType), period);
-                            <span>@labelName</span><br /><br />
-                            foreach (var document in Model.ProcedureDocuments.Where(a => a.ProcedureDocsType == period))
-                            {
-                                var docDate = document.DownloadDt != null ? $"[{document.DownloadDt.Value.ToShortDateString()}]" : "[no date]";
-                                <div>
-                                    <span>@docDate</span>
-                                    <a href="~/Upload/Documents/Procedures/@document.PathToDocument">@document.PathToDocument</a>
-                                    <a href="#" id="@document.Id" class="delete" title="Delete file">x</a>
-                                    <img id="load_@document.Id" style="visibility: hidden; height: 30px; margin-left: 25px;" src="~/Content/images/loader.gif">
-                                </div><br />
-                            }
-                            <hr />
-                        }
-                    </div>
+                        <input type="hidden" id="procedureId" name="procedureId" value="@Model.Id" />
+                        <input type="hidden" id="productId" name="productId" value="@Model.ProductId" />
+
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.Label("Document type:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
+                            </div>
+                            <div class="col-md-8">
+                                @Html.DropDownList("procedureDocsType", EnumHelper.GetSelectList(typeof(ProcedureDocsType)), "-- Select Type --", new { @class = "form-control", onchange = "dropdownSelected();" })
+
+                            </div>
+                        </div><br /><br /><br />
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.Label("Document sources:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
+                            </div>
+                            <div class="col-md-8">
+                                <label id="FileLable" class="btn btn-default">Browse for file ...<input type="file" id="uploadFiles" name="uploadFiles" onchange="getFileData(this);" hidden /></label>
+                                <label style="margin-left: 20px;" id="choosenFile" name="choosenFile" />
+                            </div>
+                        </div><br /><br /><br />
+                        <div class="form-group">
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-2 ">
+                                <input type="submit" value="Download" class="btn btn-info" />
+                            </div>
+                            <div class="col-md-6" style="padding-top: 5px; padding-bottom: 0px;">
+                                <div class="progress progress-striped">
+                                    <div class="progress-bar progress-bar-success">0%</div>
+                                </div>
+                            </div>
+                        </div><br /><br />
+                    }
                 </div>
-                <div class="row">
-                    <div class="col-md-10">
-                        <h3>Choose file to download:</h3>
-                        @using (Html.BeginForm("EditProcedureFiles", "Procedure", new { enctype = "multipart/form-data" }))
-                        {
-                            @Html.AntiForgeryToken()
-
-                            <input type="hidden" id="procedureId" name="procedureId" value="@Model.Id" />
-                            <input type="hidden" id="productId" name="productId" value="@Model.ProductId" />
-
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    @Html.Label("Document type:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
-                                </div>
-                                <div class="col-md-8">
-                                    @Html.DropDownList("procedureDocsType", EnumHelper.GetSelectList(typeof(ProcedureDocsType)), "-- Select Type --", new { @class = "form-control", onchange = "dropdownSelected();" })
-
-                                </div>
-                            </div><br /><br /><br />
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    @Html.Label("Document sources:", htmlAttributes: new { @class = "control-label col-md-4 width_100" })
-                                </div>
-                                <div class="col-md-8">
-                                    <label id="FileLable" class="btn btn-default">Browse for file ...<input type="file" id="uploadFiles" name="uploadFiles" onchange="getFileData(this);" hidden /></label>
-                                    <label style="margin-left: 20px;" id="choosenFile" name="choosenFile" />
-                                </div>
-                            </div><br /><br /><br />
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                </div>
-                                <div class="col-md-2 ">
-                                    <input type="submit" value="Download" class="btn btn-info" />
-                                </div>
-                                <div class="col-md-6" style="padding-top: 5px; padding-bottom: 0px;">
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-success">0%</div>
-                                    </div>
-                                </div>
-                            </div><br /><br />
-                        }
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-
-                    </div>
-                </div><br />
             </div>
-</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span>@Html.ActionLink("Back to procedure files -->", "ProductProcedures", "Procedure", new { id = @Model.ProductId }, 
+                              new { @class = "btn btn-info", @target = "_blank" })</span>
+                </div>
+            </div><br />
+        </div>
+    </div>
 </div>
 @section Scripts {
-
-    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"></script>
-
     <script>
-        (function() {
+        (function () {
+
+            var linkGetProductInfo = '@Url.Action("GetProductInfo", "Procedure")';
+
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var productId = urlParams.get('productId');
+            console.log("productId=" + productId);
+
+            getProductInfo(linkGetProductInfo, productId);
 
             document.getElementById("choosenFile").innerHTML = "No file yet";
 
@@ -249,8 +259,12 @@
                 return false;
             });
         });
+
     </script>
 }
+@Scripts.Render("~/Scripts/Procedures/Procedure.js")
+@Scripts.Render("~/Scripts/ajax-form.js")
+
 <style>
     [hidden] {
         display: none !important;
@@ -309,7 +323,7 @@
         top: 23px;
     }
 
-   
+
     .delete {
         /*margin-top: 7px;*/
         /*float: left;*/
@@ -324,19 +338,32 @@
         text-decoration: none;
         color: #C00;
     }
+
         a.delete:hover {
             background-color: #900;
             color: #FFF;
         }
-    .load {
 
+    .load {
     }
+
     .product_span span {
         color: darkcyan;
         font-size: 20px;
         display: block;
     }
+
     span:empty {
         height: 0px !important;
+    }
+
+    .productInfo img {
+        margin-left: 15px;
+        height: 20px;
+    }
+
+    .flag {
+        margin-left: 15px;
+        height: 20px;
     }
 </style>

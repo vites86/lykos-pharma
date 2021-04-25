@@ -33,5 +33,7 @@ namespace Olga.DAL.Interfaces
     {
         void DeleteDocument(string fileName);
         Task ArchiveDocumentAsync(int documentId, bool toArchive = true);
+        Task<T> GetItemAsync(int id);
+        Task<T> GetItemAsyncWithNoTrack(int id);
     }
 }

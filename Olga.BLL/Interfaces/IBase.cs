@@ -30,6 +30,8 @@ namespace Olga.BLL.Interfaces
         IEnumerable<ProcedureDTO> GetProceduresOptimized(int? countryId, string searchValue, string sortColumnName, string sortDirection, int start, int length, out int totalrows, out int totalrowsafterfiltering);
         //void UpdateDocument(ProcedureDTO procedure);
         Task AddDocumentToArchive(int documentId, bool toArchive = true);
+        Task<ProcedureDTO> GetItemAsync(int id);
+        Task<ProcedureDTO> GetItemAsyncWithNoTrack(int id);
     }
 
     public interface IApprDocsType : IBase<ApprDocsTypeDTO>
@@ -45,8 +47,7 @@ namespace Olga.BLL.Interfaces
     public interface ICountry : IBase<CountryDTO>
     {
         List<string> GetCountryUsersEmails(int id);
-        List<string> GetCountryUsersEmailsViaName(string countryName);
-        //IEnumerable<CountryDTO> GetItems();
+        Task<List<string>> GetCountryUsersEmailsViaNameAsync(string countryName);
     }
 
     public interface IManufacturer : IBase<ManufacturerDTO>

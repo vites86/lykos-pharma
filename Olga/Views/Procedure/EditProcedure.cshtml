@@ -2,7 +2,6 @@
     ViewBag.Title = "Edit Procedure";
 }
 @using System.Web.Mvc.Html
-@using Olga.DAL.Entities
 @model Olga.Models.ProcedureEditModel
 
 <div>
@@ -136,9 +135,6 @@
             <div class="empty"></div>
 
         }
-        @*<h2>Documents:</h2>
-
-        *@
     </div>
 </div>
 <style>
@@ -160,6 +156,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/dropzonescripts")
     <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
+    @Scripts.Render("~/Scripts/Procedures/Procedure.js")
 
     <script type="text/javascript">
         (function (parameters) {
@@ -245,48 +242,13 @@
                 submissionEstDateInput.value = new Date().toISOString().slice(0, 10);
             }
         }
-        function getProductInfo(link) {
 
-    
+        $(function () {
             var queryString = window.location.search;
             var urlParams = new URLSearchParams(queryString);
             var productId = urlParams.get('productId');
-            console.log("productId = " + productId);
-
-            $.ajax({
-                type: "POST",
-                url: link,
-                data: { productId: productId },
-                cache: false,
-                beforeSend: function () {},
-                success: function (request) {
-                    if (request.success === true) {
-
-                        console.log("request = " + request.responseText);
-                        var product = JSON.parse(request.responseText);
-
-                        $("#CountryName").text(product.countryName);
-                        $("#PharmaceuticalForm").text(product.pharmaceuticalForm);
-                        $("#Strength").text(product.strength);
-                        $("#MarketingAuthorizNumber").text(product.marketingAuthorizNumber);
-                        $("#ProductCode").text(product.productCode);
-                        $('.productInfo img').hide();
-                        $('#CountryFlag').attr('src', "../../Content/images/countries/" + product.flagSrc);
-
-                        var productLink = jQuery('<a>').attr('href', '/Product/ShowDocuments/' + productId + '?countryId=' + product.countryId).text(product.productName);
-                        jQuery('#ProductNameWithLink').append(productLink);
-
-                    } else {
-                        console.log("request = " + request.responseText);
-                        toastr.error(request.responseText);
-                    }
-                }
-            });
-        }
-
-        $(function () {
             var link = '@Url.Action("GetProductInfo", "Procedure")';
-            getProductInfo(link);
+            getProductInfo(link, productId);
         });
     </script>
 }

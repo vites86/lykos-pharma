@@ -113,5 +113,14 @@ namespace Resources {
                 return ResourceManager.GetString("EditProductAdditionalFiles", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procedures.
+        /// </summary>
+        public static string Procedures {
+            get {
+                return ResourceManager.GetString("Procedures", resourceCulture);
+            }
+        }
     }
 }

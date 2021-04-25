@@ -135,4 +135,7 @@
   <data name="EditProductAdditionalFiles" xml:space="preserve">
     <value>Edit Product Additional Files</value>
   </data>
+  <data name="Procedures" xml:space="preserve">
+    <value>Procedures</value>
+  </data>
 </root>

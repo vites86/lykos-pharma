@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -33,6 +34,18 @@ namespace Olga.BLL.Services
             return Mapper.Map<Procedure, ProcedureDTO>(Database.Procedures.Get(id));
         }
 
+        public async Task<ProcedureDTO> GetItemAsync(int id)
+        {
+            var item = await Database.Procedures.GetItemAsync(id);
+            return  Mapper.Map<Procedure, ProcedureDTO>(item);
+        }
+
+        public async Task<ProcedureDTO> GetItemAsyncWithNoTrack(int id)
+        {
+            var item = await Database.Procedures.GetItemAsyncWithNoTrack(id);
+            return Mapper.Map<Procedure, ProcedureDTO>(item);
+        }
+
         public void DeleteItem(int id)
         {
             Database.Procedures.Delete(id);
@@ -56,7 +69,8 @@ namespace Olga.BLL.Services
 
         public IEnumerable<ProcedureDTO> GetItems(int productId)
         {
-            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(Database.Procedures.GetAll(productId).ToArray());
+            var procedures = Database.Procedures.GetAll(productId).ToArray();
+            return Mapper.Map<IEnumerable<Procedure>, IEnumerable<ProcedureDTO>>(procedures);
         }
 
         public void Update(ProcedureDTO procedureDto)

@@ -77,6 +77,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
+                    <span>@Html.ActionLink("Back to procedure files -->", "ProductProcedures", "Procedure", new { id = @Model.ProductId }, 
+                              new { @class = "btn btn-info", @target = "_blank" })</span>
 
                 </div>
             </div><br />
@@ -86,22 +88,23 @@
 
 @section Scripts {
 
-    @*<script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js"></script>*@
-
-<script>
+    <script>
         //initialise Action link to Delete File in RenderedScript-file
         var linkToDelProcFile = '@Url.Action("DeleteProcedureFile", "Procedure")';
         var linkToArchiveFile = '@Url.Action("AddProcedureFileToArchive", "Procedure")';
-
         var link = '@Url.Action("GetProductInfo", "Procedure")';
+
         $(function () {
             window.initScript(linkToDelProcFile, linkToArchiveFile);
-            getProductInfo(link);
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var productId = urlParams.get('productId');
+            getProductInfo(link, productId);
         });
-</script>
-    @*<script src="~/Scripts/Procedures/EditProcFiles.js"></script>*@
+    </script>
 }
 
-@Scripts.Render("~/Scripts/ajax-form.js");
-@Scripts.Render("~/Scripts/Procedures/EditProcFiles.js");
+@Scripts.Render("~/Scripts/ajax-form.js")
+@Scripts.Render("~/Scripts/Procedures/EditProcFiles.js")
 @Styles.Render("~/Content/DownloadProcFiles.css")
+@Scripts.Render("~/Scripts/Procedures/Procedure.js")
