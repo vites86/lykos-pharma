@@ -692,7 +692,7 @@ namespace Olga.Controllers
         {
             var bodyStr = new StringBuilder();
 
-            var oldProcedure = await _procedureService.GetItemAsyncWithNoTrack(model.Id);
+            var oldProcedure = await _procedureService.GetItemAsync(model.Id);
 
             if (oldProcedure.EstimatedSubmissionDate == null && model.EstimatedSubmissionDate != null)
             {

@@ -7,8 +7,10 @@
     <span class="doc_type_name">@GetFileTypeText(procedureDocsType)</span>
     <br />
     <br />
-    var archivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => a.IsArchived).ToList();
-    var nonArchivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => !a.IsArchived).ToList();
+    var archivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => a.IsArchived
+                                                                          && a.ProcedureDocsType == (ProcedureDocsType)procedureDocsType).ToList();
+    var nonArchivedFiles = procedureViewModel?.ProcedureDocuments.Where(a => !a.IsArchived
+                                                                             && a.ProcedureDocsType == (ProcedureDocsType)procedureDocsType).ToList();
 
     if (nonArchivedFiles != null)
     {
@@ -21,7 +23,7 @@
         }
     }
     <hr />
-    if (archivedFiles != null)
+    if (archivedFiles != null && archivedFiles.Count>0)
     {
         <p><span>Archived files:</span></p>
         foreach (var document in archivedFiles)

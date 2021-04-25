@@ -43,7 +43,8 @@ namespace Olga.DAL.Repositories
 
         public async Task<Procedure> GetItemAsyncWithNoTrack(int id)
         {
-            return await db.Procedures.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+            return await db.Procedures.Include(a=>a.Product).AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Id == id).ConfigureAwait(false);
         }
 
         public void Update(Procedure item)
